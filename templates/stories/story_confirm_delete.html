@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+  Delete Story - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4 p-md-5">
+          <h3 class="mb-4 text-center">Delete Story</h3>
+
+          <div class="alert alert-danger mb-4">
+            <p class="mb-0">
+              Are you sure you want to delete the story <strong>"{{ story.title }}"</strong>? This action cannot be undone.
+            </p>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">{{ story.title }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Published on {{ story.created_at|date:'F j, Y' }}</h6>
+              <p class="card-text">{{ story.content|truncatewords:30 }}</p>
+            </div>
+          </div>
+
+          <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-outline-secondary">Cancel</a>
+              <button type="submit" class="btn btn-danger">Delete Story</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

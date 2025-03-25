@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}
+  {{ category.name }} - Stories - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 mb-4">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'stories:category_list' %}">Categories</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="col-lg-8">
+      <h1 class="mb-3">{{ category.name }}</h1>
+      {% if category.description %}
+        <div class="mb-4">
+          <p class="lead">{{ category.description }}</p>
+        </div>
+      {% endif %}
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <span class="badge bg-secondary">{{ paginator.count }} stories</span>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if sort_by == 'created_at' %}
+              Newest
+            {% elif sort_by == 'likes' %}
+              Most Liked
+            {% elif sort_by == 'title' %}
+              Title A-Z
+            {% else %}
+              Newest
+            {% endif %}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
+            <li>
+              <a class="dropdown-item {% if sort_by == 'created_at' or not sort_by %}active{% endif %}" href="?sort=created_at">Newest</a>
+            </li>
+            <li>
+              <a class="dropdown-item {% if sort_by == 'likes' %}active{% endif %}" href="?sort=likes">Most Liked</a>
+            </li>
+            <li>
+              <a class="dropdown-item {% if sort_by == 'title' %}active{% endif %}" href="?sort=title">Title A-Z</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {% if stories %}
+        <div class="row row-cols-1 g-4">
+          {% for story in stories %}
+            <div class="col">
+              <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                  <h5 class="card-title mb-1"><a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a></h5>
+                  <div class="d-flex align-items-center mb-3">
+                    <img src="{{ story.author.profile.avatar_url|default:'https://via.placeholder.com/40' }}" class="rounded-circle me-2" width="30" height="30" alt="{{ story.author.username }}" />
+                    <span class="small text-muted">{{ story.author.username }} • {{ story.created_at|date:'M d, Y' }}</span>
+                  </div>
+                  <p class="card-text">{{ story.content|truncatewords:50 }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      {% for category in story.categories.all %}
+                        <span class="badge bg-light text-dark">{{ category.name }}</span>
+                      {% endfor %}
+                    </div>
+                    <div class="text-muted small">
+                      <i class="bi bi-chat"></i> {{ story.comment_set.count }}
+                      <span class="ms-2"><i class="bi bi-heart"></i> {{ story.likes }}</span>
+                      {% if story.reading_time %}
+                        <span class="ms-2"><i class="bi bi-clock"></i> {{ story.reading_time }} min read</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4">
+          {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
+        </div>
+      {% else %}
+        <div class="alert alert-info">
+          <p class="mb-0">No stories found in this category.</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+          <h5 class="card-title">About this category</h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Stories
+              <span class="badge bg-primary rounded-pill">{{ paginator.count|default:'0' }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+              Authors
+              <span class="badge bg-primary rounded-pill">{{ author_count|default:'0' }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {% if related_categories %}
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Related Categories</h5>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              {% for related in related_categories %}
+                <a href="#" class="text-decoration-none"><span class="badge bg-light text-dark p-2">{{ related.name }}</span></a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if popular_authors %}
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Popular Authors</h5>
+            <ul class="list-group list-group-flush">
+              {% for author in popular_authors %}
+                <li class="list-group-item px-0">
+                  <div class="d-flex align-items-center">
+                    <img src="{{ author.profile.avatar_url|default:'https://via.placeholder.com/40' }}" class="rounded-circle me-2" width="40" height="40" alt="{{ author.username }}" />
+                    <div>
+                      <a href="{% url 'profiles:profile_detail' author.username %}" class="text-decoration-none">{{ author.username }}</a>
+                      <div class="small text-muted">{{ author.story_count }} stories in this category</div>
+                    </div>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

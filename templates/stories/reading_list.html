@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% block title %}Reading List - {{ reading_list.name }} - Story Platform{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'stories:reading_lists' %}">Reading Lists</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ reading_list.name }}</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>{{ reading_list.name }}</h1>
+            {% if user == reading_list.user %}
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editListModal">
+                    <i class="bi bi-pencil"></i> Edit
+                </button>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteListModal">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if reading_list.description %}
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Description</h5>
+                <p class="card-text">{{ reading_list.description }}</p>
+                <div class="d-flex justify-content-between text-muted small">
+                    <div>Created: {{ reading_list.created_at|date:"M d, Y" }}</div>
+                    <div>Updated: {{ reading_list.updated_at|date:"M d, Y" }}</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Stories in reading list -->
+        {% if stories %}
+        <div class="row row-cols-1 g-4">
+            {% for story in stories %}
+            <div class="col">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="card-title mb-0">
+                                <a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none">{{ story.title }}</a>
+                            </h5>
+                            {% if user == reading_list.user %}
+                            <form method="post" action="{% url 'stories:remove_from_reading_list' reading_list.id story.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove from list">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{{ story.author.profile.avatar_url|default:'https://via.placeholder.com/40' }}" 
+                                class="rounded-circle me-2" width="30" height="30" alt="{{ story.author.username }}">
+                            <span class="small text-muted">{{ story.author.username }} • {{ story.created_at|date:"M d, Y" }}</span>
+                        </div>
+                        <p class="card-text">{{ story.content|truncatewords:30 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                {% for category in story.categories.all %}
+                                <span class="badge bg-light text-dark">{{ category.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="text-muted small">
+                                <i class="bi bi-chat"></i> {{ story.comment_set.count }}
+                                <span class="ms-2">
+                                    <i class="bi bi-heart"></i> {{ story.likes }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        <div class="mt-4">
+            {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
+        </div>
+        
+        {% else %}
+        <div class="alert alert-info">
+            <p class="mb-0">This reading list is empty. Start adding stories to build your collection!</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <h5 class="card-title">About this list</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        Created by
+                        <span>{{ reading_list.user.username }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        Stories
+                        <span class="badge bg-primary rounded-pill">{{ paginator.count|default:"0" }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        Visibility
+                        <span class="badge {% if reading_list.is_public %}bg-success{% else %}bg-secondary{% endif %} rounded-pill">
+                            {% if reading_list.is_public %}Public{% else %}Private{% endif %}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if similar_lists %}
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">Similar Lists</h5>
+                <ul class="list-group list-group-flush">
+                    {% for list in similar_lists %}
+                    <li class="list-group-item px-0">
+                        <a href="{% url 'stories:reading_list_detail' list.id %}" class="text-decoration-none">{{ list.name }}</a>
+                        <div class="small text-muted">by {{ list.user.username }} • {{ list.story_count }} stories</div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Edit Reading List Modal -->
+{% if user == reading_list.user %}
+<div class="modal fade" id="editListModal" tabindex="-1" aria-labelledby="editListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'stories:reading_list_update' reading_list.id %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editListModalLabel">Edit Reading List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">List Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ reading_list.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3">{{ reading_list.description }}</textarea>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="is_public" name="is_public" {% if reading_list.is_public %}checked{% endif %}>
+                        <label class="form-check-label" for="is_public">
+                            Make this reading list public
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Reading List Modal -->
+<div class="modal fade" id="deleteListModal" tabindex="-1" aria-labelledby="deleteListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'stories:reading_list_delete' reading_list.id %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteListModalLabel">Delete Reading List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the reading list <strong>{{ reading_list.name }}</strong>?</p>
+                    <p class="text-danger"><strong>Warning:</strong> This action cannot be undone. The list will be permanently deleted.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete List</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %} 

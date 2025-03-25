@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}
+  Home - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <!-- Hero section -->
+    <div class="row py-5 mb-5 bg-light rounded-3 hero-section">
+      <div class="col-md-8 mx-auto text-center">
+        <h1 class="display-4 fw-bold">Discover Amazing Stories</h1>
+        <p class="lead mb-4">A platform for reading and sharing short stories from writers around the world.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <a href="{% url 'accounts:login' %}" class="btn btn-story btn-lg px-4 gap-3">Get Started</a>
+          <a href="{% url 'stories:story_list' %}" class="btn btn-outline-story btn-lg px-4">Browse Stories</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured stories section -->
+    <h2 class="mb-4 text-story-primary">Featured Stories</h2>
+    {% if featured_stories %}
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+        {% for story in featured_stories %}
+          <div class="col">
+            <div class="card h-100 shadow-sm story-card">
+              <div class="card-body">
+                <h5 class="card-title">{{ story.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">By {{ story.author.first_name }} {{ story.author.last_name }}</h6>
+                <p class="card-text">{{ story.content|truncatewords:30 }}</p>
+              </div>
+              <div class="card-footer bg-transparent border-top-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-muted">{{ story.created_at|date:'M d, Y' }}</small>
+                  <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info">
+        <p>No stories have been published yet. Check back soon!</p>
+      </div>
+    {% endif %}
+
+    <!-- Categories section -->
+    <h2 class="mb-4 text-story-primary">Browse By Category</h2>
+    {% if categories %}
+      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
+        {% for category in categories %}
+          <div class="col">
+            <a href="#" class="text-decoration-none">
+              <div class="card bg-light text-center h-100 category-card">
+                <div class="card-body">
+                  <i class="bi bi-bookmark-fill fs-3 mb-2"></i>
+                  <h5 class="card-title">{{ category.name }}</h5>
+                  <p class="card-text small text-muted">{{ category.description|default:''|truncatewords:10 }}</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info">
+        <p>No categories have been created yet.</p>
+      </div>
+    {% endif %}
+
+    <!-- Call to action section -->
+    <div class="row py-5 mb-5 bg-primary text-white rounded-3">
+      <div class="col-md-8 mx-auto text-center">
+        <h2>Ready to share your story?</h2>
+        <p class="lead mb-4">Join our community and start publishing your own stories today.</p>
+        <a href="{% url 'accounts:signup' %}" class="btn btn-light btn-lg">Sign Up Now</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

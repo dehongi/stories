@@ -1,0 +1,88 @@
+/* Custom CSS for Story Platform */
+
+/* Story card hover effect */
+.story-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Hero section background */
+.hero-section {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+}
+
+/* Category cards */
+.category-card {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.category-card:hover {
+    background-color: #e9ecef !important;
+    transform: translateY(-3px);
+}
+
+/* Custom text styles */
+.text-story-primary {
+    color: #6a41a5;
+}
+
+.text-story-secondary {
+    color: #6c757d;
+}
+
+/* Custom buttons */
+.btn-story {
+    background-color: #6a41a5;
+    border-color: #6a41a5;
+    color: white;
+}
+
+.btn-story:hover {
+    background-color: #583489;
+    border-color: #583489;
+    color: white;
+}
+
+.btn-outline-story {
+    border-color: #6a41a5;
+    color: #6a41a5;
+}
+
+.btn-outline-story:hover {
+    background-color: #6a41a5;
+    color: white;
+}
+
+/* Story content formatting */
+.story-content {
+    font-family: 'Georgia', serif;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #343a40;
+}
+
+/* Author badges */
+.author-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-radius: 50px;
+    font-size: 0.85rem;
+}
+
+/* Profile avatar */
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #f8f9fa;
+}

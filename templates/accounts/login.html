@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}
+  Login - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4 p-md-5">
+          <h3 class="mb-4 text-center">Login</h3>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="mb-3">
+              <label for="{{ form.username.id_for_label }}" class="form-label">Email</label>
+              {{ form.username }}
+              {% if form.username.errors %}
+                <div class="text-danger small">
+                  {% for error in form.username.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+              {{ form.password }}
+              {% if form.password.errors %}
+                <div class="text-danger small">
+                  {% for error in form.password.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <a href="{% url 'accounts:password_reset' %}" class="text-decoration-none small">Forgot password?</a>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <p class="mb-0">
+          Don't have an account? <a href="{% url 'accounts:signup' %}" class="text-decoration-none">Sign Up</a>
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

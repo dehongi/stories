@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% block title %}
+  Edit Profile - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4 p-md-5">
+          <h3 class="mb-4 text-center">Edit Your Profile</h3>
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.errors %}
+              <div class="alert alert-danger" role="alert">Please correct the errors below.</div>
+            {% endif %}
+
+            <div class="row">
+              <!-- Avatar Upload Section -->
+              <div class="col-md-4 mb-4 mb-md-0">
+                <div class="text-center">
+                  <img src="{{ user.profile.avatar_url|default:'https://via.placeholder.com/150' }}" alt="{{ user.username }}" class="rounded-circle img-fluid mb-3" style="max-width: 150px;" />
+
+                  <div class="mb-3">
+                    <label for="{{ form.avatar.id_for_label }}" class="form-label">Change Profile Picture</label>
+                    {{ form.avatar }}
+                    {% if form.avatar.errors %}
+                      <div class="text-danger small">
+                        {% for error in form.avatar.errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    <div class="form-text">Max file size: 2MB. Supported formats: JPEG, PNG</div>
+                  </div>
+
+                  {% if user.profile.avatar %}
+                    <div class="form-check">
+                      {{ form.remove_avatar }}
+                      <label class="form-check-label" for="{{ form.remove_avatar.id_for_label }}">Remove current picture</label>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Profile Info Section -->
+              <div class="col-md-8">
+                <div class="mb-3">
+                  <label for="{{ form.bio.id_for_label }}" class="form-label">Bio</label>
+                  {{ form.bio }}
+                  {% if form.bio.errors %}
+                    <div class="text-danger small">
+                      {% for error in form.bio.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                  <div class="form-text">Share a brief description about yourself.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="{{ form.location.id_for_label }}" class="form-label">Location</label>
+                  {{ form.location }}
+                  {% if form.location.errors %}
+                    <div class="text-danger small">
+                      {% for error in form.location.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="mb-3">
+                  <label for="{{ form.website.id_for_label }}" class="form-label">Website</label>
+                  {{ form.website }}
+                  {% if form.website.errors %}
+                    <div class="text-danger small">
+                      {% for error in form.website.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="{{ form.twitter.id_for_label }}" class="form-label">Twitter</label>
+                    <div class="input-group">
+                      <span class="input-group-text">@</span>
+                      {{ form.twitter }}
+                    </div>
+                    {% if form.twitter.errors %}
+                      <div class="text-danger small">
+                        {% for error in form.twitter.errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="{{ form.instagram.id_for_label }}" class="form-label">Instagram</label>
+                    <div class="input-group">
+                      <span class="input-group-text">@</span>
+                      {{ form.instagram }}
+                    </div>
+                    {% if form.instagram.errors %}
+                      <div class="text-danger small">
+                        {% for error in form.instagram.errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+
+                {% if form.favorite_categories %}
+                  <div class="mb-3">
+                    <label for="{{ form.favorite_categories.id_for_label }}" class="form-label">Favorite Categories</label>
+                    {{ form.favorite_categories }}
+                    {% if form.favorite_categories.errors %}
+                      <div class="text-danger small">
+                        {% for error in form.favorite_categories.errors %}
+                          {{ error }}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                    <div class="form-text">Select categories you're interested in reading and writing about.</div>
+                  </div>
+                {% endif %}
+
+                <div class="mb-3">
+                  <label for="{{ form.interests.id_for_label }}" class="form-label">Interests</label>
+                  {{ form.interests }}
+                  {% if form.interests.errors %}
+                    <div class="text-danger small">
+                      {% for error in form.interests.errors %}
+                        {{ error }}
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                  <div class="form-text">Share your interests with the community.</div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Email Preferences -->
+            <h5 class="mb-3">Email Preferences</h5>
+
+            <div class="mb-3">
+              <div class="form-check">
+                {{ form.email_notifications }}
+                <label class="form-check-label" for="{{ form.email_notifications.id_for_label }}">Receive email notifications</label>
+              </div>
+              <div class="form-text">You'll receive emails about comments, likes, and new followers.</div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check">
+                {{ form.newsletter_subscription }}
+                <label class="form-check-label" for="{{ form.newsletter_subscription.id_for_label }}">Subscribe to newsletter</label>
+              </div>
+              <div class="form-text">Receive weekly updates with featured stories and writing tips.</div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <a href="{% url 'profiles:profile_detail' user.username %}" class="btn btn-outline-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Password Change Link -->
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title mb-0">Password & Security</h5>
+              <p class="text-muted">Change your password or update security settings</p>
+            </div>
+            <a href="{% url 'accounts:password_change' %}" class="btn btn-outline-secondary"><i class="bi bi-key"></i> Change Password</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    // Enhance the form with better styling and functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      // Style form elements with Bootstrap classes
+      const bioTextarea = document.getElementById('{{ form.bio.id_for_label }}')
+      if (bioTextarea) {
+        bioTextarea.classList.add('form-control')
+        bioTextarea.setAttribute('rows', '3')
+      }
+    
+      const interestsTextarea = document.getElementById('{{ form.interests.id_for_label }}')
+      if (interestsTextarea) {
+        interestsTextarea.classList.add('form-control')
+        interestsTextarea.setAttribute('rows', '2')
+      }
+    
+      const inputFields = ['{{ form.location.id_for_label }}', '{{ form.website.id_for_label }}', '{{ form.twitter.id_for_label }}', '{{ form.instagram.id_for_label }}']
+    
+      inputFields.forEach((fieldId) => {
+        const field = document.getElementById(fieldId)
+        if (field) {
+          field.classList.add('form-control')
+        }
+      })
+    
+      const avatarInput = document.getElementById('{{ form.avatar.id_for_label }}')
+      if (avatarInput) {
+        avatarInput.classList.add('form-control')
+      }
+    
+      const checkboxFields = ['{{ form.remove_avatar.id_for_label }}', '{{ form.email_notifications.id_for_label }}', '{{ form.newsletter_subscription.id_for_label }}']
+    
+      checkboxFields.forEach((fieldId) => {
+        const field = document.getElementById(fieldId)
+        if (field) {
+          field.classList.add('form-check-input')
+        }
+      })
+    
+      const categoriesSelect = document.getElementById('{{ form.favorite_categories.id_for_label }}')
+      if (categoriesSelect) {
+        categoriesSelect.classList.add('form-select')
+        categoriesSelect.setAttribute('multiple', true)
+        categoriesSelect.setAttribute('size', '4')
+      }
+    })
+  </script>
+{% endblock %}

@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% block title %}
+  {{ profile_user.username }}'s Profile - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <!-- Profile header -->
+    <div class="col-12 mb-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <div class="row align-items-center">
+            <div class="col-md-2 text-center mb-3 mb-md-0">
+              <img src="{{ profile_user.profile.avatar_url|default:'https://via.placeholder.com/150' }}" alt="{{ profile_user.username }}" class="rounded-circle img-fluid" style="max-width: 150px;" />
+            </div>
+            <div class="col-md-7">
+              <h1 class="mb-1">{{ profile_user.username }}</h1>
+              <p class="text-muted mb-2">
+                <i class="bi bi-geo-alt"></i>
+                {{ profile_user.profile.location|default:'Location not specified' }}
+              </p>
+              <p class="mb-2">{{ profile_user.profile.bio|default:'No bio available.' }}</p>
+              <div class="d-flex flex-wrap gap-2">
+                {% if profile_user.profile.website %}
+                  <a href="{{ profile_user.profile.website }}" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="bi bi-globe"></i> Website</a>
+                {% endif %}
+                {% if profile_user.profile.twitter %}
+                  <a href="https://twitter.com/{{ profile_user.profile.twitter }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-twitter"></i> Twitter</a>
+                {% endif %}
+                {% if profile_user.profile.instagram %}
+                  <a href="https://instagram.com/{{ profile_user.profile.instagram }}" target="_blank" class="btn btn-sm btn-outline-danger"><i class="bi bi-instagram"></i> Instagram</a>
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-3 text-md-end mt-3 mt-md-0">
+              <div class="d-flex flex-column align-items-md-end">
+                <div class="mb-2">Member since {{ profile_user.date_joined|date:'F Y' }}</div>
+                <div class="d-flex gap-2 justify-content-md-end">
+                  {% if user.is_authenticated and user != profile_user %}
+                    <form method="post" action="{% url 'profiles:follow_toggle' profile_user.username %}">
+                      {% csrf_token %}
+                      <button type="submit"
+                        class="btn {% if is_following %}
+                          btn-primary
+                        {% else %}
+                          btn-outline-primary
+                        {% endif %}">
+                        {% if is_following %}
+                          <i class="bi bi-person-check-fill"></i> Following
+                        {% else %}
+                          <i class="bi bi-person-plus"></i> Follow
+                        {% endif %}
+                      </button>
+                    </form>
+                  {% endif %}
+
+                  {% if user == profile_user %}
+                    <a href="{% url 'profiles:profile_edit' %}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i> Edit Profile</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile stats -->
+    <div class="col-12 mb-4">
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0 text-center">
+            <div class="card-body">
+              <h6 class="text-muted mb-2">Stories</h6>
+              <h3 class="mb-0">{{ profile_user.stories.count }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0 text-center">
+            <div class="card-body">
+              <h6 class="text-muted mb-2">Comments</h6>
+              <h3 class="mb-0">{{ profile_user.comment_set.count }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0 text-center">
+            <div class="card-body">
+              <h6 class="text-muted mb-2">Followers</h6>
+              <h3 class="mb-0">{{ followers_count }}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0 text-center">
+            <div class="card-body">
+              <h6 class="text-muted mb-2">Following</h6>
+              <h3 class="mb-0">{{ following_count }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs for different sections -->
+    <div class="col-12">
+      <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="stories-tab" data-bs-toggle="tab" data-bs-target="#stories" type="button" role="tab" aria-controls="stories" aria-selected="true">Stories</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false">About</button>
+        </li>
+        {% if user == profile_user %}
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="drafts-tab" data-bs-toggle="tab" data-bs-target="#drafts" type="button" role="tab" aria-controls="drafts" aria-selected="false">My Drafts</button>
+          </li>
+        {% endif %}
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="reading-lists-tab" data-bs-toggle="tab" data-bs-target="#reading-lists" type="button" role="tab" aria-controls="reading-lists" aria-selected="false">Reading Lists</button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="profileTabsContent">
+        <!-- Stories Tab -->
+        <div class="tab-pane fade show active" id="stories" role="tabpanel" aria-labelledby="stories-tab">
+          {% if stories %}
+            <div class="row row-cols-1 g-4">
+              {% for story in stories %}
+                <div class="col">
+                  <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-9">
+                          <h5 class="card-title mb-1"><a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a></h5>
+                          <div class="text-muted small mb-3">Published {{ story.created_at|date:'M d, Y' }}</div>
+                          <p class="card-text">{{ story.content|truncatewords:40 }}</p>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="d-flex flex-column justify-content-between h-100">
+                            <div class="mb-3">
+                              {% for category in story.categories.all %}
+                                <span class="badge bg-light text-dark me-1">{{ category.name }}</span>
+                              {% endfor %}
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="text-muted small">
+                                <i class="bi bi-chat"></i> {{ story.comment_set.count }}
+                                <span class="ms-2"><i class="bi bi-heart"></i> {{ story.likes }}</span>
+                              </div>
+                              <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-sm btn-outline-primary">Read</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-4">
+              {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
+            </div>
+          {% else %}
+            <div class="alert alert-info">
+              <p class="mb-0">{{ profile_user.username }} hasn't published any stories yet.</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- About Tab -->
+        <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title">About {{ profile_user.username }}</h5>
+              <div class="mb-4">
+                <h6 class="text-muted">Bio</h6>
+                <p>{{ profile_user.profile.bio|default:'No bio available.' }}</p>
+              </div>
+
+              {% if profile_user.profile.interests %}
+                <div class="mb-4">
+                  <h6 class="text-muted">Interests</h6>
+                  <p>{{ profile_user.profile.interests }}</p>
+                </div>
+              {% endif %}
+
+              {% if favorite_categories %}
+                <div class="mb-4">
+                  <h6 class="text-muted">Favorite Categories</h6>
+                  <div class="d-flex flex-wrap gap-2">
+                    {% for category in favorite_categories %}
+                      <span class="badge bg-light text-dark p-2">{{ category.name }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Drafts Tab (Only visible to profile owner) -->
+        {% if user == profile_user %}
+          <div class="tab-pane fade" id="drafts" role="tabpanel" aria-labelledby="drafts-tab">
+            {% if drafts %}
+              <div class="row row-cols-1 g-4">
+                {% for draft in drafts %}
+                  <div class="col">
+                    <div class="card shadow-sm border-0">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                          <h5 class="card-title mb-1"><a href="{% url 'stories:story_update' draft.slug %}" class="text-decoration-none text-dark">{{ draft.title }}</a></h5>
+                          <span class="badge bg-secondary">Draft</span>
+                        </div>
+                        <div class="text-muted small mb-3">Last updated {{ draft.updated_at|date:'M d, Y' }}</div>
+                        <p class="card-text">{{ draft.content|truncatewords:30 }}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                          <div>
+                            {% for category in draft.categories.all %}
+                              <span class="badge bg-light text-dark me-1">{{ category.name }}</span>
+                            {% endfor %}
+                          </div>
+                          <div>
+                            <a href="{% url 'stories:story_update' draft.slug %}" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+                            <a href="{% url 'stories:story_publish' draft.slug %}" class="btn btn-sm btn-success">Publish</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="alert alert-info">
+                <p class="mb-0">
+                  You don't have any draft stories. <a href="{% url 'stories:story_create' %}" class="alert-link">Start writing</a> a new story!
+                </p>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <!-- Reading Lists Tab -->
+        <div class="tab-pane fade" id="reading-lists" role="tabpanel" aria-labelledby="reading-lists-tab">
+          {% if reading_lists %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+              {% for reading_list in reading_lists %}
+                <div class="col">
+                  <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                      <span class="badge {% if reading_list.is_public %}
+                          bg-success
+                        {% else %}
+                          bg-secondary
+                        {% endif %}">
+                        {% if reading_list.is_public %}
+                          Public
+                        {% else %}
+                          Private
+                        {% endif %}
+                      </span>
+                      <small class="text-muted">{{ reading_list.created_at|date:'M d, Y' }}</small>
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title mb-3"><a href="{% url 'stories:reading_list_detail' reading_list.id %}" class="text-decoration-none text-dark">{{ reading_list.name }}</a></h5>
+                      {% if reading_list.description %}
+                        <p class="card-text small">{{ reading_list.description|truncatechars:100 }}</p>
+                      {% endif %}
+                    </div>
+                    <div class="card-footer bg-transparent">
+                      <small class="text-muted">{{ reading_list.stories.count }} stories</small>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="alert alert-info">
+              <p class="mb-0">
+                {% if user == profile_user %}
+                  You haven't created any reading lists yet. Start organizing your favorite stories!
+                {% else %}
+                  {{ profile_user.username }} hasn't created any public reading lists.
+                {% endif %}
+              </p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

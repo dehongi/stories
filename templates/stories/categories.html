@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}
+  Categories - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 mb-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mb-0">Categories</h1>
+        <form class="d-flex" method="get" action="{% url 'stories:categories' %}">
+          <input class="form-control me-2" type="search" placeholder="Search categories..." name="search" value="{{ request.GET.search }}" aria-label="Search" />
+          <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+
+    {% if categories %}
+      <div class="col-12">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          {% for category in categories %}
+            <div class="col">
+              <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                  <h5 class="card-title"><a href="{% url 'stories:category_detail' category.slug %}" class="text-decoration-none text-dark">{{ category.name }}</a></h5>
+                  {% if category.description %}
+                    <p class="card-text">{{ category.description }}</p>
+                  {% endif %}
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-info rounded-pill">{{ category.story_count }} stories</span>
+                    <a href="{% url 'stories:category_detail' category.slug %}" class="btn btn-sm btn-outline-primary">Browse Stories</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4">
+          {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
+        </div>
+      </div>
+    {% else %}
+      <div class="col-12">
+        <div class="alert alert-info">
+          <p class="mb-0">No categories found.</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

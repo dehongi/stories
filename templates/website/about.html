@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block title %}
+  About Us - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="container py-5">
+    <div class="row mb-5">
+      <div class="col-lg-8 mx-auto text-center">
+        <h1 class="display-4 mb-4">About Story Platform</h1>
+        <p class="lead mb-4">A community where writers and readers come together to create, share, and discover amazing stories.</p>
+      </div>
+    </div>
+
+    <!-- Our mission section -->
+    <div class="row mb-5">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <img src="https://via.placeholder.com/600x400" alt="Our mission" class="img-fluid rounded shadow" />
+      </div>
+      <div class="col-md-6">
+        <h2 class="mb-4">Our Mission</h2>
+        <p>Story Platform was created with a simple mission: to provide a space where storytellers can freely express their creativity and readers can discover new perspectives through the power of stories.</p>
+        <p>We believe that stories have the power to connect people, spark imagination, and foster empathy across different cultures and backgrounds.</p>
+        <p>Our platform is designed to be accessible, inclusive, and supportive of writers at all stages of their journey.</p>
+      </div>
+    </div>
+
+    <!-- What we offer section -->
+    <div class="row mb-5">
+      <div class="col-12 text-center mb-4">
+        <h2>What We Offer</h2>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="bi bi-pencil-square text-primary" style="font-size: 2.5rem;"></i>
+            </div>
+            <h4>For Writers</h4>
+            <p>A supportive environment to publish your stories, receive feedback, and connect with readers who appreciate your work.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="bi bi-book text-primary" style="font-size: 2.5rem;"></i>
+            </div>
+            <h4>For Readers</h4>
+            <p>Access to a diverse collection of stories across genres, personalized reading lists, and the ability to connect with your favorite authors.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <i class="bi bi-people text-primary" style="font-size: 2.5rem;"></i>
+            </div>
+            <h4>For Communities</h4>
+            <p>A platform that brings together like-minded individuals who share a passion for storytelling and literary exploration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Our team section -->
+    <div class="row mb-5">
+      <div class="col-12 text-center mb-4">
+        <h2>Our Team</h2>
+        <p class="text-muted">Meet the passionate people behind Story Platform</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm">
+          <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Team member" />
+          <div class="card-body text-center">
+            <h5 class="card-title mb-1">Jane Doe</h5>
+            <p class="text-muted mb-3">Founder & CEO</p>
+            <p class="card-text">Writer, entrepreneur, and passionate about making stories accessible to everyone.</p>
+            <div class="d-flex justify-content-center gap-2">
+              <a href="#" class="text-dark"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
+              <a href="#" class="text-dark"><i class="bi bi-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm">
+          <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Team member" />
+          <div class="card-body text-center">
+            <h5 class="card-title mb-1">John Smith</h5>
+            <p class="text-muted mb-3">Lead Developer</p>
+            <p class="card-text">Tech enthusiast with a passion for creating user-friendly platforms for creative content.</p>
+            <div class="d-flex justify-content-center gap-2">
+              <a href="#" class="text-dark"><i class="bi bi-github"></i></a>
+              <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
+              <a href="#" class="text-dark"><i class="bi bi-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm">
+          <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Team member" />
+          <div class="card-body text-center">
+            <h5 class="card-title mb-1">Sarah Johnson</h5>
+            <p class="text-muted mb-3">Community Manager</p>
+            <p class="card-text">Literary enthusiast dedicated to building a supportive community of writers and readers.</p>
+            <div class="d-flex justify-content-center gap-2">
+              <a href="#" class="text-dark"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="text-dark"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="text-dark"><i class="bi bi-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQs Section -->
+    <div class="row mb-5">
+      <div class="col-lg-8 mx-auto">
+        <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">Is it free to use Story Platform?</button></h3>
+            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Yes, Story Platform is completely free to use. Writers can publish stories and readers can enjoy content without any subscription fees.</div>
+            </div>
+          </div>
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">How do I start writing on Story Platform?</button></h3>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">To start writing, simply create an account, click on "Write a Story" button from your dashboard, and use our intuitive editor to craft your story. Once satisfied, publish it for the community to read.</div>
+            </div>
+          </div>
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">Who owns the rights to stories published on the platform?</button></h3>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Authors retain all rights to their original work. By publishing on Story Platform, you grant us a non-exclusive license to display your content on our platform, but you remain the copyright holder.</div>
+            </div>
+          </div>
+          <div class="accordion-item border-0 shadow-sm">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">Can I delete my stories after publishing?</button></h3>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Yes, you have full control over your content. You can edit, unpublish, or delete your stories at any time through your dashboard.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact CTA -->
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center">
+        <h2 class="mb-4">Get in Touch</h2>
+        <p class="mb-4">Have questions, suggestions, or just want to say hello? We'd love to hear from you!</p>
+        <a href="{% url 'website:contact' %}" class="btn btn-primary">Contact Us</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

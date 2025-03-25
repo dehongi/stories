@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block title %}Reading Lists - Story Platform{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="mb-0">Reading Lists</h1>
+            <button type="button" class="btn btn-story" data-bs-toggle="modal" data-bs-target="#createListModal">
+                <i class="bi bi-plus"></i> New Reading List
+            </button>
+        </div>
+    </div>
+    
+    <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">My Lists</h5>
+                <div class="list-group list-group-flush border-0">
+                    <a href="{% url 'stories:story_list' %}" class="list-group-item list-group-item-action px-0 {% if not view_type %}active{% endif %}">
+                        <i class="bi bi-collection me-2"></i> All Lists
+                    </a>
+                    <a href="{% url 'stories:story_list' %}?view=my" class="list-group-item list-group-item-action px-0 {% if view_type == 'my' %}active{% endif %}">
+                        <i class="bi bi-person me-2"></i> My Lists
+                    </a>
+                    <a href="{% url 'stories:story_list' %}?view=saved" class="list-group-item list-group-item-action px-0 {% if view_type == 'saved' %}active{% endif %}">
+                        <i class="bi bi-bookmark me-2"></i> Saved Lists
+                    </a>
+                    <a href="{% url 'stories:story_list' %}?view=popular" class="list-group-item list-group-item-action px-0 {% if view_type == 'popular' %}active{% endif %}">
+                        <i class="bi bi-star me-2"></i> Popular Lists
+                    </a>
+                </div>
+                
+                <hr>
+                
+                <h5 class="card-title">Filter By</h5>
+                <form method="get" action="{% url 'stories:story_list' %}">
+                    {% if view_type %}
+                    <input type="hidden" name="view" value="{{ view_type }}">
+                    {% endif %}
+                    <div class="mb-3">
+                        <label for="search" class="form-label">Search</label>
+                        <input type="text" class="form-control" id="search" name="search" value="{{ request.GET.search }}">
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="publicOnly" name="public" value="1" {% if request.GET.public %}checked{% endif %}>
+                            <label class="form-check-label" for="publicOnly">
+                                Public lists only
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary w-100">Apply Filters</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8 col-lg-9">
+        {% if reading_lists %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for reading_list in reading_lists %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <span class="badge {% if reading_list.is_public %}bg-success{% else %}bg-secondary{% endif %}">
+                            {% if reading_list.is_public %}Public{% else %}Private{% endif %}
+                        </span>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-link text-dark" type="button" id="dropdownMenuButton{{ reading_list.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ reading_list.id }}">
+                                {% if user == reading_list.user %}
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i> Edit</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-2"></i> Delete</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i> Share</a></li>
+                                {% if user != reading_list.user %}
+                                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark-plus me-2"></i> Save</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title mb-1">
+                            <a href="#" class="text-decoration-none text-dark">{{ reading_list.name }}</a>
+                        </h5>
+                        <p class="text-muted small mb-3">
+                            <img src="{{ reading_list.user.profile.avatar_url|default:'https://via.placeholder.com/40' }}" class="rounded-circle me-1" width="24" height="24">
+                            {{ reading_list.user.username }}
+                        </p>
+                        {% if reading_list.description %}
+                        <p class="card-text">{{ reading_list.description|truncatechars:100 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">{{ reading_list.stories.count }} stories</small>
+                            <small class="text-muted">{{ reading_list.created_at|date:"M d, Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        <div class="mt-4">
+            {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
+        </div>
+        
+        {% else %}
+        <div class="alert alert-info">
+            <p class="mb-0">No reading lists found. Create your first reading list to start organizing your favorite stories!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Create Reading List Modal -->
+<div class="modal fade" id="createListModal" tabindex="-1" aria-labelledby="createListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="#">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createListModalLabel">Create Reading List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">List Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description (Optional)</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="is_public" name="is_public">
+                        <label class="form-check-label" for="is_public">
+                            Make this reading list public
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create List</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

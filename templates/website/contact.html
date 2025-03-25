@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}
+  Contact Us - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="container py-5">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-8 text-center">
+        <h1 class="display-4 mb-3">Contact Us</h1>
+        <p class="lead mb-0">Have questions or suggestions? We'd love to hear from you!</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <!-- Contact info -->
+      <div class="col-lg-4 mb-5 mb-lg-0">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body p-4">
+            <h3 class="card-title mb-4">Get in Touch</h3>
+
+            <div class="d-flex mb-4">
+              <div class="me-3">
+                <i class="bi bi-envelope-fill text-primary fs-4"></i>
+              </div>
+              <div>
+                <h5 class="mb-1">Email</h5>
+                <p class="mb-0">
+                  <a href="mailto:info@storyplatform.com" class="text-decoration-none text-body">info@storyplatform.com</a>
+                </p>
+              </div>
+            </div>
+
+            <div class="d-flex mb-4">
+              <div class="me-3">
+                <i class="bi bi-geo-alt-fill text-primary fs-4"></i>
+              </div>
+              <div>
+                <h5 class="mb-1">Address</h5>
+                <p class="mb-0">
+                  123 Story Avenue<br />Literary District<br />New York, NY 10001
+                </p>
+              </div>
+            </div>
+
+            <div class="d-flex mb-4">
+              <div class="me-3">
+                <i class="bi bi-telephone-fill text-primary fs-4"></i>
+              </div>
+              <div>
+                <h5 class="mb-1">Phone</h5>
+                <p class="mb-0">
+                  <a href="tel:+1-123-456-7890" class="text-decoration-none text-body">+1 (123) 456-7890</a>
+                </p>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <h5 class="mb-3">Follow Us</h5>
+            <div class="d-flex gap-3">
+              <a href="#" class="text-decoration-none"><i class="bi bi-facebook fs-4"></i></a>
+              <a href="#" class="text-decoration-none"><i class="bi bi-twitter fs-4"></i></a>
+              <a href="#" class="text-decoration-none"><i class="bi bi-instagram fs-4"></i></a>
+              <a href="#" class="text-decoration-none"><i class="bi bi-linkedin fs-4"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <div class="col-lg-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="card-title mb-4">Send Us a Message</h3>
+
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+              {% endfor %}
+            {% endif %}
+
+            <form method="post">
+              {% csrf_token %}
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label">Your Name</label>
+                  <input type="text" class="form-control" id="name" name="name" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input type="email" class="form-control" id="email" name="email" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" class="form-control" id="subject" name="subject" required />
+              </div>
+
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+              </div>
+
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter" />
+                <label class="form-check-label" for="newsletter">Subscribe to our newsletter</label>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Send Message</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <h3 class="text-center mb-4">Frequently Asked Questions</h3>
+        <div class="accordion" id="contactFaqAccordion">
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contactFaq1" aria-expanded="false" aria-controls="contactFaq1">How quickly can I expect a response?</button></h4>
+            <div id="contactFaq1" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+              <div class="accordion-body">We typically respond to all inquiries within 24-48 hours during business days. For urgent matters, please indicate this in your subject line.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contactFaq2" aria-expanded="false" aria-controls="contactFaq2">I'm having technical issues with the platform. What should I do?</button></h4>
+            <div id="contactFaq2" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+              <div class="accordion-body">For technical support, please provide detailed information about the issue you're experiencing, including your device, browser, and steps to reproduce the problem. Screenshots are also helpful.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm">
+            <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#contactFaq3" aria-expanded="false" aria-controls="contactFaq3">Can I suggest new features for the platform?</button></h4>
+            <div id="contactFaq3" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+              <div class="accordion-body">Absolutely! We love hearing suggestions from our community. Please use the contact form and select "Feature Suggestion" as the subject to share your ideas with our development team.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

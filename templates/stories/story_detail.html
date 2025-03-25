@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% block title %}
+  {{ story.title }} - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <!-- Main content column -->
+    <div class="col-lg-8">
+      <!-- Story header -->
+      <div class="mb-4">
+        <h1 class="display-5 fw-bold mb-2">{{ story.title }}</h1>
+        <div class="d-flex flex-wrap align-items-center text-muted mb-3">
+          <span class="me-3"><i class="bi bi-person-fill me-1"></i> {{ story.author.first_name }} {{ story.author.last_name }}</span>
+          <span class="me-3"><i class="bi bi-calendar-date me-1"></i> {{ story.created_at|date:'F j, Y' }}</span>
+          {% if story.updated_at != story.created_at %}
+            <span class="me-3"><i class="bi bi-pencil-fill me-1"></i> Updated {{ story.updated_at|date:'F j, Y' }}</span>
+          {% endif %}
+        </div>
+
+        <div class="mb-4">
+          {% for category in story.categories.all %}
+            <a href="{% url 'stories:story_list_by_category' category.slug %}" class="badge bg-light text-dark text-decoration-none me-1">{{ category.name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Story content -->
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body story-content">{{ story.content|linebreaks }}</div>
+      </div>
+
+      <!-- Story actions -->
+      <div class="d-flex justify-content-between mb-5">
+        <div>
+          {% if user.is_authenticated and user == story.author or user.is_staff %}
+            <a href="{% url 'stories:story_update' story.slug %}" class="btn btn-outline-primary me-2"><i class="bi bi-pencil me-1"></i> Edit</a>
+            <a href="{% url 'stories:story_delete' story.slug %}" class="btn btn-outline-danger"><i class="bi bi-trash me-1"></i> Delete</a>
+          {% endif %}
+        </div>
+        <div>
+          <a href="{% url 'stories:story_list' %}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Back to Stories</a>
+        </div>
+      </div>
+
+      <!-- Comments section -->
+      <h3 class="mb-4">Comments ({{ comments.count }})</h3>
+
+      {% if user.is_authenticated %}
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body">
+            <form method="post" action="{% url 'stories:add_comment' story.slug %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                {{ comment_form.content }}
+                {% if comment_form.content.errors %}
+                  <div class="text-danger small">
+                    {% for error in comment_form.content.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <button type="submit" class="btn btn-primary">Post Comment</button>
+            </form>
+          </div>
+        </div>
+      {% else %}
+        <div class="alert alert-info mb-4">
+          <p class="mb-0">
+            Please <a href="{% url 'accounts:login' %}">login</a> to leave a comment.
+          </p>
+        </div>
+      {% endif %}
+
+      {% if comments %}
+        <div class="comments-section">
+          {% for comment in comments %}
+            <div class="card shadow-sm border-0 mb-3">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="card-subtitle">{{ comment.user.first_name }} {{ comment.user.last_name }}</h6>
+                  <small class="text-muted">{{ comment.created_at|date:'F j, Y g:i a' }}</small>
+                </div>
+                <p class="card-text">{{ comment.content|linebreaks }}</p>
+
+                {% if user == comment.user or user.is_staff %}
+                  <div class="text-end">
+                    <form method="post" action="{% url 'stories:delete_comment' comment.id %}" class="d-inline">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i> Delete</button>
+                    </form>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-info">
+          <p class="mb-0">No comments yet. Be the first to share your thoughts!</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <!-- Author info -->
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-3">About the Author</h5>
+          <div class="d-flex align-items-center mb-3">
+            {% if story.author.profile_picture %}
+              <img src="{{ story.author.profile_picture.url }}" alt="{{ story.author.first_name }}" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;" />
+            {% else %}
+              <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 60px; height: 60px;">
+                <i class="bi bi-person-fill text-muted" style="font-size: 2rem;"></i>
+              </div>
+            {% endif %}
+            <div>
+              <h6 class="mb-0">{{ story.author.first_name }} {{ story.author.last_name }}</h6>
+              <p class="text-muted mb-0">{{ story.author.stories.count }} stories</p>
+            </div>
+          </div>
+          {% if story.author.bio %}
+            <p class="card-text">{{ story.author.bio|truncatewords:30 }}</p>
+          {% else %}
+            <p class="card-text text-muted">This author has not added a bio yet.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Reading list -->
+      {% if user.is_authenticated %}
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Reading Lists</h5>
+
+            {% if in_reading_lists %}
+              <div class="alert alert-success mb-3">
+                <p class="mb-0">
+                  <i class="bi bi-check-circle-fill me-1"></i> This story is in your reading list
+                </p>
+              </div>
+            {% endif %}
+
+            {% if user_reading_lists %}
+              <form method="post" action="{% url 'stories:add_to_reading_list' story.slug %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <select name="reading_list" class="form-select">
+                    {% for reading_list in user_reading_lists %}
+                      <option value="{{ reading_list.id }}">{{ reading_list.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add to Reading List</button>
+              </form>
+            {% else %}
+              <p class="mb-3">You don't have any reading lists yet.</p>
+              <a href="{% url 'stories:reading_list_create' %}" class="btn btn-outline-primary"><i class="bi bi-plus"></i> Create Reading List</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- More stories by this author -->
+      {% with more_stories=story.author.stories.all|dictsortreversed:'created_at' %}
+        {% if more_stories.count > 1 %}
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h5 class="card-title mb-3">More by {{ story.author.first_name }}</h5>
+              <div class="list-group list-group-flush">
+                {% for other_story in more_stories %}
+                  {% if other_story.id != story.id and other_story.is_published %}
+                    <a href="{% url 'stories:story_detail' other_story.slug %}" class="list-group-item list-group-item-action py-3">
+                      <h6 class="mb-1">{{ other_story.title }}</h6>
+                      <small class="text-muted">{{ other_story.created_at|date:'M d, Y' }}</small>
+                    </a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+{% endblock %}

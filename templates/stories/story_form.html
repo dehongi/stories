@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block title %}
+  {% if form.instance.id %}
+    Edit
+  {% else %}
+    Create
+  {% endif %}Story - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4 p-md-5">
+          <h3 class="mb-4 text-center">
+            {% if form.instance.id %}
+              Edit Story
+            {% else %}
+              Create New Story
+            {% endif %}
+          </h3>
+
+          <form method="post">
+            {% csrf_token %}
+
+            {% if form.errors %}
+              <div class="alert alert-danger" role="alert">Please correct the errors below.</div>
+            {% endif %}
+
+            <div class="mb-3">
+              <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+              {{ form.title }}
+              {% if form.title.errors %}
+                <div class="text-danger small">
+                  {% for error in form.title.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ form.categories.id_for_label }}" class="form-label">Categories</label>
+              {{ form.categories }}
+              <div class="form-text">Select one or more categories for your story.</div>
+              {% if form.categories.errors %}
+                <div class="text-danger small">
+                  {% for error in form.categories.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ form.content.id_for_label }}" class="form-label">Content</label>
+              {{ form.content }}
+              {% if form.content.errors %}
+                <div class="text-danger small">
+                  {% for error in form.content.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <div class="form-check">
+                {{ form.is_published }}
+                <label class="form-check-label" for="{{ form.is_published.id_for_label }}">Publish now</label>
+              </div>
+              <div class="form-text">If unchecked, your story will be saved as a draft.</div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'stories:story_list' %}" class="btn btn-outline-secondary">Cancel</a>
+              <div>
+                {% if form.instance.id %}
+                  <button type="submit" name="save_draft" class="btn btn-outline-primary me-2">Save Draft</button>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                {% else %}
+                  <button type="submit" name="save_draft" class="btn btn-outline-primary me-2">Save as Draft</button>
+                  <button type="submit" class="btn btn-primary">Publish</button>
+                {% endif %}
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">Writing Tips</h5>
+          <ul class="list-unstyled mb-0">
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i> Keep your title concise and engaging
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i> Structure your story with a clear beginning, middle, and end
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i> Use descriptive language to create vivid imagery
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check-circle-fill text-success me-2"></i> Develop your characters with distinct personalities
+            </li>
+            <li>
+              <i class="bi bi-check-circle-fill text-success me-2"></i> Proofread your work before publishing
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    // Enhance the form with better styling and functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      // Make sure the textarea has proper styling
+      const contentTextarea = document.getElementById('{{ form.content.id_for_label }}')
+      if (contentTextarea) {
+        contentTextarea.classList.add('form-control')
+        contentTextarea.setAttribute('rows', '15')
+      }
+    
+      // Title field styling
+      const titleInput = document.getElementById('{{ form.title.id_for_label }}')
+      if (titleInput) {
+        titleInput.classList.add('form-control')
+      }
+    
+      // Categories styling
+      const categoriesSelect = document.getElementById('{{ form.categories.id_for_label }}')
+      if (categoriesSelect) {
+        categoriesSelect.classList.add('form-select')
+        categoriesSelect.setAttribute('multiple', true)
+        categoriesSelect.setAttribute('size', '5')
+      }
+    })
+  </script>
+{% endblock %}
