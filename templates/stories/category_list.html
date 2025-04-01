@@ -22,13 +22,13 @@
             <div class="col">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <h5 class="card-title"><a href="#" class="text-decoration-none text-dark">{{ category.name }}</a></h5>
+                  <h5 class="card-title"><a href="{% url 'stories:story_list_by_category' category.slug %}" class="text-decoration-none text-dark">{{ category.name }}</a></h5>
                   {% if category.description %}
                     <p class="card-text">{{ category.description }}</p>
                   {% endif %}
                   <div class="d-flex justify-content-between align-items-center">
                     <span class="badge bg-secondary rounded-pill">{{ category.stories.count }} stories</span>
-                    <a href="#" class="btn btn-sm btn-outline-primary">Browse Stories</a>
+                    <a href="{% url 'stories:story_list_by_category' category.slug %}" class="btn btn-sm btn-outline-primary">Browse Stories</a>
                   </div>
                 </div>
               </div>

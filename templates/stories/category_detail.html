@@ -62,8 +62,8 @@
                 <div class="card-body">
                   <h5 class="card-title mb-1"><a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a></h5>
                   <div class="d-flex align-items-center mb-3">
-                    <img src="{{ story.author.profile.avatar_url|default:'https://via.placeholder.com/40' }}" class="rounded-circle me-2" width="30" height="30" alt="{{ story.author.username }}" />
-                    <span class="small text-muted">{{ story.author.username }} • {{ story.created_at|date:'M d, Y' }}</span>
+                    <img src="{{ story.author.profile_picture.url|default:'https://via.placeholder.com/40' }}" class="rounded-circle me-2" width="30" height="30" alt="{{ story.author.get_full_name }}" />
+                    <span class="small text-muted"><a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-muted">{{ story.author.get_full_name }}</a> • {{ story.created_at|date:'M d, Y' }}</span>
                   </div>
                   <p class="card-text">{{ story.content|truncatewords:50 }}</p>
                   <div class="d-flex justify-content-between align-items-center">
@@ -120,7 +120,7 @@
             <h5 class="card-title">Related Categories</h5>
             <div class="d-flex flex-wrap gap-2 mt-3">
               {% for related in related_categories %}
-                <a href="#" class="text-decoration-none"><span class="badge bg-light text-dark p-2">{{ related.name }}</span></a>
+                <a href="{% url 'stories:story_list_by_category' related.slug %}" class="text-decoration-none"><span class="badge bg-light text-dark p-2">{{ related.name }}</span></a>
               {% endfor %}
             </div>
           </div>
@@ -135,9 +135,9 @@
               {% for author in popular_authors %}
                 <li class="list-group-item px-0">
                   <div class="d-flex align-items-center">
-                    <img src="{{ author.profile.avatar_url|default:'https://via.placeholder.com/40' }}" class="rounded-circle me-2" width="40" height="40" alt="{{ author.username }}" />
+                    <img src="{{ author.profile_picture.url|default:'https://via.placeholder.com/40' }}" class="rounded-circle me-2" width="40" height="40" alt="{{ author.get_full_name }}" />
                     <div>
-                      <a href="{% url 'profiles:profile_detail' author.username %}" class="text-decoration-none">{{ author.username }}</a>
+                      <a href="{% url 'accounts:user_detail' author.slug %}" class="text-decoration-none">{{ author.get_full_name }}</a>
                       <div class="small text-muted">{{ author.story_count }} stories in this category</div>
                     </div>
                   </div>

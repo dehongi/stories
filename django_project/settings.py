@@ -37,10 +37,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third party apps
+    "imagekit",
     # Local apps
     "accounts.apps.AccountsConfig",
     "stories.apps.StoriesConfig",
     "website.apps.WebsiteConfig",
+    # Django cleanup
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [
@@ -142,3 +146,14 @@ LOGIN_URL = "accounts:login"
 
 # Email settings (for development)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Messages
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
+}

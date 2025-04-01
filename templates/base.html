@@ -69,20 +69,49 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'stories:category_list' %}">Categories</a>
             </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="popularDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Popular</a>
+              <ul class="dropdown-menu" aria-labelledby="popularDropdown">
+                <li>
+                  <a class="dropdown-item" href="{% url 'stories:story_list' %}?sort=popular">Popular Stories</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'stories:reading_list_list' %}?sort=popular">Popular Reading Lists</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'stories:category_list' %}">Browse Categories</a>
+                </li>
+              </ul>
+            </li>
           </ul>
           <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ user.first_name|default:user.email }}</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ user.get_full_name }}</a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                   <li>
                     <a class="dropdown-item" href="{% url 'accounts:profile' %}">My Profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'accounts:user_detail' user.slug %}">Public Profile</a>
                   </li>
                   <li>
                     <a class="dropdown-item" href="{% url 'stories:my_stories' %}">My Stories</a>
                   </li>
                   <li>
                     <a class="dropdown-item" href="{% url 'stories:reading_list_list' %}">Reading Lists</a>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'accounts:followers_list' user.slug %}"><span class="badge bg-primary rounded-pill">{{ user.follower_count }}</span> Followers</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'accounts:following_list' user.slug %}"><span class="badge bg-primary rounded-pill">{{ user.following_count }}</span> Following</a>
                   </li>
                   <li>
                     <hr class="dropdown-divider" />
@@ -131,6 +160,11 @@
           <div class="col-md-6">
             <h5>Story Platform</h5>
             <p class="text-muted">A place to read and share short stories.</p>
+            <div class="d-flex gap-2 mb-3">
+              <a href="#" class="text-muted"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="text-muted"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="text-muted"><i class="bi bi-instagram"></i></a>
+            </div>
           </div>
           <div class="col-md-6 text-md-end">
             <ul class="list-inline mb-0">
@@ -151,7 +185,7 @@
               </li>
             </ul>
             <p class="mt-2 text-muted">
-              &copy;{% now 'Y' %}Story Platform. All rights reserved.
+              &copy;{% now 'Y' %}&nbsp;Story Platform. Developed by <a href="https://bastakiss.com" class="text-muted">Bastaki</a>
             </p>
           </div>
         </div>

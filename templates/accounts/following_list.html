@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block title %}
+  {{ profile_user.get_full_name }}'s Following - Story Platform
+{% endblock %}
+
+{% block content %}
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'accounts:user_detail' profile_user.slug %}">{{ profile_user.get_full_name }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Following</li>
+          </ol>
+        </nav>
+        <h1 class="mb-4">Users {{ profile_user.get_full_name }} Follows</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        {% if following %}
+          <div class="card shadow-sm border-0">
+            <div class="list-group list-group-flush">
+              {% for follow in following %}
+                <div class="list-group-item py-3">
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      {% if follow.followed.profile_picture %}
+                        <img src="{{ follow.followed.profile_picture.url }}" alt="{{ follow.followed.get_full_name }}" class="rounded-circle" width="50" height="50" />
+                      {% else %}
+                        <div class="bg-light rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px;">
+                          <i class="bi bi-person-fill text-muted"></i>
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h5 class="mb-0"><a href="{% url 'accounts:user_detail' follow.followed.slug %}" class="text-decoration-none text-dark">{{ follow.followed.get_full_name }}</a></h5>
+                          <p class="text-muted mb-0 small">Following since {{ follow.created_at|date:'M d, Y' }}</p>
+                        </div>
+                        {% if user.is_authenticated and user != follow.followed %}
+                          <div>
+                            <form method="post" action="{% url 'accounts:toggle_follow' follow.followed.slug %}">
+                              {% csrf_token %}
+                              <button type="submit"
+                                class="btn btn-sm {% if user.is_following == follow.followed %}
+                                  btn-primary
+                                {% else %}
+                                  btn-outline-primary
+                                {% endif %}">
+                                {% if user.is_following == follow.followed %}
+                                  <i class="bi bi-person-check-fill"></i> Following
+                                {% else %}
+                                  <i class="bi bi-person-plus"></i> Follow
+                                {% endif %}
+                              </button>
+                            </form>
+                          </div>
+                        {% endif %}
+
+                        {% if user == profile_user %}
+                          <div class="ms-2">
+                            <form method="post" action="{% url 'accounts:unfollow_user' follow.followed.slug %}">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-person-x"></i> Unfollow</button>
+                            </form>
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          {% if page_obj.has_other_pages %}
+            <nav aria-label="Following pagination" class="mt-4">
+              <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">&laquo;&laquo;</span>
+                  </li>
+                  <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                  </li>
+                {% endif %}
+
+                {% for i in page_obj.paginator.page_range %}
+                  {% if page_obj.number == i %}
+                    <li class="page-item active">
+                      <span class="page-link">{{ i }}</span>
+                    </li>
+                  {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                  </li>
+                  <li class="page-item disabled">
+                    <span class="page-link">&raquo;&raquo;</span>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+        {% else %}
+          <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+              <div class="mb-4">
+                <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+              </div>
+              <h4>Not following anyone yet</h4>
+              <p class="text-muted">{{ profile_user.get_full_name }} isn't following anyone yet.</p>
+              {% if user == profile_user %}
+                <a href="{% url 'website:home' %}" class="btn btn-primary mt-2">Discover Users to Follow</a>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

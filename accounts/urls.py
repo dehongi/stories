@@ -10,6 +10,12 @@ from .views import (
     CustomPasswordChangeView,
     profile_view,
     ProfileUpdateView,
+    UserDetailView,
+    follow_user,
+    unfollow_user,
+    toggle_follow,
+    FollowersListView,
+    FollowingListView,
 )
 
 app_name = "accounts"
@@ -39,4 +45,19 @@ urlpatterns = [
     ),
     path("profile/", profile_view, name="profile"),
     path("profile/update/", ProfileUpdateView.as_view(), name="profile_update"),
+    # User detail and follow system
+    path("user/<slug:slug>/", UserDetailView.as_view(), name="user_detail"),
+    path("user/<slug:slug>/follow/", follow_user, name="follow_user"),
+    path("user/<slug:slug>/unfollow/", unfollow_user, name="unfollow_user"),
+    path("user/<slug:slug>/toggle-follow/", toggle_follow, name="toggle_follow"),
+    path(
+        "user/<slug:slug>/followers/",
+        FollowersListView.as_view(),
+        name="followers_list",
+    ),
+    path(
+        "user/<slug:slug>/following/",
+        FollowingListView.as_view(),
+        name="following_list",
+    ),
 ]
