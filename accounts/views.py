@@ -27,7 +27,7 @@ from .models import CustomUser, Follow
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("accounts:login")
     template_name = "accounts/signup.html"
 
     def form_valid(self, form):
@@ -67,7 +67,7 @@ class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
     template_name = "accounts/password_reset.html"
     email_template_name = "accounts/password_reset_email.html"
-    success_url = reverse_lazy("password_reset_done")
+    success_url = reverse_lazy("accounts:password_reset_done")
 
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
@@ -77,7 +77,7 @@ class CustomPasswordResetDoneView(PasswordResetDoneView):
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     form_class = CustomSetPasswordForm
     template_name = "accounts/password_reset_confirm.html"
-    success_url = reverse_lazy("password_reset_complete")
+    success_url = reverse_lazy("accounts:password_reset_complete")
 
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
