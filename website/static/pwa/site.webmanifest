@@ -1,0 +1,82 @@
+{
+  "name": "Story Platform",
+  "short_name": "Stories",
+  "description": "Discover and share amazing stories from writers around the world",
+  "icons": [
+    {
+      "src": "/static/pwa/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/static/pwa/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/static/pwa/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/pwa/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "theme_color": "#3b82f6",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "categories": [
+    "books",
+    "education",
+    "social"
+  ],
+  "screenshots": [
+    {
+      "src": "/static/pwa/screenshot-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/static/pwa/screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Stories",
+      "short_name": "Browse",
+      "description": "View the latest stories",
+      "url": "/stories/",
+      "icons": [
+        {
+          "src": "/static/pwa/browse-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Write Story",
+      "short_name": "Write",
+      "description": "Create a new story",
+      "url": "/stories/story/new/",
+      "icons": [
+        {
+          "src": "/static/pwa/write-icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "lang": "en",
+  "dir": "ltr"
+}
