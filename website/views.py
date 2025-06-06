@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from stories.models import Story, Category
 from django.contrib.auth import get_user_model
-from django.db.models import Count
+from django.db.models import Count, Q
 
 User = get_user_model()
 
@@ -18,9 +18,7 @@ def home_view(request):
     # Get popular authors based on number of published stories
     popular_authors = (
         User.objects.annotate(
-            story_count=Count(
-                "stories", filter=Story.objects.filter(is_published=True).values("id")
-            )
+            story_count=Count("stories", filter=Q(stories__is_published=True))
         )
         .filter(story_count__gt=0)
         .order_by("-story_count")[:6]
