@@ -9,10 +9,10 @@
       <div class="card shadow-sm border-0">
         <div class="card-body text-center">
           {% if user.profile_picture %}
-            <img src="{{ user.profile_picture.url }}" alt="{{ user.first_name }}" class="profile-avatar mb-4" />
+            <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="profile-avatar mb-4 rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
           {% else %}
             <div class="bg-light rounded-circle mx-auto d-flex justify-content-center align-items-center mb-4" style="width: 150px; height: 150px;">
-              <i class="bi bi-person-fill text-muted" style="font-size: 4rem;"></i>
+              <span class="h1 mb-0 text-muted">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</span>
             </div>
           {% endif %}
 

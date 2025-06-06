@@ -102,10 +102,10 @@
                       <div class="d-flex align-items-center">
                         <div class="me-3">
                           {% if author.profile_picture %}
-                            <img src="{{ author.profile_picture.url }}" alt="{{ author.get_full_name }}" class="rounded-circle" width="40" height="40" />
+                            <img src="{{ author.profile_picture.url }}" alt="{{ author.get_full_name }}" class="rounded-circle" width="40" height="40" style="object-fit: cover;" />
                           {% else %}
                             <div class="bg-light rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-                              <i class="bi bi-person-fill text-muted"></i>
+                              <span class="h6 mb-0 text-muted">{{ author.first_name.0|upper }}{{ author.last_name.0|upper }}</span>
                             </div>
                           {% endif %}
                         </div>

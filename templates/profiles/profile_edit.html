@@ -21,7 +21,13 @@
               <!-- Avatar Upload Section -->
               <div class="col-md-4 mb-4 mb-md-0">
                 <div class="text-center">
-                  <img src="{{ user.profile.avatar_url|default:'https://via.placeholder.com/150' }}" alt="{{ user.username }}" class="rounded-circle img-fluid mb-3" style="max-width: 150px;" />
+                  {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;" />
+                  {% else %}
+                    <div class="bg-light rounded-circle mx-auto d-flex justify-content-center align-items-center mb-3" style="width: 150px; height: 150px;">
+                      <span class="h1 mb-0 text-muted">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</span>
+                    </div>
+                  {% endif %}
 
                   <div class="mb-3">
                     <label for="{{ form.avatar.id_for_label }}" class="form-label">Change Profile Picture</label>

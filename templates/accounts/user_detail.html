@@ -13,10 +13,10 @@
             <div class="row align-items-center">
               <div class="col-md-2 text-center mb-3 mb-md-0">
                 {% if profile_user.profile_picture %}
-                  <img src="{{ profile_user.profile_picture.url }}" alt="{{ profile_user.get_full_name }}" class="rounded-circle img-fluid" style="max-width: 150px;" />
+                  <img src="{{ profile_user.profile_picture.url }}" alt="{{ profile_user.get_full_name }}" class="rounded-circle img-fluid" style="max-width: 150px; width: 150px; height: 150px; object-fit: cover;" />
                 {% else %}
                   <div class="bg-light rounded-circle mx-auto d-flex justify-content-center align-items-center" style="width: 150px; height: 150px;">
-                    <i class="bi bi-person-fill text-muted" style="font-size: 4rem;"></i>
+                    <span class="h1 mb-0 text-muted">{{ profile_user.first_name.0|upper }}{{ profile_user.last_name.0|upper }}</span>
                   </div>
                 {% endif %}
               </div>

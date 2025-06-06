@@ -29,10 +29,10 @@
                   <div class="d-flex align-items-center">
                     <div class="me-3">
                       {% if follow.follower.profile_picture %}
-                        <img src="{{ follow.follower.profile_picture.url }}" alt="{{ follow.follower.get_full_name }}" class="rounded-circle" width="50" height="50" />
+                        <img src="{{ follow.follower.profile_picture.url }}" alt="{{ follow.follower.get_full_name }}" class="rounded-circle" width="50" height="50" style="object-fit: cover;" />
                       {% else %}
                         <div class="bg-light rounded-circle d-flex justify-content-center align-items-center" style="width: 50px; height: 50px;">
-                          <i class="bi bi-person-fill text-muted"></i>
+                          <span class="h5 mb-0 text-muted">{{ follow.follower.first_name.0|upper }}{{ follow.follower.last_name.0|upper }}</span>
                         </div>
                       {% endif %}
                     </div>

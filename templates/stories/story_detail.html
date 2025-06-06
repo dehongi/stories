@@ -114,10 +114,10 @@
           <h5 class="card-title mb-3">About the Author</h5>
           <div class="d-flex align-items-center mb-3">
             {% if story.author.profile_picture %}
-              <img src="{{ story.author.profile_picture.url }}" alt="{{ story.author.first_name }}" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;" />
+              <img src="{{ story.author.profile_picture.url }}" alt="{{ story.author.get_full_name }}" class="rounded-circle me-3" style="width: 60px; height: 60px; object-fit: cover;" />
             {% else %}
               <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 60px; height: 60px;">
-                <i class="bi bi-person-fill text-muted" style="font-size: 2rem;"></i>
+                <span class="h4 mb-0 text-muted">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
               </div>
             {% endif %}
             <div>
