@@ -165,7 +165,9 @@
                         {% if story.author.profile_picture %}
                         <img src="{{ story.author.profile_picture.url }}" class="rounded-circle me-2" width="30" height="30" alt="{{ story.author.get_full_name }}" />
                         {% else %}
-                        <img src="https://via.placeholder.com/40" class="rounded-circle me-2" width="30" height="30" alt="{{ story.author.get_full_name }}" />
+                        <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 60px; height: 60px;">
+                          <span class="h4 mb-0 text-muted">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
+                        </div>
                         {% endif %}
                         <span class="small text-muted"><a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-muted">{{ story.author.get_full_name }}</a> • {{ story.created_at|date:'M d, Y' }}</span>
                       </div>
