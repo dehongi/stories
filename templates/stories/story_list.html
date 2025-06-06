@@ -3,213 +3,255 @@
   Browse Stories - Story Platform
 {% endblock %}
 
+{% block extra_css %}
+  <style>
+    .container-narrow {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .story-grid {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .story-card {
+      transition: transform 0.2s ease-in-out;
+    }
+    .story-card:hover {
+      transform: translateY(-5px);
+    }
+    .filter-sidebar {
+      position: sticky;
+      top: 1rem;
+      z-index: 1000;
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
-  <div class="row">
-    <!-- Filters sidebar -->
-    <div class="col-lg-3 mb-4">
-      <div class="card shadow-sm border-0 sticky-lg-top" style="top: 1rem; z-index: 1000;">
-        <div class="card-header bg-transparent">
-          <h5 class="mb-0">Filters</h5>
-        </div>
-        <div class="card-body">
-          <form method="get" action="{% url 'stories:story_list' %}">
-            {% if request.GET.q %}
-              <input type="hidden" name="q" value="{{ request.GET.q }}" />
-            {% endif %}
+  <div class="container-narrow py-4">
+    <div class="row g-4">
+      <!-- Filters sidebar -->
+      <div class="col-lg-3">
+        <div class="card shadow-sm border-0 filter-sidebar">
+          <div class="card-header bg-transparent">
+            <h5 class="mb-0">Filters</h5>
+          </div>
+          <div class="card-body">
+            <form method="get" action="{% url 'stories:story_list' %}">
+              {% if request.GET.q %}
+                <input type="hidden" name="q" value="{{ request.GET.q }}" />
+              {% endif %}
 
-            <!-- Sort by -->
-            <div class="mb-3">
-              <label for="sort" class="form-label">Sort by</label>
-              <select class="form-select" id="sort" name="sort">
-                {% if sort_by == 'newest' or not sort_by %}
-                  <option value="newest" selected>Newest</option>
-                {% else %}
-                  <option value="newest">Newest</option>
-                {% endif %}
-                {% if sort_by == 'oldest' %}
-                  <option value="oldest" selected>Oldest</option>
-                {% else %}
-                  <option value="oldest">Oldest</option>
-                {% endif %}
-                {% if sort_by == 'most_liked' %}
-                  <option value="most_liked" selected>Most Liked</option>
-                {% else %}
-                  <option value="most_liked">Most Liked</option>
-                {% endif %}
-                {% if sort_by == 'most_commented' %}
-                  <option value="most_commented" selected>Most Commented</option>
-                {% else %}
-                  <option value="most_commented">Most Commented</option>
-                {% endif %}
-                {% if sort_by == 'title_az' %}
-                  <option value="title_az" selected>Title (A-Z)</option>
-                {% else %}
-                  <option value="title_az">Title (A-Z)</option>
-                {% endif %}
-                {% if sort_by == 'title_za' %}
-                  <option value="title_za" selected>Title (Z-A)</option>
-                {% else %}
-                  <option value="title_za">Title (Z-A)</option>
-                {% endif %}
-              </select>
-            </div>
-
-            <!-- Categories -->
-            <div class="mb-3">
-              <label class="form-label">Categories</label>
-              <div class="overflow-auto" style="max-height: 200px;">
-                {% for category in all_categories %}
-                  <div class="form-check">
-                    {% if category.slug in selected_categories %}
-                      <input class="form-check-input" type="checkbox" value="{{ category.slug }}" id="category_{{ category.id }}" name="category" checked />
-                    {% else %}
-                      <input class="form-check-input" type="checkbox" value="{{ category.slug }}" id="category_{{ category.id }}" name="category" />
-                    {% endif %}
-                    <label class="form-check-label d-flex justify-content-between" for="category_{{ category.id }}">
-                      {{ category.name }}
-                      <span class="badge bg-light text-dark">{{ category.story_count }}</span>
-                    </label>
-                  </div>
-                {% endfor %}
+              <!-- Sort by -->
+              <div class="mb-3">
+                <label for="sort" class="form-label">Sort by</label>
+                <select class="form-select" id="sort" name="sort">
+                  {% if sort_by == 'newest' or not sort_by %}
+                    <option value="newest" selected>Newest</option>
+                  {% else %}
+                    <option value="newest">Newest</option>
+                  {% endif %}
+                  {% if sort_by == 'oldest' %}
+                    <option value="oldest" selected>Oldest</option>
+                  {% else %}
+                    <option value="oldest">Oldest</option>
+                  {% endif %}
+                  {% if sort_by == 'most_liked' %}
+                    <option value="most_liked" selected>Most Liked</option>
+                  {% else %}
+                    <option value="most_liked">Most Liked</option>
+                  {% endif %}
+                  {% if sort_by == 'most_commented' %}
+                    <option value="most_commented" selected>Most Commented</option>
+                  {% else %}
+                    <option value="most_commented">Most Commented</option>
+                  {% endif %}
+                  {% if sort_by == 'title_az' %}
+                    <option value="title_az" selected>Title (A-Z)</option>
+                  {% else %}
+                    <option value="title_az">Title (A-Z)</option>
+                  {% endif %}
+                  {% if sort_by == 'title_za' %}
+                    <option value="title_za" selected>Title (Z-A)</option>
+                  {% else %}
+                    <option value="title_za">Title (Z-A)</option>
+                  {% endif %}
+                </select>
               </div>
-            </div>
 
-            <!-- Date range -->
-            <div class="mb-3">
-              <label class="form-label">Date Range</label>
-              <div class="input-group mb-2">
-                <span class="input-group-text">From</span>
-                <input type="date" class="form-control" name="date_from" value="{{ request.GET.date_from }}" />
-              </div>
-              <div class="input-group">
-                <span class="input-group-text">To</span>
-                <input type="date" class="form-control" name="date_to" value="{{ request.GET.date_to }}" />
-              </div>
-            </div>
-
-            <!-- More filters can be added here -->
-
-            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
-            {% if is_filtered %}
-              <a href="{% url 'stories:story_list' %}" class="btn btn-outline-secondary w-100 mt-2">Clear Filters</a>
-            {% endif %}
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- Story list -->
-    <div class="col-lg-9">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">
-          {% if search_query %}
-            Search Results for "{{ search_query }}"
-          {% else %}
-            Browse Stories
-          {% endif %}
-        </h1>
-        <div class="d-flex">
-          <form class="d-flex me-2" method="get" action="{% url 'stories:story_list' %}">
-            <input class="form-control me-2" type="search" placeholder="Search stories" name="q" value="{{ search_query }}" aria-label="Search" />
-            <button class="btn btn-outline-primary" type="submit">Search</button>
-          </form>
-          {% if user.is_authenticated %}
-            <a href="{% url 'stories:story_create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> New Story</a>
-          {% endif %}
-        </div>
-      </div>
-
-      {% if is_filtered %}
-        <div class="alert alert-info mb-4">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <strong>Applied Filters:</strong>
-              {% if selected_categories %}
-                <span class="ms-2">
-                  Categories:{% for cat in categories_display %}
-                    <span class="badge bg-primary">{{ cat }}</span>
+              <!-- Categories -->
+              <div class="mb-3">
+                <label class="form-label">Categories</label>
+                <div class="overflow-auto" style="max-height: 200px;">
+                  {% for category in all_categories %}
+                    <div class="form-check">
+                      {% if category.slug in selected_categories %}
+                        <input class="form-check-input" type="checkbox" value="{{ category.slug }}" id="category_{{ category.id }}" name="category" checked />
+                      {% else %}
+                        <input class="form-check-input" type="checkbox" value="{{ category.slug }}" id="category_{{ category.id }}" name="category" />
+                      {% endif %}
+                      <label class="form-check-label d-flex justify-content-between" for="category_{{ category.id }}">
+                        {{ category.name }}
+                        <span class="badge bg-light text-dark">{{ category.story_count }}</span>
+                      </label>
+                    </div>
                   {% endfor %}
-                </span>
-              {% endif %}
+                </div>
+              </div>
 
-              {% if request.GET.date_from or request.GET.date_to %}
-                <span class="ms-2">
-                  Date:{% if request.GET.date_from %}
-                    from {{ request.GET.date_from }}
-                  {% endif %}
-                  {% if request.GET.date_to %}
-                    to {{ request.GET.date_to }}
-                  {% endif %}
-                </span>
-              {% endif %}
+              <!-- Date range -->
+              <div class="mb-3">
+                <label class="form-label">Date Range</label>
+                <div class="input-group mb-2">
+                  <span class="input-group-text">From</span>
+                  <input type="date" class="form-control" name="date_from" value="{{ request.GET.date_from }}" />
+                </div>
+                <div class="input-group">
+                  <span class="input-group-text">To</span>
+                  <input type="date" class="form-control" name="date_to" value="{{ request.GET.date_to }}" />
+                </div>
+              </div>
 
-              {% if sort_by %}
-                <span class="ms-2">Sorted by: {{ sort_display }}</span>
+              <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+              {% if is_filtered %}
+                <a href="{% url 'stories:story_list' %}" class="btn btn-outline-secondary w-100 mt-2">Clear Filters</a>
               {% endif %}
-            </div>
-            <a href="{% url 'stories:story_list' %}" class="btn btn-sm btn-outline-secondary">Clear All</a>
+            </form>
           </div>
         </div>
-      {% endif %}
+      </div>
 
-      {% if stories %}
-        <div class="row row-cols-1 g-4">
-          {% for story in stories %}
-            <div class="col">
-              <div class="card shadow-sm border-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-8">
-                      <h5 class="card-title mb-1"><a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a></h5>
-                      <div class="d-flex align-items-center mb-3">
-                        {% if story.author.profile_picture %}
-                        <img src="{{ story.author.profile_picture.url }}" class="rounded-circle me-2" width="30" height="30" alt="{{ story.author.get_full_name }}" />
-                        {% else %}
-                        <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 60px; height: 60px;">
-                          <span class="h4 mb-0 text-muted">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
-                        </div>
-                        {% endif %}
-                        <span class="small text-muted"><a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-muted">{{ story.author.get_full_name }}</a> • {{ story.created_at|date:'M d, Y' }}</span>
-                      </div>
-                      <p class="card-text">{{ story.content|truncatewords:40 }}</p>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="d-flex flex-column justify-content-between h-100">
-                        <div class="mb-3">
-                          {% for category in story.categories.all %}
-                            <span class="badge bg-light text-dark me-1">{{ category.name }}</span>
-                          {% endfor %}
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                          <div class="text-muted small">
-                            <i class="bi bi-chat"></i> {{ story.comment_set.count }}
-                            <span class="ms-2"><i class="bi bi-heart"></i> {{ story.likes }}</span>
-                            {% if story.reading_time %}
-                              <span class="ms-2"><i class="bi bi-clock"></i> {{ story.reading_time }} min read</span>
+      <!-- Story list -->
+      <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="h2 mb-0">
+            {% if search_query %}
+              Search Results for "{{ search_query }}"
+            {% else %}
+              Browse Stories
+            {% endif %}
+          </h1>
+          <div class="d-flex gap-2">
+            <form class="d-flex" method="get" action="{% url 'stories:story_list' %}">
+              <input class="form-control me-2" type="search" placeholder="Search stories" name="q" value="{{ search_query }}" aria-label="Search" />
+              <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+            {% if user.is_authenticated %}
+              <a href="{% url 'stories:story_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i>
+                <span class="d-none d-sm-inline ms-1">New Story</span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if is_filtered %}
+          <div class="alert alert-info mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong>Applied Filters:</strong>
+                {% if selected_categories %}
+                  <span class="ms-2">
+                    Categories:{% for cat in categories_display %}
+                      <span class="badge bg-primary">{{ cat }}</span>
+                    {% endfor %}
+                  </span>
+                {% endif %}
+
+                {% if request.GET.date_from or request.GET.date_to %}
+                  <span class="ms-2">
+                    Date:{% if request.GET.date_from %}
+                      from {{ request.GET.date_from }}
+                    {% endif %}
+                    {% if request.GET.date_to %}
+                      to {{ request.GET.date_to }}
+                    {% endif %}
+                  </span>
+                {% endif %}
+
+                {% if sort_by %}
+                  <span class="ms-2">Sorted by: {{ sort_display }}</span>
+                {% endif %}
+              </div>
+              <a href="{% url 'stories:story_list' %}" class="btn btn-sm btn-outline-secondary">Clear All</a>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if stories %}
+          <div class="row row-cols-1 g-4">
+            {% for story in stories %}
+              <div class="col">
+                <div class="card shadow-sm border-0 story-card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-8">
+                        <h5 class="card-title mb-1">
+                          <a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a>
+                        </h5>
+                        <div class="d-flex align-items-center mb-3">
+                          <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none me-2">
+                            {% if story.author.profile_picture %}
+                              <img src="{{ story.author.profile_picture.url }}" class="rounded-circle" width="32" height="32" alt="{{ story.author.get_full_name }}" style="object-fit: cover;" />
+                            {% else %}
+                              <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                <span class="text-primary small">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
+                              </div>
                             {% endif %}
+                          </a>
+                          <div class="small text-muted">
+                            <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-muted">{{ story.author.get_full_name }}</a>
+                            <span class="mx-1">•</span>
+                            {{ story.created_at|date:'M d, Y' }}
                           </div>
-                          <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-sm btn-outline-primary">Read</a>
+                        </div>
+                        <p class="card-text text-secondary">{{ story.content|truncatewords:40 }}</p>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="d-flex flex-column justify-content-between h-100">
+                          <div class="mb-3">
+                            {% for category in story.categories.all %}
+                              <a href="{% url 'stories:story_list_by_category' category.slug %}" 
+                                 class="badge bg-primary bg-opacity-10 text-primary text-decoration-none me-1">
+                                {{ category.name }}
+                              </a>
+                            {% endfor %}
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                              <span title="Comments"><i class="bi bi-chat"></i> {{ story.comment_set.count }}</span>
+                              <span class="ms-2" title="Likes"><i class="bi bi-heart"></i> {{ story.likes }}</span>
+                              {% if story.reading_time %}
+                                <span class="ms-2" title="Reading time"><i class="bi bi-clock"></i> {{ story.reading_time }} min</span>
+                              {% endif %}
+                            </div>
+                            <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-sm btn-primary">Read</a>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          {% endfor %}
-        </div>
+            {% endfor %}
+          </div>
 
-        <!-- Pagination -->
-        <div class="mt-4">
-          {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
-        </div>
-      {% else %}
-        <div class="alert alert-info">
-          <p class="mb-0">
-            No stories found matching your criteria. Try adjusting your filters or <a href="{% url 'stories:story_list' %}" class="alert-link">view all stories</a>.
-          </p>
-        </div>
-      {% endif %}
+          <!-- Pagination -->
+          <div class="mt-4">
+            {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
+          </div>
+        {% else %}
+          <div class="alert alert-info">
+            <p class="mb-0">
+              No stories found matching your criteria. Try adjusting your filters or <a href="{% url 'stories:story_list' %}" class="alert-link">view all stories</a>.
+            </p>
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 {% endblock %}

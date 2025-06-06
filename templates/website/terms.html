@@ -1,114 +1,239 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}
   Terms of Service - Story Platform
 {% endblock %}
 
 {% block content %}
+  <!-- Hero Section -->
+  <section class="hero-section text-center mb-0">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h1 class="display-4 fw-bold mb-4 fade-in">Terms of Service</h1>
+          <p class="lead mb-0 fade-in">Last updated: {% now "F j, Y" %}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="container py-5">
     <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <div class="card shadow-sm border-0">
-          <div class="card-body p-4 p-md-5">
-            <h1 class="mb-4">Terms of Service</h1>
-            <p class="text-muted">Last updated: March 25, 2025</p>
+      <div class="col-lg-8">
+        <!-- Introduction -->
+        <section class="mb-5">
+          <p class="lead">Welcome to Story Platform. By accessing our platform, you agree to be bound by these Terms of Service and all applicable laws and regulations.</p>
+          <p>Please read these terms carefully before using our platform. If you do not agree with any part of these terms, you must not use our platform.</p>
+        </section>
 
-            <div class="mb-5">
-              <p>Welcome to Story Platform. Please read these Terms of Service ("Terms") carefully as they contain important information about your legal rights, remedies, and obligations. By accessing or using Story Platform, you agree to be bound by these Terms and our Privacy Policy.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>1. Acceptance of Terms</h3>
-              <p>By accessing or using our platform, you agree to these Terms and our Privacy Policy. If you do not agree to these Terms, you may not access or use Story Platform.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>2. Changes to Terms</h3>
-              <p>We may modify these Terms at any time. If we make changes, we will provide notice by posting the updated Terms on the platform and updating the "Last updated" date. Your continued use of the platform after the changes are made constitutes your acceptance of the updated Terms.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>3. Account Registration</h3>
-              <p>To access certain features of the platform, you may need to register for an account. You agree to provide accurate and complete information and to keep it updated. You are responsible for maintaining the confidentiality of your password and account information, and you are solely responsible for all activities that occur under your account.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>4. Content and Ownership</h3>
-              <h5>4.1 Your Content</h5>
-              <p>You retain all ownership rights to the content you submit to the platform. By submitting content, you grant us a worldwide, non-exclusive, royalty-free license to use, copy, reproduce, process, adapt, modify, publish, transmit, display, and distribute your content in any and all media or distribution methods now known or later developed.</p>
-
-              <h5>4.2 Content Guidelines</h5>
-              <p>You agree not to post content that:</p>
-              <ul>
-                <li>Is illegal, harmful, threatening, abusive, harassing, defamatory, vulgar, obscene, or invasive of another's privacy</li>
-                <li>Infringes any patent, trademark, trade secret, copyright, or other intellectual property rights</li>
-                <li>Contains software viruses or any other code designed to interrupt, destroy, or limit the functionality of any computer software or hardware</li>
-                <li>Constitutes unauthorized or unsolicited advertising, junk or bulk email ("spamming")</li>
+        <!-- Definitions -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Definitions</h2>
+              <ul class="mb-0">
+                <li class="mb-3">
+                  <strong>"Platform"</strong> refers to Story Platform, including all its features and services.
+                </li>
+                <li class="mb-3">
+                  <strong>"User"</strong> refers to any individual who accesses or uses the Platform.
+                </li>
+                <li class="mb-3">
+                  <strong>"Content"</strong> refers to any text, images, or other material submitted, posted, or displayed on the Platform.
+                </li>
+                <li class="mb-3">
+                  <strong>"Account"</strong> refers to a registered user profile on the Platform.
+                </li>
               </ul>
-
-              <h5>4.3 Content Removal</h5>
-              <p>We reserve the right, but are not obligated, to remove any content that violates these Terms or that we find objectionable for any reason, without prior notice.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>5. Prohibited Uses</h3>
-              <p>You agree not to:</p>
-              <ul>
-                <li>Use the platform for any illegal purpose or in violation of any local, state, national, or international law</li>
-                <li>Violate or encourage others to violate the rights of third parties, including intellectual property rights</li>
-                <li>Attempt to circumvent any security measures implemented by Story Platform</li>
-                <li>Use any automated system to access the platform without our express written permission</li>
-                <li>Interfere with or disrupt the platform or servers or networks connected to the platform</li>
-              </ul>
-            </div>
-
-            <div class="mb-4">
-              <h3>6. Termination</h3>
-              <p>We may terminate or suspend your access to the platform immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach these Terms. Upon termination, your right to use the platform will immediately cease.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>7. Disclaimer</h3>
-              <p>THE PLATFORM IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT THE PLATFORM WILL BE UNINTERRUPTED OR ERROR-FREE, THAT DEFECTS WILL BE CORRECTED, OR THAT THE PLATFORM OR THE SERVER THAT MAKES IT AVAILABLE ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>8. Limitation of Liability</h3>
-              <p>IN NO EVENT WILL STORY PLATFORM, ITS AFFILIATES, OR THEIR LICENSORS, SERVICE PROVIDERS, EMPLOYEES, AGENTS, OFFICERS, OR DIRECTORS BE LIABLE FOR DAMAGES OF ANY KIND, UNDER ANY LEGAL THEORY, ARISING OUT OF OR IN CONNECTION WITH YOUR USE, OR INABILITY TO USE, THE PLATFORM.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>9. Governing Law</h3>
-              <p>These Terms and any dispute arising from them will be governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law principles.</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>10. Dispute Resolution</h3>
-              <p>Any dispute arising from these Terms will first be resolved through good-faith negotiations. If such negotiations fail, the dispute will be resolved through binding arbitration in [Your Jurisdiction] in accordance with the rules of the [Relevant Arbitration Association].</p>
-            </div>
-
-            <div class="mb-4">
-              <h3>11. Entire Agreement</h3>
-              <p>These Terms constitute the entire agreement between you and Story Platform regarding the platform and supersede all prior and contemporaneous understandings, agreements, representations, and warranties, both written and oral.</p>
-            </div>
-
-            <div class="mb-5">
-              <h3>12. Contact Information</h3>
-              <p>If you have any questions about these Terms, please contact us at:</p>
-              <p>
-                Story Platform<br />
-                123 Story Avenue<br />
-                Literary District<br />
-                New York, NY 10001<br />
-                Email: <a href="mailto:legal@storyplatform.com">legal@storyplatform.com</a>
-              </p>
-            </div>
-
-            <div class="text-center">
-              <a href="{% url 'website:privacy' %}" class="btn btn-outline-primary me-2">Privacy Policy</a>
-              <a href="{% url 'website:contact' %}" class="btn btn-outline-secondary">Contact Us</a>
             </div>
           </div>
-        </div>
+        </section>
+
+        <!-- Account Terms -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Account Terms</h2>
+              <ol class="mb-4">
+                <li class="mb-3">You must be at least 13 years old to use this Platform.</li>
+                <li class="mb-3">You must provide accurate and complete information when creating an account.</li>
+                <li class="mb-3">You are responsible for maintaining the security of your account and password.</li>
+                <li class="mb-3">You must notify us immediately of any unauthorized access to your account.</li>
+                <li class="mb-3">We reserve the right to suspend or terminate accounts that violate these terms.</li>
+              </ol>
+
+              <div class="alert alert-warning">
+                <i class="bi bi-shield-exclamation me-2"></i>You are responsible for all activities that occur under your account.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Content Guidelines -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Content Guidelines</h2>
+              
+              <h3 class="h5 mb-3">Acceptable Content</h3>
+              <p>Users may post content that:</p>
+              <ul class="mb-4">
+                <li>Is original or properly attributed</li>
+                <li>Respects copyright and intellectual property rights</li>
+                <li>Is appropriate for the intended audience</li>
+                <li>Follows community guidelines</li>
+              </ul>
+
+              <h3 class="h5 mb-3">Prohibited Content</h3>
+              <p>Users must not post content that:</p>
+              <ul class="mb-4">
+                <li>Is illegal or promotes illegal activities</li>
+                <li>Is hateful, discriminatory, or harassing</li>
+                <li>Contains explicit adult content without proper warnings</li>
+                <li>Infringes on others' intellectual property rights</li>
+                <li>Contains malware or malicious code</li>
+                <li>Spams or manipulates platform features</li>
+              </ul>
+
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>We reserve the right to remove any content that violates these guidelines.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Intellectual Property -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Intellectual Property Rights</h2>
+              
+              <h3 class="h5 mb-3">Your Content</h3>
+              <p>By posting content on our platform:</p>
+              <ul class="mb-4">
+                <li>You retain all ownership rights to your content</li>
+                <li>You grant us a non-exclusive license to use, display, and distribute your content</li>
+                <li>You warrant that you have the right to post the content</li>
+                <li>You are responsible for any claims related to your content</li>
+              </ul>
+
+              <h3 class="h5 mb-3">Platform Content</h3>
+              <p>All platform features, logos, and designs are protected by copyright and trademark laws.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- User Conduct -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">User Conduct</h2>
+              <p>Users agree to:</p>
+              <ul class="mb-4">
+                <li>Use the platform in a lawful manner</li>
+                <li>Respect other users' rights and privacy</li>
+                <li>Not attempt to gain unauthorized access</li>
+                <li>Not interfere with platform operations</li>
+                <li>Not use the platform for commercial purposes without permission</li>
+              </ul>
+
+              <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle me-2"></i>Violation of these terms may result in account suspension or termination.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Limitation of Liability -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Limitation of Liability</h2>
+              <p>Story Platform and its operators:</p>
+              <ul class="mb-4">
+                <li>Provide the platform "as is" without warranties</li>
+                <li>Are not responsible for user-generated content</li>
+                <li>Are not liable for any damages arising from platform use</li>
+                <li>May experience occasional downtime for maintenance</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Changes to Terms -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Changes to Terms</h2>
+              <p>We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to the platform.</p>
+              <ul class="mb-4">
+                <li>Users will be notified of significant changes</li>
+                <li>Continued use constitutes acceptance of changes</li>
+                <li>Regular review of terms is recommended</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Termination -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Termination</h2>
+              <p>We may terminate or suspend your account and access to the platform:</p>
+              <ul class="mb-4">
+                <li>For violations of these terms</li>
+                <li>At our sole discretion</li>
+                <li>Without prior notice or explanation</li>
+              </ul>
+
+              <p>Users may terminate their account at any time through platform settings.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Governing Law -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Governing Law</h2>
+              <p>These terms are governed by and construed in accordance with the laws of the United States. Any disputes shall be subject to the exclusive jurisdiction of the courts in New York.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contact Information -->
+        <section class="mb-5">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h4 mb-4">Contact Us</h2>
+              <p>For questions about these Terms of Service, please contact us:</p>
+              <ul class="list-unstyled mb-4">
+                <li class="mb-2">
+                  <i class="bi bi-envelope me-2"></i>
+                  <a href="mailto:legal@storyplatform.com">legal@storyplatform.com</a>
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-geo-alt me-2"></i>
+                  123 Story Avenue, Literary District, New York, NY 10001
+                </li>
+                <li>
+                  <i class="bi bi-telephone me-2"></i>
+                  <a href="tel:+1-123-456-7890">+1 (123) 456-7890</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Agreement -->
+        <section class="text-center">
+          <p class="mb-4">By using Story Platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.</p>
+          <a href="{% url 'website:contact' %}" class="btn btn-primary">
+            <i class="bi bi-chat-dots me-2"></i>Contact Us with Questions
+          </a>
+        </section>
       </div>
     </div>
   </div>

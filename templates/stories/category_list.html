@@ -3,59 +3,141 @@
   Categories - Story Platform
 {% endblock %}
 
+{% block extra_css %}
+  <style>
+    .container-narrow {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .category-card {
+      transition: transform 0.2s ease-in-out;
+    }
+    .category-card:hover {
+      transform: translateY(-5px);
+    }
+    .category-icon {
+      width: 48px;
+      height: 48px;
+      background-color: var(--bs-primary);
+      opacity: 0.1;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .category-icon i {
+      font-size: 24px;
+      color: var(--bs-primary);
+      opacity: 1;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
-  <div class="row">
-    <div class="col-12 mb-4">
-      <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mb-0">Categories</h1>
+  <div class="container-narrow py-4">
+    <!-- Header section -->
+    <div class="mb-5">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+          <h1 class="display-6 mb-1">Story Categories</h1>
+          <p class="text-secondary mb-0">Explore stories by your favorite genres and themes</p>
+        </div>
         <form class="d-flex" method="get" action="{% url 'stories:category_list' %}">
-          <input class="form-control me-2" type="search" placeholder="Search categories..." name="search" value="{{ request.GET.search }}" aria-label="Search" />
-          <button class="btn btn-outline-primary" type="submit">Search</button>
+          <div class="input-group">
+            <input class="form-control" type="search" placeholder="Search categories..." 
+                   name="search" value="{{ request.GET.search }}" aria-label="Search" />
+            <button class="btn btn-primary" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
         </form>
       </div>
     </div>
 
     {% if categories %}
-      <div class="col-12">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          {% for category in categories %}
-            <div class="col">
-              <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
-                  <h5 class="card-title"><a href="{% url 'stories:story_list_by_category' category.slug %}" class="text-decoration-none text-dark">{{ category.name }}</a></h5>
-                  {% if category.description %}
-                    <p class="card-text">{{ category.description }}</p>
-                  {% endif %}
-                  <div class="d-flex justify-content-between align-items-center">
-                    <span class="badge bg-secondary rounded-pill">{{ category.stories.count }} stories</span>
-                    <a href="{% url 'stories:story_list_by_category' category.slug %}" class="btn btn-sm btn-outline-primary">Browse Stories</a>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for category in categories %}
+          <div class="col">
+            <div class="card h-100 shadow-sm border-0 category-card">
+              <div class="card-body p-4">
+                <div class="category-icon">
+                  <i class="bi bi-bookmark"></i>
+                </div>
+                <h3 class="h5 mb-3">
+                  <a href="{% url 'stories:story_list_by_category' category.slug %}" 
+                     class="text-decoration-none text-dark stretched-link">
+                    {{ category.name }}
+                  </a>
+                </h3>
+                {% if category.description %}
+                  <p class="card-text text-secondary mb-3">{{ category.description|truncatewords:20 }}</p>
+                {% endif %}
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center text-muted small">
+                    <span title="Stories">
+                      <i class="bi bi-book me-1"></i>{{ category.stories.count }} stories
+                    </span>
+                    {% if category.author_count %}
+                      <span class="mx-2">•</span>
+                      <span title="Authors">
+                        <i class="bi bi-people me-1"></i>{{ category.author_count }} authors
+                      </span>
+                    {% endif %}
                   </div>
+                  {% if user.is_staff %}
+                    <div class="btn-group">
+                      <a href="{% url 'stories:category_update' category.slug %}" 
+                         class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                      <a href="{% url 'stories:category_delete' category.slug %}" 
+                         class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                      </a>
+                    </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
-          {% endfor %}
-        </div>
-
-        <!-- Pagination -->
-        {% if is_paginated %}
-          <div class="mt-4">
-            {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
           </div>
-        {% endif %}
+        {% endfor %}
       </div>
-    {% else %}
-      <div class="col-12">
-        <div class="alert alert-info">
-          <p class="mb-0">No categories found.</p>
+
+      <!-- Pagination -->
+      {% if is_paginated %}
+        <div class="mt-4">
+          {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
         </div>
+      {% endif %}
+    {% else %}
+      <div class="text-center py-5">
+        <div class="mb-4">
+          <i class="bi bi-grid-3x3-gap display-1 text-muted"></i>
+        </div>
+        <h2 class="h4 mb-3">No Categories Found</h2>
+        <p class="text-muted mb-4">
+          {% if request.GET.search %}
+            No categories match your search criteria. Try different keywords or browse all categories.
+          {% else %}
+            There are no categories available yet. Check back soon!
+          {% endif %}
+        </p>
+        {% if request.GET.search %}
+          <a href="{% url 'stories:category_list' %}" class="btn btn-primary">
+            <i class="bi bi-arrow-left me-2"></i>View All Categories
+          </a>
+        {% endif %}
       </div>
     {% endif %}
 
     {% if user.is_staff %}
-      <div class="col-12 mt-4">
-        <div class="d-flex justify-content-end">
-          <a href="{% url 'stories:category_create' %}" class="btn btn-primary"><i class="bi bi-plus"></i> Add Category</a>
-        </div>
+      <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1000;">
+        <a href="{% url 'stories:category_create' %}" class="btn btn-primary btn-lg rounded-circle shadow">
+          <i class="bi bi-plus-lg"></i>
+        </a>
       </div>
     {% endif %}
   </div>

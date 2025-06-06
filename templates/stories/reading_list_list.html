@@ -1,120 +1,152 @@
 {% extends 'base.html' %}
-{% block title %}Reading Lists - Story Platform{% endblock %}
+{% block title %}
+  My Reading Lists - Story Platform
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .container-narrow {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .list-card {
+      transition: transform 0.2s ease-in-out;
+    }
+    .list-card:hover {
+      transform: translateY(-5px);
+    }
+    .list-meta {
+      font-size: 0.875rem;
+      color: var(--bs-gray-600);
+    }
+    .empty-state {
+      padding: 4rem 2rem;
+      text-align: center;
+      background: linear-gradient(45deg, var(--bs-primary), #2d5cff);
+      border-radius: 1rem;
+      color: white;
+    }
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+  </style>
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12 mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1 class="mb-0">Reading Lists</h1>
-            <a href="{% url 'stories:reading_list_create' %}" class="btn btn-primary">
-                <i class="bi bi-plus"></i> New Reading List
-            </a>
-        </div>
+  <div class="container-narrow py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="h2 mb-1">My Reading Lists</h1>
+        <p class="text-secondary mb-0">Organize and manage your favorite stories</p>
+      </div>
+      <a href="{% url 'stories:reading_list_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-2"></i>Create New List
+      </a>
     </div>
-    
-    <div class="col-md-4 col-lg-3 mb-4">
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <h5 class="card-title">My Lists</h5>
-                <div class="list-group list-group-flush border-0">
-                    <a href="{% url 'stories:reading_list_list' %}" class="list-group-item list-group-item-action px-0 {% if not view_type %}active{% endif %}">
-                        <i class="bi bi-collection me-2"></i> All Lists
+
+    {% if reading_lists %}
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for reading_list in reading_lists %}
+          <div class="col">
+            <div class="card h-100 shadow-sm border-0 list-card">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <h2 class="h5 mb-0">
+                    <a href="{% url 'stories:reading_list_detail' reading_list.id %}" 
+                       class="text-decoration-none text-dark stretched-link">
+                      {{ reading_list.name }}
                     </a>
-                    <a href="{% url 'stories:reading_list_list' %}?view=my" class="list-group-item list-group-item-action px-0 {% if view_type == 'my' %}active{% endif %}">
-                        <i class="bi bi-person me-2"></i> My Lists
-                    </a>
-                    <a href="{% url 'stories:reading_list_list' %}?view=saved" class="list-group-item list-group-item-action px-0 {% if view_type == 'saved' %}active{% endif %}">
-                        <i class="bi bi-bookmark me-2"></i> Saved Lists
-                    </a>
-                    <a href="{% url 'stories:reading_list_list' %}?view=popular" class="list-group-item list-group-item-action px-0 {% if view_type == 'popular' %}active{% endif %}">
-                        <i class="bi bi-star me-2"></i> Popular Lists
-                    </a>
+                  </h2>
+                  <span class="badge {% if reading_list.is_public %}bg-success{% else %}bg-secondary{% endif %} rounded-pill">
+                    <i class="bi bi-{% if reading_list.is_public %}globe{% else %}lock{% endif %} me-1"></i>
+                    {{ reading_list.is_public|yesno:"Public,Private" }}
+                  </span>
                 </div>
-                
-                <hr>
-                
-                <h5 class="card-title">Filter By</h5>
-                <form method="get" action="{% url 'stories:reading_list_list' %}">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ request.GET.name|default:'' }}">
-                    </div>
-                    
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="public" name="public" {% if request.GET.public %}checked{% endif %}>
-                            <label class="form-check-label" for="public">
-                                Public Lists Only
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-8 col-lg-9">
-        {% if reading_lists %}
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {% for reading_list in reading_lists %}
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                        <span class="badge {% if reading_list.is_public %}bg-success{% else %}bg-secondary{% endif %}">
-                            {% if reading_list.is_public %}Public{% else %}Private{% endif %}
-                        </span>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-link text-dark" type="button" id="dropdownMenuButton{{ reading_list.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton{{ reading_list.id }}">
-                                {% if user == reading_list.user %}
-                                <li><a class="dropdown-item" href="{% url 'stories:reading_list_update' reading_list.id %}"><i class="bi bi-pencil me-2"></i> Edit</a></li>
-                                <li><a class="dropdown-item" href="{% url 'stories:reading_list_delete' reading_list.id %}"><i class="bi bi-trash me-2"></i> Delete</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                {% endif %}
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i> Share</a></li>
-                                {% if user != reading_list.user %}
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark-plus me-2"></i> Save</a></li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title mb-1">
-                            <a href="{% url 'stories:reading_list_detail' reading_list.id %}" class="text-decoration-none text-dark">{{ reading_list.name }}</a>
-                        </h5>
-                        <p class="text-muted small mb-3">
-                            <img src="{{ reading_list.user.profile.avatar_url|default:'https://via.placeholder.com/40' }}" class="rounded-circle me-1" width="24" height="24">
-                            {{ reading_list.user.username }}
-                        </p>
-                        {% if reading_list.description %}
-                        <p class="card-text">{{ reading_list.description|truncatechars:100 }}</p>
-                        {% endif %}
-                    </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                        <div class="d-flex justify-content-between">
-                            <small class="text-muted">{{ reading_list.stories.count }} stories</small>
-                            <small class="text-muted">{{ reading_list.created_at|date:"M d, Y" }}</small>
-                        </div>
-                    </div>
+
+                {% if reading_list.description %}
+                  <p class="text-secondary mb-3">{{ reading_list.description|truncatewords:30 }}</p>
+                {% endif %}
+
+                <div class="list-meta d-flex flex-wrap gap-3 mb-3">
+                  <span><i class="bi bi-book me-1"></i>{{ reading_list.stories.count }} stories</span>
+                  <span><i class="bi bi-calendar me-1"></i>Created {{ reading_list.created_at|date:"M d, Y" }}</span>
+                  {% if reading_list.updated_at != reading_list.created_at %}
+                    <span><i class="bi bi-pencil me-1"></i>Updated {{ reading_list.updated_at|date:"M d, Y" }}</span>
+                  {% endif %}
                 </div>
+
+                {% with stories=reading_list.stories.all|slice:":3" %}
+                  {% if stories %}
+                    <div class="list-group list-group-flush mb-3">
+                      {% for story in stories %}
+                        <div class="list-group-item border-0 px-0 py-2">
+                          <div class="d-flex align-items-center">
+                            {% if story.author.profile_picture %}
+                              <img src="{{ story.author.profile_picture.url }}" 
+                                   class="rounded-circle me-2" width="32" height="32" 
+                                   alt="{{ story.author.get_full_name }}" style="object-fit: cover;">
+                            {% else %}
+                              <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2" 
+                                   style="width: 32px; height: 32px;">
+                                <span class="text-primary small">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
+                              </div>
+                            {% endif %}
+                            <div class="flex-grow-1">
+                              <h6 class="mb-0 text-truncate">{{ story.title }}</h6>
+                              <small class="text-muted">by {{ story.author.get_full_name }}</small>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                    {% if reading_list.stories.count > 3 %}
+                      <div class="text-center">
+                        <small class="text-muted">
+                          and {{ reading_list.stories.count|add:"-3" }} more stories
+                        </small>
+                      </div>
+                    {% endif %}
+                  {% else %}
+                    <p class="text-muted mb-0">No stories added yet.</p>
+                  {% endif %}
+                {% endwith %}
+              </div>
+              <div class="card-footer bg-transparent border-top-0 p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <a href="{% url 'stories:reading_list_detail' reading_list.id %}" 
+                     class="btn btn-sm btn-primary">
+                    <i class="bi bi-eye me-1"></i>View List
+                  </a>
+                  <div class="btn-group">
+                    <a href="{% url 'stories:reading_list_update' reading_list.id %}" 
+                       class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'stories:reading_list_delete' reading_list.id %}" 
+                       class="btn btn-sm btn-outline-danger">
+                      <i class="bi bi-trash"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-            {% endfor %}
-        </div>
-        
-        <!-- Pagination -->
-        <div class="mt-4">
-            {% include 'stories/includes/pagination.html' with page_obj=page_obj %}
-        </div>
-        
-        {% else %}
-        <div class="alert alert-info">
-            <p class="mb-0">No reading lists found. Create your first reading list to start organizing your favorite stories!</p>
-        </div>
-        {% endif %}
-    </div>
-</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i class="bi bi-journal-bookmark empty-state-icon d-block"></i>
+        <h2 class="h4 mb-3">No Reading Lists Yet</h2>
+        <p class="mb-4">Create your first reading list to start organizing your favorite stories.</p>
+        <a href="{% url 'stories:reading_list_create' %}" class="btn btn-light">
+          <i class="bi bi-plus-lg me-2"></i>Create Reading List
+        </a>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %} 

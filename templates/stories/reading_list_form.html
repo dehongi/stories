@@ -3,90 +3,220 @@
 {% if form.instance.id %}Edit{% else %}Create{% endif %} Reading List - Story Platform
 {% endblock %}
 
+{% block extra_css %}
+<style>
+  .container-narrow {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+  }
+  .story-select {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .story-select .form-check {
+    padding: 1rem;
+    border-bottom: 1px solid var(--bs-gray-200);
+    transition: background-color 0.2s ease-in-out;
+  }
+  .story-select .form-check:last-child {
+    border-bottom: none;
+  }
+  .story-select .form-check:hover {
+    background-color: var(--bs-gray-100);
+  }
+  .story-select .form-check-label {
+    cursor: pointer;
+    width: 100%;
+  }
+  .story-meta {
+    font-size: 0.875rem;
+    color: var(--bs-gray-600);
+  }
+  .preview-card {
+    transition: transform 0.2s ease-in-out;
+  }
+  .preview-card:hover {
+    transform: translateY(-5px);
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4 p-md-5">
-                <h2 class="mb-4 text-center">
-                    {% if form.instance.id %}
-                    Edit Reading List
-                    {% else %}
-                    Create New Reading List
-                    {% endif %}
-                </h2>
-                
-                <form method="post">
-                    {% csrf_token %}
+<div class="container-narrow py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'stories:reading_list_list' %}" class="text-decoration-none">Reading Lists</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {% if form.instance.id %}
+                        Edit Reading List
+                        {% else %}
+                        Create Reading List
+                        {% endif %}
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4 p-md-5">
+                    <h1 class="h2 mb-4 text-center">
+                        {% if form.instance.id %}
+                        Edit Reading List
+                        {% else %}
+                        Create New Reading List
+                        {% endif %}
+                    </h1>
                     
-                    {% if form.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        Please correct the errors below.
-                    </div>
-                    {% endif %}
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.name.id_for_label }}" class="form-label">List Name</label>
-                        <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="name" value="{{ form.name.value|default:'' }}" required>
-                        {% if form.name.errors %}
-                        <div class="text-danger small">
-                            {% for error in form.name.errors %}
-                            {{ error }}
-                            {% endfor %}
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Please correct the errors below.
                         </div>
                         {% endif %}
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.description.id_for_label }}" class="form-label">Description (Optional)</label>
-                        <textarea class="form-control" id="{{ form.description.id_for_label }}" name="description" rows="3">{{ form.description.value|default:'' }}</textarea>
-                        {% if form.description.errors %}
-                        <div class="text-danger small">
-                            {% for error in form.description.errors %}
-                            {{ error }}
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        <div class="form-text">Add a brief description for your reading list.</div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="{{ form.is_public.id_for_label }}" name="is_public" {% if form.is_public.value %}checked{% endif %}>
-                            <label class="form-check-label" for="{{ form.is_public.id_for_label }}">
-                                Make this reading list public
-                            </label>
-                        </div>
-                        <div class="form-text">
-                            Public reading lists can be seen by other users. Private lists are only visible to you.
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label for="{{ form.stories.id_for_label }}" class="form-label">Select Stories</label>
-                        {{ form.stories }}
-                        {% if form.stories.errors %}
-                        <div class="text-danger small">
-                            {% for error in form.stories.errors %}
-                            {{ error }}
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        <div class="form-text">Select the stories you want to add to this reading list.</div>
-                    </div>
-                    
-                    <div class="d-flex justify-content-between">
-                        <a href="{% url 'stories:story_list' %}" class="btn btn-outline-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">
-                            {% if form.instance.id %}
-                            Save Changes
-                            {% else %}
-                            Create List
+                        
+                        <!-- Name -->
+                        <div class="mb-4">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">List Name</label>
+                            <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="name" value="{{ form.name.value|default:'' }}" required>
+                            {% if form.name.errors %}
+                            <div class="text-danger small mt-2">
+                                {% for error in form.name.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
                             {% endif %}
-                        </button>
-                    </div>
-                </form>
+                            <div class="form-text">Choose a descriptive name for your reading list.</div>
+                        </div>
+                        
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                            <textarea class="form-control" id="{{ form.description.id_for_label }}" name="description" rows="3">{{ form.description.value|default:'' }}</textarea>
+                            {% if form.description.errors %}
+                            <div class="text-danger small mt-2">
+                                {% for error in form.description.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="form-text">Add a brief description to help others understand what this list is about.</div>
+                        </div>
+                        
+                        <!-- Visibility -->
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" id="{{ form.is_public.id_for_label }}" name="is_public" {% if form.is_public.value %}checked{% endif %}>
+                                <label class="form-check-label" for="{{ form.is_public.id_for_label }}">Make this list public</label>
+                            </div>
+                            <div class="form-text">Public lists can be viewed by anyone. Private lists are only visible to you.</div>
+                        </div>
+                        
+                        <!-- Stories -->
+                        <div class="mb-4">
+                            <label class="form-label">Select Stories</label>
+                            <div class="card">
+                                <div class="story-select">
+                                    {% for story in form.stories.field.queryset %}
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="story_{{ story.id }}" name="stories" value="{{ story.id }}"
+                                               {% if story.id in form.stories.value %}checked{% endif %}>
+                                        <label class="form-check-label" for="story_{{ story.id }}">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h6 class="mb-1">{{ story.title }}</h6>
+                                                    <div class="story-meta">
+                                                        <span><i class="bi bi-person me-1"></i>{{ story.author.get_full_name }}</span>
+                                                        <span class="mx-2">•</span>
+                                                        <span><i class="bi bi-calendar me-1"></i>{{ story.created_at|date:"M d, Y" }}</span>
+                                                        {% if story.reading_time %}
+                                                        <span class="mx-2">•</span>
+                                                        <span><i class="bi bi-clock me-1"></i>{{ story.reading_time }} min read</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        {% for category in story.categories.all %}
+                                                        <span class="badge bg-primary bg-opacity-10 text-primary">{{ category.name }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <span class="ms-3 text-muted">
+                                                    <i class="bi bi-chevron-right"></i>
+                                                </span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    {% empty %}
+                                    <div class="p-4 text-center text-muted">
+                                        <i class="bi bi-journal-x display-4 mb-3"></i>
+                                        <p class="mb-0">No stories available to add to your reading list.</p>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if form.stories.errors %}
+                            <div class="text-danger small mt-2">
+                                {% for error in form.stories.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="form-text">Select the stories you want to include in this reading list.</div>
+                        </div>
+                        
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'stories:reading_list_list' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-2"></i>
+                                {% if form.instance.id %}
+                                Save Changes
+                                {% else %}
+                                Create List
+                                {% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
+
+            {% if form.instance.id %}
+            <!-- Preview Card -->
+            <div class="card shadow-sm border-0 mt-4 preview-card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Reading List Preview</h5>
+                </div>
+                <div class="card-body">
+                    <h2 class="h4 mb-2">{{ form.instance.name }}</h2>
+                    {% if form.instance.description %}
+                    <p class="text-secondary mb-3">{{ form.instance.description }}</p>
+                    {% endif %}
+                    <div class="d-flex flex-wrap gap-3 text-muted small">
+                        <span><i class="bi bi-book me-1"></i>{{ form.instance.stories.count }} stories</span>
+                        <span><i class="bi bi-person me-1"></i>Created by {{ form.instance.user.get_full_name }}</span>
+                        <span><i class="bi bi-calendar me-1"></i>{{ form.instance.created_at|date:"M d, Y" }}</span>
+                        <span>
+                            <i class="bi bi-{% if form.instance.is_public %}globe{% else %}lock{% endif %} me-1"></i>
+                            {{ form.instance.is_public|yesno:"Public,Private" }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

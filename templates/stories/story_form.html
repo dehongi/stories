@@ -1,143 +1,294 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}
   {% if form.instance.id %}
     Edit
   {% else %}
     Create
-  {% endif %}Story - Story Platform
+  {% endif %} Story - Story Platform
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .container-narrow {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--bs-primary);
+      box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+    }
+    .ck-editor__editable {
+      min-height: 300px;
+      max-height: 600px;
+    }
+    .preview-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .preview-card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body p-4 p-md-5">
-          <h3 class="mb-4 text-center">
-            {% if form.instance.id %}
-              Edit Story
-            {% else %}
-              Create New Story
-            {% endif %}
-          </h3>
+  <div class="container-narrow py-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'stories:story_list' %}" class="text-decoration-none">Stories</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              {% if form.instance.id %}
+                Edit Story
+              {% else %}
+                Create Story
+              {% endif %}
+            </li>
+          </ol>
+        </nav>
 
-          <form method="post">
-            {% csrf_token %}
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4 p-md-5">
+            <h1 class="h2 mb-4 text-center">
+              {% if form.instance.id %}
+                Edit Story
+              {% else %}
+                Create New Story
+              {% endif %}
+            </h1>
 
-            {% if form.errors %}
-              <div class="alert alert-danger" role="alert">Please correct the errors below.</div>
-            {% endif %}
+            <form method="post" enctype="multipart/form-data" id="storyForm">
+              {% csrf_token %}
 
-            <div class="mb-3">
-              <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
-              {{ form.title }}
-              {% if form.title.errors %}
-                <div class="text-danger small">
-                  {% for error in form.title.errors %}
-                    {{ error }}
-                  {% endfor %}
+              <!-- Hidden field to track submission type -->
+              <input type="hidden" name="submit_type" id="submit_type" value="">
+
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger mb-4" role="alert">
+                  <h6 class="alert-heading d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Form Errors
+                  </h6>
+                  <ul class="mb-0 ps-3">
+                    {% for error in form.non_field_errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
                 </div>
               {% endif %}
-            </div>
 
-            <div class="mb-3">
-              <label for="{{ form.categories.id_for_label }}" class="form-label">Categories</label>
-              {{ form.categories }}
-              <div class="form-text">Select one or more categories for your story.</div>
-              {% if form.categories.errors %}
-                <div class="text-danger small">
-                  {% for error in form.categories.errors %}
-                    {{ error }}
-                  {% endfor %}
+              <!-- Debug Info - Only visible in debug mode -->
+              {% if debug %}
+                <div class="alert alert-info mb-4">
+                  <h6 class="alert-heading">Debug Information</h6>
+                  <pre class="mb-0"><code>{{ form.errors.as_json }}</code></pre>
                 </div>
               {% endif %}
-            </div>
 
-            <div class="mb-3">
-              <label for="{{ form.content.id_for_label }}" class="form-label">Content</label>
-              {{ form.content }}
-              {% if form.content.errors %}
-                <div class="text-danger small">
-                  {% for error in form.content.errors %}
-                    {{ error }}
-                  {% endfor %}
+              <!-- Title -->
+              <div class="mb-4">
+                <label for="{{ form.title.id_for_label }}" class="form-label">
+                  Title {% if form.title.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                <div class="input-group {% if form.title.errors %}has-validation{% endif %}">
+                  {{ form.title }}
+                  {% if form.title.errors %}
+                    <div class="invalid-feedback d-block">
+                      {% for error in form.title.errors %}
+                        <div><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
                 </div>
-              {% endif %}
-            </div>
-
-            <div class="mb-4">
-              <div class="form-check">
-                {{ form.is_published }}
-                <label class="form-check-label" for="{{ form.is_published.id_for_label }}">Publish now</label>
+                <div class="form-text">
+                  {% if form.title.help_text %}
+                    {{ form.title.help_text }}
+                  {% else %}
+                    Choose a descriptive title for your story.
+                  {% endif %}
+                </div>
               </div>
-              <div class="form-text">If unchecked, your story will be saved as a draft.</div>
-            </div>
 
-            <div class="d-flex justify-content-between">
-              <a href="{% url 'stories:story_list' %}" class="btn btn-outline-secondary">Cancel</a>
-              <div>
-                {% if form.instance.id %}
-                  <button type="submit" name="save_draft" class="btn btn-outline-primary me-2">Save Draft</button>
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
-                {% else %}
-                  <button type="submit" name="save_draft" class="btn btn-outline-primary me-2">Save as Draft</button>
-                  <button type="submit" class="btn btn-primary">Publish</button>
+              <!-- Categories -->
+              <div class="mb-4">
+                <label for="{{ form.categories.id_for_label }}" class="form-label">
+                  Categories {% if form.categories.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                <div class="{% if form.categories.errors %}has-validation{% endif %}">
+                  {{ form.categories }}
+                  {% if form.categories.errors %}
+                    <div class="invalid-feedback d-block">
+                      {% for error in form.categories.errors %}
+                        <div><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-text">
+                  {% if form.categories.help_text %}
+                    {{ form.categories.help_text }}
+                  {% else %}
+                    Select one or more categories that best describe your story.
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Content -->
+              <div class="mb-4">
+                <label for="{{ form.content.id_for_label }}" class="form-label">
+                  Story Content {% if form.content.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                <div class="{% if form.content.errors %}has-validation{% endif %}">
+                  <textarea 
+                    name="content" 
+                    id="{{ form.content.id_for_label }}"
+                    class="form-control {% if form.content.errors %}is-invalid{% endif %}"
+                    rows="15"
+                    style="display: none;"
+                    aria-hidden="true"
+                  >{{ form.content.value|default:'' }}</textarea>
+                  <div id="editor-container"></div>
+                  {% if form.content.errors %}
+                    <div class="invalid-feedback d-block mt-2">
+                      {% for error in form.content.errors %}
+                        <div><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-text">
+                  {% if form.content.help_text %}
+                    {{ form.content.help_text }}
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Cover Image -->
+              {% if form.cover_image %}
+                <div class="mb-4">
+                  <label for="{{ form.cover_image.id_for_label }}" class="form-label">
+                    Cover Image {% if form.cover_image.field.required %}<span class="text-danger">*</span>{% endif %}
+                  </label>
+                  <div class="{% if form.cover_image.errors %}has-validation{% endif %}">
+                    {{ form.cover_image }}
+                    {% if form.cover_image.errors %}
+                      <div class="invalid-feedback d-block">
+                        {% for error in form.cover_image.errors %}
+                          <div><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="form-text">
+                    {% if form.cover_image.help_text %}
+                      {{ form.cover_image.help_text }}
+                    {% else %}
+                      Upload an image to make your story more engaging. (Optional)
+                    {% endif %}
+                  </div>
+                  {% if form.instance.cover_image %}
+                    <div class="mt-2">
+                      <img src="{{ form.instance.cover_image.url }}" alt="Current cover image" 
+                           class="img-thumbnail" style="max-height: 200px;">
+                      <div class="form-text">Current cover image</div>
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+
+              <!-- Publication Status -->
+              <div class="mb-4">
+                <div class="form-check form-switch {% if form.is_published.errors %}has-validation{% endif %}">
+                  {{ form.is_published }}
+                  <label class="form-check-label" for="{{ form.is_published.id_for_label }}">
+                    Publish immediately
+                  </label>
+                  {% if form.is_published.errors %}
+                    <div class="invalid-feedback d-block">
+                      {% for error in form.is_published.errors %}
+                        <div><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="form-text">
+                  {% if form.is_published.help_text %}
+                    {{ form.is_published.help_text }}
+                  {% else %}
+                    If unchecked, your story will be saved as a draft.
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Form Actions -->
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'stories:story_list' %}" class="btn btn-outline-secondary">
+                  <i class="bi bi-arrow-left me-2"></i>Cancel
+                </a>
+                <div class="btn-group">
+                  <button type="submit" name="submit_type" value="draft" class="btn btn-outline-primary" formnovalidate>
+                    <i class="bi bi-save me-2"></i>Save Draft
+                  </button>
+                  <button type="submit" name="submit_type" value="publish" class="btn btn-primary">
+                    <i class="bi bi-send me-2"></i>
+                    {% if form.instance.id %}
+                      Update Story
+                    {% else %}
+                      Publish Story
+                    {% endif %}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {% if form.instance.id %}
+          <!-- Preview Card -->
+          <div class="card shadow-sm border-0 mt-4 preview-card">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Story Preview</h5>
+            </div>
+            <div class="card-body">
+              <h2 class="h4">{{ form.instance.title }}</h2>
+              <div class="d-flex align-items-center text-muted mb-3">
+                <span><i class="bi bi-person me-1"></i>{{ form.instance.author.get_full_name }}</span>
+                <span class="mx-2">•</span>
+                <span><i class="bi bi-calendar me-1"></i>{{ form.instance.created_at|date:"M d, Y" }}</span>
+                {% if form.instance.reading_time %}
+                  <span class="mx-2">•</span>
+                  <span><i class="bi bi-clock me-1"></i>{{ form.instance.reading_time }} min read</span>
                 {% endif %}
               </div>
+              <p class="card-text">{{ form.instance.content|truncatewords:50 }}</p>
+              <div class="d-flex gap-2">
+                {% for category in form.instance.categories.all %}
+                  <span class="badge bg-primary bg-opacity-10 text-primary">{{ category.name }}</span>
+                {% endfor %}
+              </div>
             </div>
-          </form>
-        </div>
-      </div>
-
-      <div class="card shadow-sm border-0">
-        <div class="card-body">
-          <h5 class="card-title">Writing Tips</h5>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2">
-              <i class="bi bi-check-circle-fill text-success me-2"></i> Keep your title concise and engaging
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check-circle-fill text-success me-2"></i> Structure your story with a clear beginning, middle, and end
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check-circle-fill text-success me-2"></i> Use descriptive language to create vivid imagery
-            </li>
-            <li class="mb-2">
-              <i class="bi bi-check-circle-fill text-success me-2"></i> Develop your characters with distinct personalities
-            </li>
-            <li>
-              <i class="bi bi-check-circle-fill text-success me-2"></i> Proofread your work before publishing
-            </li>
-          </ul>
-        </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
 {% endblock %}
 
 {% block extra_js %}
+  <!-- CKEditor 5 -->
+  <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+  <!-- Story Form JS -->
+  <script src="{% static 'stories/js/story_form.js' %}"></script>
   <script>
-    // Enhance the form with better styling and functionality
-    document.addEventListener('DOMContentLoaded', function () {
-      // Make sure the textarea has proper styling
-      const contentTextarea = document.getElementById('{{ form.content.id_for_label }}')
-      if (contentTextarea) {
-        contentTextarea.classList.add('form-control')
-        contentTextarea.setAttribute('rows', '15')
-      }
-    
-      // Title field styling
-      const titleInput = document.getElementById('{{ form.title.id_for_label }}')
-      if (titleInput) {
-        titleInput.classList.add('form-control')
-      }
-    
-      // Categories styling
-      const categoriesSelect = document.getElementById('{{ form.categories.id_for_label }}')
-      if (categoriesSelect) {
-        categoriesSelect.classList.add('form-select')
-        categoriesSelect.setAttribute('multiple', true)
-        categoriesSelect.setAttribute('size', '5')
-      }
-    })
+    // Initialize the editor when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeEditor('#{{ form.content.id_for_label }}', {% if form.instance.content %}'{{ form.instance.content|escapejs }}'{% else %}null{% endif %});
+    });
   </script>
 {% endblock %}

@@ -3,233 +3,401 @@
   Home - Story Platform
 {% endblock %}
 
+{% block extra_css %}
+  <style>
+    .mb-6 {
+      margin-bottom: 4rem;
+    }
+    .py-6 {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+    .hero-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .text-gradient {
+      background: linear-gradient(45deg, var(--bs-primary), #2d5cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .story-card {
+      transition: transform 0.2s ease-in-out;
+    }
+    .story-card:hover {
+      transform: translateY(-5px);
+    }
+    .badge {
+      transition: all 0.2s ease-in-out;
+    }
+    .badge:hover {
+      transform: scale(1.05);
+    }
+    .container-narrow {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    @media (min-width: 992px) {
+      .story-grid {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+    }
+    .featured-image {
+      max-width: 540px;
+      margin-left: auto;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
-  <div class="container-fluid px-0">
-    <!-- Hero section -->
-    <div class="hero-section bg-light py-5 mb-5">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6 mb-4 mb-lg-0">
-            <h1 class="display-4 fw-bold mb-3">Discover and Share Amazing Stories</h1>
-            <p class="lead mb-4">Join our community of writers and readers to explore, create, and share stories across all genres.</p>
-            <div class="d-flex flex-wrap gap-2">
-              <a href="{% url 'stories:story_list' %}" class="btn btn-primary">Browse Stories</a>
-              {% if user.is_authenticated %}
-                <a href="{% url 'stories:story_create' %}" class="btn btn-outline-primary">Write a Story</a>
-              {% else %}
-                <a href="{% url 'accounts:signup' %}" class="btn btn-outline-primary">Join Now</a>
-              {% endif %}
-            </div>
+  <!-- Hero section with gradient background -->
+  <section class="hero-section position-relative overflow-hidden mb-6">
+    <div class="hero-pattern position-absolute w-100 h-100 opacity-10"></div>
+    <div class="container-narrow py-6">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <h1 class="display-3 fw-bold mb-4 text-gradient">Discover and Share Amazing Stories</h1>
+          <p class="lead fs-4 text-secondary mb-5">Join our vibrant community of storytellers and readers. Create, share, and explore stories that inspire, entertain, and connect.</p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="{% url 'stories:story_list' %}" class="btn btn-primary btn-lg px-4 py-3">
+              <i class="bi bi-book me-2"></i>Browse Stories
+            </a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'stories:story_create' %}" class="btn btn-outline-primary btn-lg px-4 py-3">
+                <i class="bi bi-pencil-square me-2"></i>Write a Story
+              </a>
+            {% else %}
+              <a href="{% url 'accounts:signup' %}" class="btn btn-outline-primary btn-lg px-4 py-3">
+                <i class="bi bi-person-plus me-2"></i>Join Now
+              </a>
+            {% endif %}
           </div>
-          <div class="col-lg-6">
-            <img src="https://via.placeholder.com/600x400" class="img-fluid rounded" alt="Stories platform illustration" />
+        </div>
+        <div class="col-lg-6">
+          <div class="position-relative featured-image">
+            <div class="position-absolute top-0 start-50 translate-middle-x bg-primary rounded-circle" style="width: 250px; height: 250px; filter: blur(80px); opacity: 0.2; z-index: -1;"></div>
+            <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&q=80" 
+                 class="img-fluid rounded-4 shadow-lg" alt="Stories platform illustration" />
           </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="container">
-      <!-- Featured stories section -->
-      <section class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2 class="mb-0">Featured Stories</h2>
-          <a href="{% url 'stories:story_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+  <div class="container-narrow">
+    <!-- Stats section -->
+    <section class="mb-6">
+      <div class="row g-4 story-grid">
+        <div class="col-md-4">
+          <div class="card border-0 bg-light h-100">
+            <div class="card-body text-center p-4">
+              <div class="display-4 fw-bold text-primary mb-2">1.2K+</div>
+              <p class="text-secondary mb-0">Active Writers</p>
+            </div>
+          </div>
         </div>
+        <div class="col-md-4">
+          <div class="card border-0 bg-light h-100">
+            <div class="card-body text-center p-4">
+              <div class="display-4 fw-bold text-primary mb-2">5K+</div>
+              <p class="text-secondary mb-0">Stories Published</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card border-0 bg-light h-100">
+            <div class="card-body text-center p-4">
+              <div class="display-4 fw-bold text-primary mb-2">10K+</div>
+              <p class="text-secondary mb-0">Monthly Readers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        {% if featured_stories %}
-          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {% for story in featured_stories %}
-              <div class="col">
-                <div class="card h-100 shadow-sm border-0">
-                  <div class="card-body">
-                    <h5 class="card-title"><a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a></h5>
-                    <p class="card-text text-muted small mb-2">
-                      <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-muted">By {{ story.author.get_full_name }}</a>
-                      • {{ story.created_at|date:'M d, Y' }}
-                    </p>
-                    <p class="card-text">{{ story.content|truncatewords:25 }}</p>
+    <!-- Featured stories section -->
+    <section class="mb-6">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="h1 mb-1">Featured Stories</h2>
+          <p class="text-secondary mb-0">Handpicked stories you'll love</p>
+        </div>
+        <a href="{% url 'stories:story_list' %}" class="btn btn-outline-primary">
+          View All <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+      </div>
+
+      {% if featured_stories %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 story-grid">
+          {% for story in featured_stories %}
+            <div class="col">
+              <div class="card h-100 shadow-sm border-0 story-card">
+                {% if story.cover_image %}
+                  <img src="{{ story.cover_image.url }}" class="card-img-top" alt="{{ story.title }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                  <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="bi bi-book text-secondary" style="font-size: 3rem;"></i>
                   </div>
-                  <div class="card-footer bg-transparent border-top-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div>
-                        {% for category in story.categories.all|slice:':2' %}
-                          <span class="badge bg-light text-dark me-1">{{ category.name }}</span>
-                        {% endfor %}
-                      </div>
-                      <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-sm btn-outline-primary">Read</a>
+                {% endif %}
+                <div class="card-body p-4">
+                  <div class="d-flex align-items-center mb-3">
+                    <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none">
+                      {% if story.author.profile_picture %}
+                        <img src="{{ story.author.profile_picture.url }}" alt="{{ story.author.get_full_name }}" 
+                             class="rounded-circle me-2" width="40" height="40" style="object-fit: cover;">
+                      {% else %}
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2" 
+                             style="width: 40px; height: 40px;">
+                          <span class="text-primary fw-bold">{{ story.author.first_name.0|upper }}</span>
+                        </div>
+                      {% endif %}
+                    </a>
+                    <div>
+                      <h6 class="mb-0">
+                        <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-dark">
+                          {{ story.author.get_full_name }}
+                        </a>
+                      </h6>
+                      <small class="text-muted">{{ story.created_at|date:"M d, Y" }}</small>
+                    </div>
+                  </div>
+                  <h5 class="card-title mb-3">
+                    <a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">
+                      {{ story.title }}
+                    </a>
+                  </h5>
+                  <p class="card-text text-secondary">{{ story.content|truncatewords:25 }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 p-4">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex gap-2">
+                      {% for category in story.categories.all|slice:':2' %}
+                        <a href="{% url 'stories:story_list_by_category' category.slug %}" 
+                           class="badge bg-primary bg-opacity-10 text-primary text-decoration-none">
+                          {{ category.name }}
+                        </a>
+                      {% endfor %}
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="text-muted small">
+                        <i class="bi bi-heart me-1"></i>{{ story.likes_count }}
+                      </span>
+                      <span class="text-muted small">
+                        <i class="bi bi-chat me-1"></i>{{ story.comments_count }}
+                      </span>
+                      <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-sm btn-primary">Read</a>
                     </div>
                   </div>
                 </div>
               </div>
-            {% endfor %}
-          </div>
-        {% else %}
-          <div class="alert alert-info">No featured stories available yet. Check back soon!</div>
-        {% endif %}
-      </section>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle me-2"></i>No featured stories available yet. Check back soon!
+        </div>
+      {% endif %}
+    </section>
 
-      <!-- Categories, popular stories and users -->
-      <div class="row">
-        <!-- Popular categories -->
-        <div class="col-lg-4 mb-5">
-          <div class="card shadow-sm border-0">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Popular Categories</h5>
-                <a href="{% url 'stories:category_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+    <!-- Categories and Popular Authors -->
+    <div class="row g-4 mb-6 story-grid">
+      <!-- Popular categories -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div>
+                <h3 class="h4 mb-1">Popular Categories</h3>
+                <p class="text-secondary small mb-0">Find stories you love</p>
               </div>
-              <hr />
-              <div class="d-flex flex-wrap gap-2">
-                {% for category in popular_categories %}
-                  <a href="{% url 'stories:story_list_by_category' category.slug %}" class="text-decoration-none"><span class="badge bg-light text-dark p-2">{{ category.name }} ({{ category.story_count }})</span></a>
-                {% empty %}
-                  <p class="text-muted mb-0">No categories available.</p>
+              <a href="{% url 'stories:category_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              {% for category in popular_categories %}
+                <a href="{% url 'stories:story_list_by_category' category.slug %}" 
+                   class="badge bg-light text-dark text-decoration-none p-2">
+                  {{ category.name }} 
+                  <span class="badge bg-primary rounded-pill ms-1">{{ category.story_count }}</span>
+                </a>
+              {% empty %}
+                <p class="text-muted mb-0">No categories available.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Popular Authors -->
+        {% if popular_authors %}
+          <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                  <h3 class="h4 mb-1">Popular Authors</h3>
+                  <p class="text-secondary small mb-0">Writers you might like</p>
+                </div>
+              </div>
+              <div class="list-group list-group-flush">
+                {% for author in popular_authors %}
+                  <div class="list-group-item border-0 px-0 py-3">
+                    <div class="d-flex align-items-center">
+                      <a href="{% url 'accounts:user_detail' author.slug %}" class="text-decoration-none me-3">
+                        {% if author.profile_picture %}
+                          <img src="{{ author.profile_picture.url }}" alt="{{ author.get_full_name }}" 
+                               class="rounded-circle" width="48" height="48" style="object-fit: cover;" />
+                        {% else %}
+                          <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" 
+                               style="width: 48px; height: 48px;">
+                            <span class="h5 mb-0 text-primary">{{ author.first_name.0|upper }}{{ author.last_name.0|upper }}</span>
+                          </div>
+                        {% endif %}
+                      </a>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-1">
+                          <a href="{% url 'accounts:user_detail' author.slug %}" class="text-decoration-none text-dark">
+                            {{ author.get_full_name }}
+                          </a>
+                        </h6>
+                        <div class="d-flex align-items-center gap-3">
+                          <small class="text-muted">{{ author.follower_count }} followers</small>
+                          <small class="text-muted">{{ author.stories.count }} stories</small>
+                        </div>
+                      </div>
+
+                      {% if user.is_authenticated and user != author %}
+                        <form method="post" action="{% url 'accounts:toggle_follow' author.slug %}" class="ms-3">
+                          {% csrf_token %}
+                          <button type="submit" 
+                            class="btn btn-sm {% if user.is_following == author %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                            {% if user.is_following == author %}
+                              <i class="bi bi-person-check-fill me-1"></i>Following
+                            {% else %}
+                              <i class="bi bi-person-plus me-1"></i>Follow
+                            {% endif %}
+                          </button>
+                        </form>
+                      {% endif %}
+                    </div>
+                  </div>
                 {% endfor %}
               </div>
             </div>
           </div>
+        {% endif %}
+      </div>
 
-          <!-- Popular Users -->
-          {% if popular_authors %}
-            <div class="card shadow-sm border-0 mt-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 class="mb-0">Popular Authors</h5>
-                </div>
-                <div class="list-group list-group-flush">
-                  {% for author in popular_authors %}
-                    <a href="{% url 'accounts:user_detail' author.slug %}" class="list-group-item list-group-item-action px-0 border-0 py-2">
-                      <div class="d-flex align-items-center">
-                        <div class="me-3">
-                          {% if author.profile_picture %}
-                            <img src="{{ author.profile_picture.url }}" alt="{{ author.get_full_name }}" class="rounded-circle" width="40" height="40" style="object-fit: cover;" />
-                          {% else %}
-                            <div class="bg-light rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-                              <span class="h6 mb-0 text-muted">{{ author.first_name.0|upper }}{{ author.last_name.0|upper }}</span>
-                            </div>
-                          {% endif %}
-                        </div>
-                        <div>
-                          <h6 class="mb-0">{{ author.get_full_name }}</h6>
-                          <small class="text-muted">{{ author.follower_count }} followers</small>
-                        </div>
-
-                        {% if user.is_authenticated and user != author %}
-                          <div class="ms-auto">
-                            <form method="post" action="{% url 'accounts:toggle_follow' author.slug %}">
-                              {% csrf_token %}
-                              <button type="submit"
-                                class="btn btn-sm {% if user.is_following == author %}
-                                  
-                                  btn-primary
-
-                                {% else %}
-                                  
-                                  btn-outline-primary
-
-                                {% endif %}">
-                                {% if user.is_following == author %}
-                                  <i class="bi bi-person-check-fill"></i>
-                                {% else %}
-                                  <i class="bi bi-person-plus"></i>
-                                {% endif %}
-                              </button>
-                            </form>
-                          </div>
-                        {% endif %}
-                      </div>
-                    </a>
-                  {% endfor %}
-                </div>
+      <!-- Reading lists -->
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div>
+                <h3 class="h4 mb-1">Popular Reading Lists</h3>
+                <p class="text-secondary small mb-0">Curated collections by our community</p>
               </div>
+              <a href="{% url 'stories:reading_list_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
-          {% endif %}
-        </div>
-
-        <!-- Reading lists -->
-        <div class="col-lg-8 mb-5">
-          <div class="card shadow-sm border-0">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">Popular Reading Lists</h5>
-                <a href="{% url 'stories:reading_list_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
-              </div>
-              {% if popular_reading_lists %}
-                <div class="list-group list-group-flush">
-                  {% for reading_list in popular_reading_lists %}
-                    <a href="{% url 'stories:reading_list_detail' reading_list.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">
+            {% if popular_reading_lists %}
+              <div class="list-group list-group-flush">
+                {% for reading_list in popular_reading_lists %}
+                  <a href="{% url 'stories:reading_list_detail' reading_list.id %}" 
+                     class="list-group-item list-group-item-action border-0 px-0 py-3">
+                    <div class="d-flex justify-content-between align-items-center">
                       <div>
-                        <h6 class="mb-0">{{ reading_list.name }}</h6>
+                        <h5 class="h6 mb-1">{{ reading_list.name }}</h5>
                         <p class="text-muted small mb-0">
-                          By <a href="{% url 'accounts:user_detail' reading_list.user.slug %}" class="text-decoration-none text-muted">{{ reading_list.user.get_full_name }}</a>
+                          By <a href="{% url 'accounts:user_detail' reading_list.user.slug %}" 
+                             class="text-decoration-none text-primary">{{ reading_list.user.get_full_name }}</a>
                           • {{ reading_list.stories.count }} stories
                         </p>
                       </div>
-                      <i class="bi bi-chevron-right"></i>
-                    </a>
-                  {% endfor %}
+                      <span class="btn btn-sm btn-light">
+                        <i class="bi bi-chevron-right"></i>
+                      </span>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-muted">No reading lists available yet.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How it works section -->
+    <section class="mb-6">
+      <div class="text-center mb-5">
+        <h2 class="h1 mb-2">How It Works</h2>
+        <p class="text-secondary lead">Start your journey with Story Platform in three simple steps</p>
+      </div>
+      <div class="row row-cols-1 row-cols-md-3 g-4 story-grid">
+        <div class="col">
+          <div class="card h-100 border-0 shadow-sm text-center">
+            <div class="card-body p-4">
+              <div class="mb-4">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" 
+                     style="width: 80px; height: 80px;">
+                  <i class="bi bi-book fs-1 text-primary"></i>
                 </div>
-              {% else %}
-                <p class="text-muted">No reading lists available yet.</p>
-              {% endif %}
+              </div>
+              <h3 class="h5 mb-3">1. Read</h3>
+              <p class="text-secondary mb-0">Explore thousands of stories across different genres and discover new authors.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 border-0 shadow-sm text-center">
+            <div class="card-body p-4">
+              <div class="mb-4">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" 
+                     style="width: 80px; height: 80px;">
+                  <i class="bi bi-pencil-square fs-1 text-primary"></i>
+                </div>
+              </div>
+              <h3 class="h5 mb-3">2. Write</h3>
+              <p class="text-secondary mb-0">Create and publish your own stories to share with our growing community.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 border-0 shadow-sm text-center">
+            <div class="card-body p-4">
+              <div class="mb-4">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" 
+                     style="width: 80px; height: 80px;">
+                  <i class="bi bi-people fs-1 text-primary"></i>
+                </div>
+              </div>
+              <h3 class="h5 mb-3">3. Connect</h3>
+              <p class="text-secondary mb-0">Engage with other readers and writers through comments, likes and following.</p>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- How it works section -->
-      <section class="mb-5">
-        <h2 class="text-center mb-4">How It Works</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
-          <div class="col">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body">
-                <div class="mb-3">
-                  <i class="bi bi-book fs-1 text-primary"></i>
-                </div>
-                <h5 class="card-title">1. Read</h5>
-                <p class="card-text">Explore thousands of stories across different genres and discover new authors.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body">
-                <div class="mb-3">
-                  <i class="bi bi-pencil-square fs-1 text-primary"></i>
-                </div>
-                <h5 class="card-title">2. Write</h5>
-                <p class="card-text">Create and publish your own stories to share with our growing community.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card h-100 border-0 shadow-sm">
-              <div class="card-body">
-                <div class="mb-3">
-                  <i class="bi bi-people fs-1 text-primary"></i>
-                </div>
-                <h5 class="card-title">3. Connect</h5>
-                <p class="card-text">Engage with other readers and writers through comments, likes and following.</p>
-              </div>
-            </div>
-          </div>
+    <!-- Join community CTA -->
+    <section class="mb-6 text-center p-5 bg-primary bg-opacity-10 rounded-4">
+      <h2 class="mb-3">Join Our Community Today</h2>
+      <p class="lead text-secondary mb-4">Connect with readers and writers from around the world.</p>
+      {% if not user.is_authenticated %}
+        <div class="d-flex justify-content-center gap-3">
+          <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-lg px-4">
+            <i class="bi bi-person-plus me-2"></i>Sign Up
+          </a>
+          <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-lg px-4">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Log In
+          </a>
         </div>
-      </section>
-
-      <!-- Join community CTA -->
-      <section class="mb-5 text-center p-5 bg-light rounded">
-        <h2 class="mb-3">Join Our Community Today</h2>
-        <p class="lead mb-4">Connect with readers and writers from around the world.</p>
-        {% if not user.is_authenticated %}
-          <div class="d-flex justify-content-center gap-3">
-            <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Sign Up</a>
-            <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary">Log In</a>
-          </div>
-        {% else %}
-          <a href="{% url 'stories:story_create' %}" class="btn btn-primary">Write Your Story</a>
-        {% endif %}
-      </section>
-    </div>
+      {% else %}
+        <a href="{% url 'stories:story_create' %}" class="btn btn-primary btn-lg px-4">
+          <i class="bi bi-pencil-square me-2"></i>Write Your Story
+        </a>
+      {% endif %}
+    </section>
   </div>
 {% endblock %}

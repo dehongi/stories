@@ -1,324 +1,274 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}
-  Frequently Asked Questions - Story Platform
+  FAQ - Story Platform
 {% endblock %}
 
 {% block content %}
+  <!-- Hero Section -->
+  <section class="hero-section text-center mb-0">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h1 class="display-4 fw-bold mb-4 fade-in">Frequently Asked Questions</h1>
+          <p class="lead mb-0 fade-in">Find answers to common questions about Story Platform</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="container py-5">
+    <!-- Search Section -->
     <div class="row justify-content-center mb-5">
-      <div class="col-lg-8 text-center">
-        <h1 class="display-4 mb-3">Frequently Asked Questions</h1>
-        <p class="lead">Find answers to the most common questions about Story Platform</p>
+      <div class="col-lg-6">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input type="text" class="form-control border-start-0 ps-0" id="faqSearch" placeholder="Search FAQ..." aria-label="Search FAQ">
+        </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-lg-4 mb-4">
-        <!-- FAQ Categories Sidebar -->
-        <div class="card shadow-sm border-0 mb-4 sticky-top" style="top: 2rem;">
-          <div class="card-body">
-            <h5 class="mb-3">Categories</h5>
-            <div class="list-group list-group-flush">
-              <a href="#general" class="list-group-item list-group-item-action px-0 border-0">General</a>
-              <a href="#account" class="list-group-item list-group-item-action px-0 border-0">Account & Profile</a>
-              <a href="#writing" class="list-group-item list-group-item-action px-0 border-0">Writing & Publishing</a>
-              <a href="#reading" class="list-group-item list-group-item-action px-0 border-0">Reading & Discovering</a>
-              <a href="#reading-lists" class="list-group-item list-group-item-action px-0 border-0">Reading Lists</a>
-              <a href="#community" class="list-group-item list-group-item-action px-0 border-0">Community & Interaction</a>
-              <a href="#privacy" class="list-group-item list-group-item-action px-0 border-0">Privacy & Security</a>
-              <a href="#troubleshooting" class="list-group-item list-group-item-action px-0 border-0">Troubleshooting</a>
+    <div class="row g-4">
+      <!-- Getting Started -->
+      <div class="col-lg-6 fade-in">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                <i class="bi bi-rocket-takeoff text-primary fs-4"></i>
+              </div>
+              <h2 class="h4 mb-0">Getting Started</h2>
+            </div>
+            <div class="accordion" id="accordionGettingStarted">
+              <div class="accordion-item border-0 mb-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#gs1">
+                    How do I create an account?
+                  </button>
+                </h3>
+                <div id="gs1" class="accordion-collapse collapse show" data-bs-parent="#accordionGettingStarted">
+                  <div class="accordion-body">
+                    Click the "Sign Up" button in the top navigation bar. Fill in your details, including your name, email, and password. Verify your email address through the confirmation link we'll send you, and you're ready to start!
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 mb-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#gs2">
+                    Is it free to use Story Platform?
+                  </button>
+                </h3>
+                <div id="gs2" class="accordion-collapse collapse" data-bs-parent="#accordionGettingStarted">
+                  <div class="accordion-body">
+                    Yes, Story Platform is completely free to use. You can read stories, create your own content, and interact with other users without any subscription fees.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#gs3">
+                    What types of stories can I write?
+                  </button>
+                </h3>
+                <div id="gs3" class="accordion-collapse collapse" data-bs-parent="#accordionGettingStarted">
+                  <div class="accordion-body">
+                    You can write stories in any genre, including fiction, non-fiction, poetry, and personal essays. Just ensure your content follows our community guidelines and terms of service.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Contact Support -->
-        <div class="card shadow-sm border-0">
-          <div class="card-body text-center p-4">
-            <div class="mb-3">
-              <i class="bi bi-headset text-primary" style="font-size: 2.5rem;"></i>
+      <!-- Writing & Publishing -->
+      <div class="col-lg-6 fade-in">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                <i class="bi bi-pencil-square text-primary fs-4"></i>
+              </div>
+              <h2 class="h4 mb-0">Writing & Publishing</h2>
             </div>
-            <h5>Can't find your answer?</h5>
-            <p class="mb-3">We're here to help with any questions you might have.</p>
-            <a href="{% url 'website:contact' %}" class="btn btn-primary">Contact Support</a>
+            <div class="accordion" id="accordionWriting">
+              <div class="accordion-item border-0 mb-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#wp1">
+                    How do I publish a story?
+                  </button>
+                </h3>
+                <div id="wp1" class="accordion-collapse collapse show" data-bs-parent="#accordionWriting">
+                  <div class="accordion-body">
+                    Click on "Write a Story" from your dashboard, compose your story using our editor, add tags and a category, then click "Publish" when you're ready to share it with the world.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 mb-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#wp2">
+                    Can I edit my story after publishing?
+                  </button>
+                </h3>
+                <div id="wp2" class="accordion-collapse collapse" data-bs-parent="#accordionWriting">
+                  <div class="accordion-body">
+                    Yes, you can edit your published stories at any time. Just go to your dashboard, find the story you want to edit, and click the "Edit" button.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#wp3">
+                    What are the content guidelines?
+                  </button>
+                </h3>
+                <div id="wp3" class="accordion-collapse collapse" data-bs-parent="#accordionWriting">
+                  <div class="accordion-body">
+                    We encourage creative expression while maintaining a safe and inclusive environment. Please avoid explicit content, hate speech, plagiarism, and ensure proper attribution for any referenced work.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-8">
-        <!-- General Questions -->
-        <section id="general" class="mb-5">
-          <h3 class="mb-4">General</h3>
-          <div class="accordion" id="accordionGeneral">
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general1" aria-expanded="false">What is Story Platform?</button></h4>
-              <div id="general1" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
-                <div class="accordion-body">
-                  <p>Story Platform is an online community where writers can share their stories and readers can discover new content. Our platform supports various genres and formats, allowing creators to express themselves freely while connecting with an audience who appreciates their work.</p>
+      <!-- Account & Settings -->
+      <div class="col-lg-6 fade-in">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                <i class="bi bi-gear text-primary fs-4"></i>
+              </div>
+              <h2 class="h4 mb-0">Account & Settings</h2>
+            </div>
+            <div class="accordion" id="accordionAccount">
+              <div class="accordion-item border-0 mb-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#as1">
+                    How do I change my password?
+                  </button>
+                </h3>
+                <div id="as1" class="accordion-collapse collapse show" data-bs-parent="#accordionAccount">
+                  <div class="accordion-body">
+                    Go to your profile settings, click on "Security," and follow the prompts to change your password. Make sure to use a strong, unique password.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 mb-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#as2">
+                    Can I delete my account?
+                  </button>
+                </h3>
+                <div id="as2" class="accordion-collapse collapse" data-bs-parent="#accordionAccount">
+                  <div class="accordion-body">
+                    Yes, you can delete your account from the profile settings page. Please note that this action is permanent and will remove all your stories and data.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#as3">
+                    How do I customize my profile?
+                  </button>
+                </h3>
+                <div id="as3" class="accordion-collapse collapse" data-bs-parent="#accordionAccount">
+                  <div class="accordion-body">
+                    Visit your profile settings to add a profile picture, bio, and social media links. You can also customize your display name and privacy settings.
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general2" aria-expanded="false">Is Story Platform free to use?</button></h4>
-              <div id="general2" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
-                <div class="accordion-body">
-                  <p>Yes, Story Platform is completely free to use. You can create an account, publish stories, read content, and interact with the community without any subscription fees. We may introduce premium features in the future, but our core services will always remain free.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general3" aria-expanded="false">Who can use Story Platform?</button></h4>
-              <div id="general3" class="accordion-collapse collapse" data-bs-parent="#accordionGeneral">
-                <div class="accordion-body">
-                  <p>Story Platform is available to anyone over the age of 13. We welcome writers at all skill levels, from beginners to published authors, as well as readers who are passionate about discovering new stories. Our community guidelines ensure a respectful environment for everyone.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Account & Profile Questions -->
-        <section id="account" class="mb-5">
-          <h3 class="mb-4">Account & Profile</h3>
-          <div class="accordion" id="accordionAccount">
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account1" aria-expanded="false">How do I create an account?</button></h4>
-              <div id="account1" class="accordion-collapse collapse" data-bs-parent="#accordionAccount">
-                <div class="accordion-body">
-                  <p>To create an account, click on the "Sign Up" button in the top right corner of the page. You'll need to provide a valid email address, choose a username, and create a password. Once you've completed the registration form and accepted our Terms of Service, you'll receive a confirmation email to verify your account.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account2" aria-expanded="false">How do I customize my profile?</button></h4>
-              <div id="account2" class="accordion-collapse collapse" data-bs-parent="#accordionAccount">
-                <div class="accordion-body">
-                  <p>After logging in, click on your profile icon in the top navigation bar and select "Edit Profile" from the dropdown menu. Here, you can update your profile picture, add a bio, include your social media links, and customize your profile settings. A complete profile helps readers and other writers connect with you.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account3" aria-expanded="false">Can I delete my account?</button></h4>
-              <div id="account3" class="accordion-collapse collapse" data-bs-parent="#accordionAccount">
-                <div class="accordion-body">
-                  <p>Yes, you can delete your account at any time. Go to your account settings and select the "Delete Account" option at the bottom of the page. Please note that account deletion is permanent and will remove all your stories, comments, and profile information from our platform.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Writing & Publishing Questions -->
-        <section id="writing" class="mb-5">
-          <h3 class="mb-4">Writing & Publishing</h3>
-          <div class="accordion" id="accordionWriting">
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#writing1" aria-expanded="false">How do I publish a story?</button></h4>
-              <div id="writing1" class="accordion-collapse collapse" data-bs-parent="#accordionWriting">
-                <div class="accordion-body">
-                  <p>To publish a story, click on the "Write a Story" button in your dashboard or navigation menu. Our intuitive editor allows you to write, format, and review your story before publishing. You can add a title, select categories, add tags, and decide whether to publish immediately or save as a draft for later.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#writing2" aria-expanded="false">What types of stories are allowed?</button></h4>
-              <div id="writing2" class="accordion-collapse collapse" data-bs-parent="#accordionWriting">
-                <div class="accordion-body">
-                  <p>We welcome a wide variety of stories, including fiction, non-fiction, poetry, and more. All content must adhere to our community guidelines, which prohibit plagiarism, hate speech, explicit content without proper age restrictions, and illegal content. Please refer to our Terms of Service for detailed content guidelines.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#writing3" aria-expanded="false">Who owns the rights to my stories?</button></h4>
-              <div id="writing3" class="accordion-collapse collapse" data-bs-parent="#accordionWriting">
-                <div class="accordion-body">
-                  <p>You retain all ownership rights to your original work. By publishing on Story Platform, you grant us a non-exclusive license to display your content on our platform, but you remain the copyright holder. You are free to publish your work elsewhere or remove it from our platform at any time.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Reading & Discovering Questions -->
-        <section id="reading" class="mb-5">
-          <h3 class="mb-4">Reading & Discovering</h3>
-          <div class="accordion" id="accordionReading">
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reading1" aria-expanded="false">How do I find stories that interest me?</button></h4>
-              <div id="reading1" class="accordion-collapse collapse" data-bs-parent="#accordionReading">
-                <div class="accordion-body">
-                  <p>You can discover stories through various methods on our platform: browse by category, use the search function with keywords, check out featured stories on the homepage, or explore trending and popular stories. You can also follow your favorite authors to see their new publications in your feed.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reading2" aria-expanded="false">Can I read stories offline?</button></h4>
-              <div id="reading2" class="accordion-collapse collapse" data-bs-parent="#accordionReading">
-                <div class="accordion-body">
-                  <p>Currently, our platform requires an internet connection to access stories. However, you can bookmark stories for easy access later. We're considering adding offline reading capabilities in future updates to enhance the reading experience.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reading3" aria-expanded="false">How can I provide feedback to authors?</button></h4>
-              <div id="reading3" class="accordion-collapse collapse" data-bs-parent="#accordionReading">
-                <div class="accordion-body">
-                  <p>You can engage with authors by leaving comments on their stories, liking their work, or sharing it with others. Constructive feedback is encouraged and helps writers improve their craft. Please ensure all interactions follow our community guidelines and maintain a respectful tone.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Reading Lists -->
-        <section id="reading-lists" class="mb-5">
-          <h3 class="mb-4">Reading Lists</h3>
-          <div class="accordion" id="accordionReadingLists">
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#readingList1" aria-expanded="false">How do I create a reading list?</button></h4>
-              <div id="readingList1" class="accordion-collapse collapse" data-bs-parent="#accordionReadingLists">
-                <div class="accordion-body">
-                  <p>To create a reading list, navigate to your profile and select "My Reading Lists," then click on "Create New List." Give your list a name, add an optional description, choose whether to make it public or private, and start adding stories. You can add stories to your lists while browsing by clicking the bookmark icon on any story.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#readingList2" aria-expanded="false">Can I share my reading lists with others?</button></h4>
-              <div id="readingList2" class="accordion-collapse collapse" data-bs-parent="#accordionReadingLists">
-                <div class="accordion-body">
-                  <p>Yes, you can share your reading lists by setting them to "public" in the list settings. Public lists are visible to all users and can be discovered through our platform. Each reading list has a unique URL that you can share directly with friends or on social media.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#readingList3" aria-expanded="false">How do I organize stories in my reading lists?</button></h4>
-              <div id="readingList3" class="accordion-collapse collapse" data-bs-parent="#accordionReadingLists">
-                <div class="accordion-body">
-                  <p>When viewing your reading list, you can drag and drop stories to reorder them. You can also remove stories, update the list description, or change the privacy settings at any time. Creating multiple themed lists can help you organize stories by genre, mood, or any other criteria that makes sense for your reading habits.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Community & Interaction Questions -->
-        <section id="community" class="mb-5">
-          <h3 class="mb-4">Community & Interaction</h3>
-          <div class="accordion" id="accordionCommunity">
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#community1" aria-expanded="false">How do I follow other users?</button></h4>
-              <div id="community1" class="accordion-collapse collapse" data-bs-parent="#accordionCommunity">
-                <div class="accordion-body">
-                  <p>To follow another user, visit their profile and click the "Follow" button. Once you follow someone, their new stories will appear in your feed, and you'll receive notifications about their activity (if enabled in your notification settings). You can manage your followed accounts in your profile settings.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#community2" aria-expanded="false">What are the community guidelines?</button></h4>
-              <div id="community2" class="accordion-collapse collapse" data-bs-parent="#accordionCommunity">
-                <div class="accordion-body">
-                  <p>Our community guidelines promote respect, creativity, and constructive interaction. We prohibit harassment, hate speech, spam, and content that violates others' rights. All users are expected to engage respectfully, provide constructive feedback, and report any violations. Detailed community guidelines can be found in our Terms of Service.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#community3" aria-expanded="false">How do I report inappropriate content?</button></h4>
-              <div id="community3" class="accordion-collapse collapse" data-bs-parent="#accordionCommunity">
-                <div class="accordion-body">
-                  <p>If you encounter content that violates our community guidelines, click the "Report" button available on stories, comments, or user profiles. Select the reason for reporting and provide any additional context. Our moderation team reviews all reports promptly and takes appropriate action to maintain a safe and positive community.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Privacy & Security Questions -->
-        <section id="privacy" class="mb-5">
-          <h3 class="mb-4">Privacy & Security</h3>
-          <div class="accordion" id="accordionPrivacy">
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#privacy1" aria-expanded="false">How is my personal information protected?</button></h4>
-              <div id="privacy1" class="accordion-collapse collapse" data-bs-parent="#accordionPrivacy">
-                <div class="accordion-body">
-                  <p>We take data protection seriously and implement industry-standard security measures to safeguard your information. Your password is encrypted, and we use secure protocols for data transmission. We only collect information necessary for the platform's functionality and never sell your personal data to third parties. For more details, please review our Privacy Policy.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#privacy2" aria-expanded="false">Can I make my profile private?</button></h4>
-              <div id="privacy2" class="accordion-collapse collapse" data-bs-parent="#accordionPrivacy">
-                <div class="accordion-body">
-                  <p>Yes, you can adjust your privacy settings in your account preferences. You can control who sees your profile, reading lists, and activities. You can also choose to write under a pseudonym if you prefer not to use your real name. However, published stories marked as public will be visible to all platform users.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#privacy3" aria-expanded="false">How can I manage my notification settings?</button></h4>
-              <div id="privacy3" class="accordion-collapse collapse" data-bs-parent="#accordionPrivacy">
-                <div class="accordion-body">
-                  <p>To manage your notification preferences, go to your account settings and select "Notifications." Here, you can choose which types of notifications you'd like to receive, including email notifications, in-app alerts, and activity summaries. You can customize these settings at any time based on your preferences.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Troubleshooting Questions -->
-        <section id="troubleshooting" class="mb-5">
-          <h3 class="mb-4">Troubleshooting</h3>
-          <div class="accordion" id="accordionTroubleshooting">
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#troubleshooting1" aria-expanded="false">I forgot my password. How do I reset it?</button></h4>
-              <div id="troubleshooting1" class="accordion-collapse collapse" data-bs-parent="#accordionTroubleshooting">
-                <div class="accordion-body">
-                  <p>On the login page, click "Forgot Password?" and enter the email address associated with your account. We'll send you an email with instructions to reset your password. If you don't receive the email, check your spam folder or contact our support team for assistance.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#troubleshooting2" aria-expanded="false">Why can't I publish my story?</button></h4>
-              <div id="troubleshooting2" class="accordion-collapse collapse" data-bs-parent="#accordionTroubleshooting">
-                <div class="accordion-body">
-                  <p>Common issues include missing required fields (title, content, category), content that exceeds length limits, or temporary platform maintenance. Ensure all required fields are completed and try again. If the problem persists, try using a different browser or clearing your cache. If you still encounter issues, please contact our support team.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item border-0 mb-3 shadow-sm">
-              <h4 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#troubleshooting3" aria-expanded="false">The platform is running slowly. What can I do?</button></h4>
-              <div id="troubleshooting3" class="accordion-collapse collapse" data-bs-parent="#accordionTroubleshooting">
-                <div class="accordion-body">
-                  <p>Performance issues can be caused by various factors. Try clearing your browser cache, using a different browser, or disabling browser extensions. Ensure your internet connection is stable. If the problem continues, it might be related to high traffic or maintenance on our end. Please report persistent performance issues to our support team.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Still Need Help -->
-        <div class="text-center p-4 bg-light rounded">
-          <h4>Still Have Questions?</h4>
-          <p class="mb-3">We're here to help! Contact our support team for personalized assistance.</p>
-          <div class="d-flex justify-content-center gap-3">
-            <a href="{% url 'website:contact' %}" class="btn btn-primary">Contact Us</a>
-            <a href="#" class="btn btn-outline-secondary">Read Documentation</a>
           </div>
         </div>
       </div>
+
+      <!-- Reading & Interaction -->
+      <div class="col-lg-6 fade-in">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+              <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                <i class="bi bi-book text-primary fs-4"></i>
+              </div>
+              <h2 class="h4 mb-0">Reading & Interaction</h2>
+            </div>
+            <div class="accordion" id="accordionReading">
+              <div class="accordion-item border-0 mb-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#ri1">
+                    How do I find stories to read?
+                  </button>
+                </h3>
+                <div id="ri1" class="accordion-collapse collapse show" data-bs-parent="#accordionReading">
+                  <div class="accordion-body">
+                    Browse stories by category, use the search function, or check out our featured and trending stories. You can also follow your favorite authors to see their latest work.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 mb-3">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#ri2">
+                    How do I create a reading list?
+                  </button>
+                </h3>
+                <div id="ri2" class="accordion-collapse collapse" data-bs-parent="#accordionReading">
+                  <div class="accordion-body">
+                    Click the bookmark icon on any story to save it. You can organize saved stories into custom reading lists from your profile.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item border-0">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed rounded-3" type="button" data-bs-toggle="collapse" data-bs-target="#ri3">
+                    Can I interact with authors?
+                  </button>
+                </h3>
+                <div id="ri3" class="accordion-collapse collapse" data-bs-parent="#accordionReading">
+                  <div class="accordion-body">
+                    Yes! You can follow authors, like their stories, leave comments, and share their work. Many authors appreciate thoughtful feedback and engagement.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Still have questions -->
+    <div class="text-center mt-5 pt-4">
+      <h2 class="h4 mb-4">Still Have Questions?</h2>
+      <p class="text-muted mb-4">Can't find the answer you're looking for? Please chat to our friendly team.</p>
+      <a href="{% url 'website:contact' %}" class="btn btn-primary">
+        <i class="bi bi-chat-dots me-2"></i>Contact Us
+      </a>
     </div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // FAQ Search functionality
+  document.getElementById('faqSearch').addEventListener('input', function(e) {
+    const searchText = e.target.value.toLowerCase();
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    
+    accordionItems.forEach(item => {
+      const question = item.querySelector('.accordion-button').textContent.toLowerCase();
+      const answer = item.querySelector('.accordion-body').textContent.toLowerCase();
+      
+      if (question.includes(searchText) || answer.includes(searchText)) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+</script>
 {% endblock %}

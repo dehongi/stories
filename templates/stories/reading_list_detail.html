@@ -3,102 +3,236 @@
   {{ reading_list.name }} - Reading List - Story Platform
 {% endblock %}
 
-{% block content %}
-  <div class="row">
-    <div class="col-12 mb-4">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="{% url 'stories:reading_list_list' %}">Reading Lists</a>
-          </li>
-          <li class="breadcrumb-item active" aria-current="page">{{ reading_list.name }}</li>
-        </ol>
-      </nav>
-    </div>
+{% block extra_css %}
+  <style>
+    .container-narrow {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .story-card {
+      transition: transform 0.2s ease-in-out;
+    }
+    .story-card:hover {
+      transform: translateY(-5px);
+    }
+    .sidebar-sticky {
+      position: sticky;
+      top: 1rem;
+    }
+    .list-meta {
+      font-size: 0.875rem;
+      color: var(--bs-secondary);
+    }
+    .list-meta i {
+      opacity: 0.7;
+    }
+  </style>
+{% endblock %}
 
-    <div class="col-lg-8">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>{{ reading_list.name }}</h1>
-        {% if user == reading_list.user %}
-          <div class="btn-group">
-            <a href="{% url 'stories:reading_list_update' reading_list.id %}" class="btn btn-outline-primary"><i class="bi bi-pencil"></i> Edit</a>
-            <a href="{% url 'stories:reading_list_delete' reading_list.id %}" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Delete</a>
+{% block content %}
+  <div class="container-narrow py-4">
+    <div class="row">
+      <!-- Breadcrumb -->
+      <div class="col-12 mb-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'stories:reading_list_list' %}" class="text-decoration-none">Reading Lists</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ reading_list.name }}</li>
+          </ol>
+        </nav>
+      </div>
+
+      <!-- Main content -->
+      <div class="col-lg-8">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-start mb-4">
+          <div>
+            <h1 class="display-6 mb-2">{{ reading_list.name }}</h1>
+            <div class="list-meta d-flex flex-wrap gap-3">
+              <span>
+                <i class="bi bi-person me-1"></i>
+                Created by {{ reading_list.user.get_full_name }}
+              </span>
+              <span>
+                <i class="bi bi-calendar me-1"></i>
+                {{ reading_list.created_at|date:'M d, Y' }}
+              </span>
+              <span>
+                <i class="bi bi-book me-1"></i>
+                {{ reading_list.stories.count }} stories
+              </span>
+              <span>
+                <i class="bi bi-{% if reading_list.is_public %}globe{% else %}lock{% endif %} me-1"></i>
+                {{ reading_list.is_public|yesno:"Public,Private" }}
+              </span>
+            </div>
+          </div>
+          {% if user == reading_list.user %}
+            <div class="btn-group">
+              <a href="{% url 'stories:reading_list_update' reading_list.id %}" 
+                 class="btn btn-outline-primary">
+                <i class="bi bi-pencil me-2"></i>Edit
+              </a>
+              <a href="{% url 'stories:reading_list_delete' reading_list.id %}" 
+                 class="btn btn-outline-danger">
+                <i class="bi bi-trash me-2"></i>Delete
+              </a>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if reading_list.description %}
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">About this list</h5>
+              <p class="card-text mb-0">{{ reading_list.description }}</p>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Stories in reading list -->
+        {% if reading_list.stories.all %}
+          <div class="row row-cols-1 g-4">
+            {% for story in reading_list.stories.all %}
+              <div class="col">
+                <div class="card h-100 shadow-sm border-0 story-card">
+                  <div class="card-body p-4">
+                    <div class="d-flex justify-content-between mb-3">
+                      <h5 class="card-title mb-0">
+                        <a href="{% url 'stories:story_detail' story.slug %}" 
+                           class="text-decoration-none text-dark">
+                          {{ story.title }}
+                        </a>
+                      </h5>
+                      {% if user == reading_list.user %}
+                        <form method="post" action="{% url 'stories:remove_from_reading_list' story.slug reading_list.id %}" 
+                              class="d-inline">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove from list">
+                            <i class="bi bi-x-lg"></i>
+                          </button>
+                        </form>
+                      {% endif %}
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                      {% if story.author.profile_picture %}
+                        <img src="{{ story.author.profile_picture.url }}" 
+                             class="rounded-circle me-2" width="32" height="32" 
+                             alt="{{ story.author.get_full_name }}" style="object-fit: cover;">
+                      {% else %}
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2" 
+                             style="width: 32px; height: 32px;">
+                          <span class="text-primary small">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
+                        </div>
+                      {% endif %}
+                      <div class="small text-muted">
+                        <a href="{% url 'accounts:user_detail' story.author.slug %}" 
+                           class="text-decoration-none text-muted">
+                          {{ story.author.get_full_name }}
+                        </a>
+                        <span class="mx-1">•</span>
+                        {{ story.created_at|date:'M d, Y' }}
+                      </div>
+                    </div>
+                    <p class="card-text text-secondary mb-3">{{ story.content|truncatewords:50 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex gap-2">
+                        {% for category in story.categories.all %}
+                          <a href="{% url 'stories:story_list_by_category' category.slug %}" 
+                             class="badge bg-primary bg-opacity-10 text-primary text-decoration-none">
+                            {{ category.name }}
+                          </a>
+                        {% endfor %}
+                      </div>
+                      <div class="d-flex align-items-center gap-3">
+                        <span class="text-muted small" title="Comments">
+                          <i class="bi bi-chat me-1"></i>{{ story.comments.count }}
+                        </span>
+                        <span class="text-muted small" title="Likes">
+                          <i class="bi bi-heart me-1"></i>{{ story.likes }}
+                        </span>
+                        {% if story.reading_time %}
+                          <span class="text-muted small" title="Reading time">
+                            <i class="bi bi-clock me-1"></i>{{ story.reading_time }} min
+                          </span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-center py-5">
+            <div class="mb-4">
+              <i class="bi bi-journal-text display-1 text-muted"></i>
+            </div>
+            <h2 class="h4 mb-3">No Stories Yet</h2>
+            <p class="text-muted mb-4">This reading list is empty. Start adding stories to build your collection!</p>
+            <a href="{% url 'stories:story_list' %}" class="btn btn-primary">
+              <i class="bi bi-search me-2"></i>Browse Stories
+            </a>
           </div>
         {% endif %}
       </div>
 
-      {% if reading_list.description %}
-        <div class="card shadow-sm border-0 mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Description</h5>
-            <p class="card-text">{{ reading_list.description }}</p>
-            <div class="d-flex justify-content-between text-muted small">
-              <div>Created: {{ reading_list.created_at|date:'M d, Y' }}</div>
-              <div>Updated: {{ reading_list.updated_at|date:'M d, Y' }}</div>
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="sidebar-sticky">
+          <!-- List stats -->
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+              <h5 class="card-title mb-3">List Statistics</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  Total Stories
+                  <span class="badge bg-primary rounded-pill">{{ reading_list.stories.count }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  Categories
+                  <span class="badge bg-primary rounded-pill">{{ reading_list.unique_categories.count }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  Authors
+                  <span class="badge bg-primary rounded-pill">{{ reading_list.unique_authors.count }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                  Last Updated
+                  <span class="text-muted small">{{ reading_list.updated_at|date:"M d, Y" }}</span>
+                </li>
+              </ul>
             </div>
           </div>
-        </div>
-      {% endif %}
 
-      <!-- Stories in reading list -->
-      {% if reading_list.stories.all %}
-        <h4 class="mb-3">Stories in this list</h4>
-        <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
-          {% for story in reading_list.stories.all %}
-            <div class="col">
-              <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
-                  <h5 class="card-title"><a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a></h5>
-                  <p class="card-text">{{ story.content|truncatechars:120 }}</p>
-                </div>
-                <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
-                  <small class="text-muted">{{ story.created_at|date:'M d, Y' }}</small>
-                  {% if user == reading_list.user %}
-                    <form method="post" action="{% url 'stories:remove_from_reading_list' story.slug reading_list.id %}">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x"></i> Remove</button>
-                    </form>
-                  {% endif %}
+          <!-- Similar lists -->
+          {% if similar_lists %}
+            <div class="card shadow-sm border-0">
+              <div class="card-body">
+                <h5 class="card-title mb-3">Similar Lists</h5>
+                <div class="list-group list-group-flush">
+                  {% for list in similar_lists %}
+                    <a href="{% url 'stories:reading_list_detail' list.id %}" 
+                       class="list-group-item list-group-item-action px-0">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 class="mb-1">{{ list.name }}</h6>
+                          <p class="text-muted small mb-0">
+                            by {{ list.user.get_full_name }} • {{ list.stories.count }} stories
+                          </p>
+                        </div>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </div>
+                    </a>
+                  {% endfor %}
                 </div>
               </div>
             </div>
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="alert alert-info">
-          <p class="mb-0">This reading list doesn't have any stories yet.</p>
-        </div>
-      {% endif %}
-    </div>
-
-    <div class="col-lg-4">
-      <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body">
-          <h5 class="card-title">About this list</h5>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-              Created by
-              <span>{{ reading_list.user.username }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-              Stories
-              <span class="badge bg-primary rounded-pill">{{ reading_list.stories.count }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-              Visibility
-              <span class="badge {% if reading_list.is_public %}
-                  bg-success
-                {% else %}
-                  bg-secondary
-                {% endif %} rounded-pill">
-                {% if reading_list.is_public %}
-                  Public
-                {% else %}
-                  Private
-                {% endif %}
-              </span>
-            </li>
-          </ul>
+          {% endif %}
         </div>
       </div>
     </div>
