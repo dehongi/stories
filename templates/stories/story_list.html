@@ -209,7 +209,7 @@
                             {{ story.created_at|date:'M d, Y' }}
                           </div>
                         </div>
-                        <p class="card-text text-secondary">{{ story.content|truncatewords_html:40 }}</p>
+                        <p class="card-text text-secondary">{{ story.content|truncatewords_html:40|safe }}</p>
                       </div>
                       <div class="col-md-4">
                         <div class="d-flex flex-column justify-content-between h-100">
