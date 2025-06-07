@@ -1,10 +1,13 @@
 /* Custom Variables */
 :root {
-    --primary-color: #4a90e2;
-    --secondary-color: #f5f7fa;
-    --accent-color: #ff6b6b;
-    --text-primary: #2c3e50;
-    --text-secondary: #7f8c8d;
+    --primary-color: #2563eb;
+    /* Darker blue for better contrast */
+    --secondary-color: #f1f5f9;
+    --accent-color: #ef4444;
+    --text-primary: #1e293b;
+    /* Darker text for better readability */
+    --text-secondary: #64748b;
+    /* Adjusted for better contrast */
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Roboto', sans-serif;
 }
@@ -89,7 +92,7 @@ h6 {
 /* Navigation */
 .navbar {
     padding: 1rem 0;
-    background-color: rgba(255, 255, 255, 0.95) !important;
+    background-color: rgba(255, 255, 255, 0.98) !important;
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
@@ -104,11 +107,38 @@ h6 {
 .nav-link {
     font-weight: 500;
     padding: 0.5rem 1rem !important;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    color: var(--text-primary) !important;
 }
 
 .nav-link:hover {
     color: var(--primary-color) !important;
+}
+
+/* Improve signup button visibility */
+.btn-signup {
+    background-color: var(--primary-color);
+    color: white !important;
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem !important;
+}
+
+.btn-signup:hover {
+    background-color: #1d4ed8;
+    color: white !important;
+    transform: translateY(-1px);
+}
+
+/* Add hover effect for login button */
+.btn-login {
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    color: var(--primary-color) !important;
+}
+
+.btn-login:hover {
+    background-color: var(--primary-color);
+    color: white !important;
 }
 
 /* Footer */
@@ -219,25 +249,50 @@ footer a:hover {
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
     :root {
-        --text-primary: #f5f7fa;
-        --text-secondary: #a4b0be;
-        --secondary-color: #2f3542;
+        --text-primary: #e2e8f0;
+        /* Lighter text for better readability */
+        --text-secondary: #cbd5e1;
+        /* Lighter secondary text */
+        --secondary-color: #1e293b;
+        /* Darker background for better contrast */
     }
 
     body {
-        background-color: #1e272e;
+        background-color: #0f172a;
+        /* Darker background */
     }
 
     .card {
-        background-color: #2f3542;
+        background-color: #1e293b;
+        /* Adjusted card background */
     }
 
     .navbar {
-        background-color: rgba(30, 39, 46, 0.95) !important;
+        background-color: rgba(15, 23, 42, 0.95) !important;
+        /* Darker navbar */
     }
 
     .category-card:hover {
-        background-color: #3a4452;
+        background-color: #334155;
+        /* Lighter hover state */
+    }
+
+    /* Improve text contrast in dark mode */
+    .story-card .card-text,
+    .story-content {
+        color: #e2e8f0;
+        /* Ensure story text is readable */
+    }
+
+    /* Improve button contrast in dark mode */
+    .btn-outline-light {
+        border-color: #e2e8f0;
+        color: #e2e8f0;
+    }
+
+    .btn-outline-light:hover {
+        background-color: #e2e8f0;
+        color: #1e293b;
     }
 }
 
