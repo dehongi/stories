@@ -20,18 +20,20 @@
     .category-icon {
       width: 48px;
       height: 48px;
-      background-color: var(--bs-primary);
-      opacity: 0.1;
+      background-color: rgba(var(--bs-primary-rgb), 0.1);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 1rem;
+      transition: background-color 0.2s ease-in-out;
+    }
+    .category-card:hover .category-icon {
+      background-color: rgba(var(--bs-primary-rgb), 0.15);
     }
     .category-icon i {
       font-size: 24px;
       color: var(--bs-primary);
-      opacity: 1;
     }
   </style>
 {% endblock %}
@@ -64,7 +66,19 @@
             <div class="card h-100 shadow-sm border-0 category-card">
               <div class="card-body p-4">
                 <div class="category-icon">
-                  <i class="bi bi-bookmark"></i>
+                  <i class="bi {% if category.name|lower == 'fiction' %}bi-book
+                    {% elif category.name|lower == 'non-fiction' %}bi-journal-text
+                    {% elif category.name|lower == 'poetry' %}bi-chat-heart
+                    {% elif category.name|lower == 'mystery' %}bi-question-diamond
+                    {% elif category.name|lower == 'romance' %}bi-heart
+                    {% elif category.name|lower == 'sci-fi' %}bi-rocket
+                    {% elif category.name|lower == 'fantasy' %}bi-stars
+                    {% elif category.name|lower == 'horror' %}bi-moon-stars
+                    {% elif category.name|lower == 'thriller' %}bi-lightning
+                    {% elif category.name|lower == 'adventure' %}bi-compass
+                    {% elif category.name|lower == 'historical' %}bi-hourglass
+                    {% elif category.name|lower == 'biography' %}bi-person-badge
+                    {% else %}bi-bookmark{% endif %}"></i>
                 </div>
                 <h3 class="h5 mb-3">
                   <a href="{% url 'stories:story_list_by_category' category.slug %}" 

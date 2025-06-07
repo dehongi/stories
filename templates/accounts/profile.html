@@ -3,145 +3,226 @@
   My Profile - Story Platform
 {% endblock %}
 
+{% block extra_css %}
+  <style>
+    .container-narrow {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .profile-stats {
+      transition: transform 0.2s ease-in-out;
+    }
+    .profile-stats:hover {
+      transform: translateY(-3px);
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
-  <div class="row">
-    <div class="col-lg-4 mb-4">
-      <div class="card shadow-sm border-0">
-        <div class="card-body text-center">
-          {% if user.profile_picture %}
-            <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="profile-avatar mb-4 rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
-          {% else %}
-            <div class="bg-light rounded-circle mx-auto d-flex justify-content-center align-items-center mb-4" style="width: 150px; height: 150px;">
-              <span class="h1 mb-0 text-muted">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</span>
-            </div>
-          {% endif %}
+  <div class="container-narrow py-4">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <!-- Profile Card -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body p-4 text-center">
+            {% if user.profile_picture %}
+              <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="profile-avatar mb-4 rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
+            {% else %}
+              <div class="bg-light rounded-circle mx-auto d-flex justify-content-center align-items-center mb-4" style="width: 150px; height: 150px;">
+                <span class="h1 mb-0 text-muted">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</span>
+              </div>
+            {% endif %}
 
-          <h3 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h3>
-          <p class="text-muted mb-3">{{ user.email }}</p>
+            <h3 class="mb-2">{{ user.first_name }} {{ user.last_name }}</h3>
+            <p class="text-muted mb-4">{{ user.email }}</p>
 
-          <a href="{% url 'accounts:profile_update' %}" class="btn btn-outline-story"><i class="bi bi-pencil-square me-1"></i> Edit Profile</a>
-          <a href="{% url 'accounts:password_change' %}" class="btn btn-outline-secondary"><i class="bi bi-key me-1"></i> Change Password</a>
-        </div>
-      </div>
-
-      <!-- Network Stats -->
-      <div class="card shadow-sm border-0 mt-4">
-        <div class="card-body">
-          <h5 class="card-title mb-3">My Network</h5>
-          <div class="row text-center g-3">
-            <div class="col-6">
-              <a href="{% url 'accounts:followers_list' user.slug %}" class="text-decoration-none">
-                <div class="py-3 rounded bg-light">
-                  <h3 class="mb-0">{{ user.follower_count }}</h3>
-                  <p class="text-muted mb-0">Followers</p>
-                </div>
+            <div class="d-grid gap-2">
+              <a href="{% url 'accounts:profile_update' %}" class="btn btn-primary">
+                <i class="bi bi-pencil-square me-2"></i>Edit Profile
               </a>
-            </div>
-            <div class="col-6">
-              <a href="{% url 'accounts:following_list' user.slug %}" class="text-decoration-none">
-                <div class="py-3 rounded bg-light">
-                  <h3 class="mb-0">{{ user.following_count }}</h3>
-                  <p class="text-muted mb-0">Following</p>
-                </div>
+              <a href="{% url 'accounts:password_change' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-key me-2"></i>Change Password
               </a>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="col-lg-8">
-      <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body">
-          <h4 class="card-title mb-4">Profile Information</h4>
-
-          <div class="row mb-3">
-            <div class="col-md-3 fw-bold">Full Name</div>
-            <div class="col-md-9">{{ user.first_name }} {{ user.last_name }}</div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-3 fw-bold">Email</div>
-            <div class="col-md-9">{{ user.email }}</div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-3 fw-bold">Bio</div>
-            <div class="col-md-9">{{ user.bio|default:'No bio provided.' }}</div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-3 fw-bold">Member Since</div>
-            <div class="col-md-9">{{ user.date_joined|date:'F j, Y' }}</div>
+        <!-- Network Stats -->
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4">
+            <h5 class="card-title mb-4">My Network</h5>
+            <div class="row g-3">
+              <div class="col-6">
+                <a href="{% url 'accounts:followers_list' user.slug %}" class="text-decoration-none">
+                  <div class="p-3 rounded bg-light text-center">
+                    <h3 class="mb-1">{{ user.follower_count }}</h3>
+                    <p class="text-muted small mb-0">Followers</p>
+                  </div>
+                </a>
+              </div>
+              <div class="col-6">
+                <a href="{% url 'accounts:following_list' user.slug %}" class="text-decoration-none">
+                  <div class="p-3 rounded bg-light text-center">
+                    <h3 class="mb-1">{{ user.following_count }}</h3>
+                    <p class="text-muted small mb-0">Following</p>
+                  </div>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-4">
-          <div class="card shadow-sm border-0 h-100">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title mb-0">My Stories</h5>
-                <a href="{% url 'stories:story_create' %}" class="btn btn-sm btn-story"><i class="bi bi-plus"></i> New Story</a>
-              </div>
-
-              {% with stories=user.stories.all %}
-                {% if stories %}
-                  <div class="list-group list-group-flush">
-                    {% for story in stories|slice:':3' %}
-                      <a href="{% url 'stories:story_detail' story.slug %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">
-                        <div>
-                          <h6 class="mb-0">{{ story.title }}</h6>
-                          <small class="text-muted">{{ story.created_at|date:'M d, Y' }}</small>
-                        </div>
-                        {% if story.is_published %}
-                          <span class="badge bg-success rounded-pill">Published</span>
-                        {% else %}
-                          <span class="badge bg-secondary rounded-pill">Draft</span>
-                        {% endif %}
-                      </a>
-                    {% endfor %}
-                  </div>
-                  {% if stories.count > 3 %}
-                    <a href="{% url 'accounts:user_detail' user.slug %}" class="btn btn-link btn-sm text-decoration-none mt-2">View all {{ stories.count }} stories</a>
-                  {% endif %}
+      <div class="col-lg-8">
+        <!-- Profile Info -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body p-4 p-lg-5">
+            <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+              <div class="text-center">
+                {% if user.profile_picture %}
+                  <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" />
                 {% else %}
-                  <p class="text-muted">You haven't written any stories yet.</p>
+                  <div class="bg-light rounded-circle mx-auto d-flex justify-content-center align-items-center" style="width: 150px; height: 150px;">
+                    <span class="h1 mb-0 text-muted">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</span>
+                  </div>
                 {% endif %}
-              {% endwith %}
+              </div>
+              <div class="text-center text-md-start flex-grow-1">
+                <h1 class="h2 mb-3">{{ user.get_full_name }}</h1>
+                <p class="text-muted mb-3">@{{ user.username }}</p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
+                  <a href="{% url 'profile_update' %}" class="btn btn-primary">
+                    <i class="bi bi-pencil-square me-2"></i>Edit Profile
+                  </a>
+                  <a href="{% url 'password_change' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-key me-2"></i>Change Password
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="card shadow-sm border-0 profile-stats">
+              <div class="card-body p-4 text-center">
+                <h3 class="h4 mb-2">Stories</h3>
+                <p class="h2 mb-0 text-primary">{{ user.stories.count }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow-sm border-0 profile-stats">
+              <div class="card-body p-4 text-center">
+                <h3 class="h4 mb-2">Likes</h3>
+                <p class="h2 mb-0 text-primary">{{ user.likes.count }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card shadow-sm border-0 profile-stats">
+              <div class="card-body p-4 text-center">
+                <h3 class="h4 mb-2">Comments</h3>
+                <p class="h2 mb-0 text-primary">{{ user.comments.count }}</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-md-6 mb-4">
-          <div class="card shadow-sm border-0 h-100">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title mb-0">Reading Lists</h5>
-                <a href="{% url 'stories:reading_list_create' %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus"></i> New List</a>
-              </div>
+        <!-- Activity Section -->
+        <div class="row g-4">
+          <!-- My Stories -->
+          <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <h5 class="card-title mb-0">My Stories</h5>
+                  <a href="{% url 'stories:story_create' %}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg me-2"></i>New Story
+                  </a>
+                </div>
 
-              {% with reading_lists=user.reading_lists.all %}
-                {% if reading_lists %}
-                  <div class="list-group list-group-flush">
-                    {% for list in reading_lists|slice:':3' %}
-                      <a href="{% url 'stories:reading_list_detail' list.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">
-                        <div>
-                          <h6 class="mb-0">{{ list.name }}</h6>
-                          <small class="text-muted">{{ list.stories.count }} stories</small>
-                        </div>
-                        <i class="bi bi-chevron-right"></i>
+                {% with stories=user.stories.all %}
+                  {% if stories %}
+                    <div class="list-group list-group-flush">
+                      {% for story in stories|slice:':3' %}
+                        <a href="{% url 'stories:story_detail' story.slug %}" class="list-group-item list-group-item-action px-0">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <h6 class="mb-1">{{ story.title }}</h6>
+                              <small class="text-muted">{{ story.created_at|date:'M d, Y' }}</small>
+                            </div>
+                            {% if story.is_published %}
+                              <span class="badge bg-success rounded-pill">Published</span>
+                            {% else %}
+                              <span class="badge bg-secondary rounded-pill">Draft</span>
+                            {% endif %}
+                          </div>
+                        </a>
+                      {% endfor %}
+                    </div>
+                    {% if stories.count > 3 %}
+                      <a href="{% url 'stories:my_stories' %}" class="btn btn-link btn-sm text-decoration-none mt-3">
+                        View all {{ stories.count }} stories<i class="bi bi-arrow-right ms-2"></i>
                       </a>
-                    {% endfor %}
-                  </div>
-                  {% if reading_lists.count > 3 %}
-                    <a href="{% url 'accounts:user_detail' user.slug %}" class="btn btn-link btn-sm text-decoration-none mt-2">View all {{ reading_lists.count }} lists</a>
+                    {% endif %}
+                  {% else %}
+                    <div class="text-center py-4">
+                      <div class="mb-3">
+                        <i class="bi bi-journal-text display-6 text-muted"></i>
+                      </div>
+                      <p class="text-muted mb-0">You haven't written any stories yet.</p>
+                    </div>
                   {% endif %}
-                {% else %}
-                  <p class="text-muted">You don't have any reading lists yet.</p>
-                {% endif %}
-              {% endwith %}
+                {% endwith %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Reading Lists -->
+          <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <h5 class="card-title mb-0">Reading Lists</h5>
+                  <a href="{% url 'stories:reading_list_create' %}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg me-2"></i>New List
+                  </a>
+                </div>
+
+                {% with reading_lists=user.reading_lists.all %}
+                  {% if reading_lists %}
+                    <div class="list-group list-group-flush">
+                      {% for list in reading_lists|slice:':3' %}
+                        <a href="{% url 'stories:reading_list_detail' list.id %}" class="list-group-item list-group-item-action px-0">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                              <h6 class="mb-1">{{ list.name }}</h6>
+                              <small class="text-muted">{{ list.stories.count }} stories</small>
+                            </div>
+                            <i class="bi bi-chevron-right text-muted"></i>
+                          </div>
+                        </a>
+                      {% endfor %}
+                    </div>
+                    {% if reading_lists.count > 3 %}
+                      <a href="{% url 'stories:reading_list_list' %}" class="btn btn-link btn-sm text-decoration-none mt-3">
+                        View all {{ reading_lists.count }} lists<i class="bi bi-arrow-right ms-2"></i>
+                      </a>
+                    {% endif %}
+                  {% else %}
+                    <div class="text-center py-4">
+                      <div class="mb-3">
+                        <i class="bi bi-bookmarks display-6 text-muted"></i>
+                      </div>
+                      <p class="text-muted mb-0">You don't have any reading lists yet.</p>
+                    </div>
+                  {% endif %}
+                {% endwith %}
+              </div>
             </div>
           </div>
         </div>
