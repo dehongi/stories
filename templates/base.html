@@ -4,54 +4,87 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      {% block title %}
-        Story Platform
-      {% endblock %}
-    </title>
+    <title>{% block title %} Story Platform {% endblock %}</title>
 
     <!-- Bootstrap 5.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
+      crossorigin="anonymous"
+    />
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 
     <!-- Google Fonts - Roboto and Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/custom.css' %}" />
 
     <!-- Progressive Web App -->
-    <link rel="icon" type="image/png" href="{% static 'pwa/favicon-96x96.png' %}" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="{% static 'pwa/favicon.svg' %}" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{% static 'pwa/favicon-96x96.png' %}"
+      sizes="96x96"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="{% static 'pwa/favicon.svg' %}"
+    />
     <link rel="shortcut icon" href="{% static 'pwa/favicon.ico' %}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'pwa/apple-touch-icon.png' %}" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{% static 'pwa/apple-touch-icon.png' %}"
+    />
     <meta name="apple-mobile-web-app-title" content="Stories" />
     <link rel="manifest" href="{% static 'pwa/site.webmanifest' %}" />
     <!-- End of Progressive Web App -->
 
-    {% block extra_css %}
-
-    {% endblock %}
+    {% block extra_css %} {% endblock %}
   </head>
   <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top glass-navbar">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'website:home' %}">
-          <i class="bi bi-book me-2"></i>Story Platform
+        <a
+          class="navbar-brand d-flex align-items-center"
+          href="{% url 'website:home' %}"
+        >
+          <i class="bi bi-book me-2 fs-4"></i>
+          <span>Story Platform</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
+          <ul class="navbar-nav me-auto ms-lg-4">
             <li class="nav-item">
               <a class="nav-link" href="{% url 'website:home' %}">
                 <i class="bi bi-house-door me-1"></i>Home
@@ -68,26 +101,48 @@
               </a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="popularDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="popularDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <i class="bi bi-star me-1"></i>Popular
               </a>
-              <ul class="dropdown-menu shadow-sm" aria-labelledby="popularDropdown">
+              <ul
+                class="dropdown-menu shadow border-0 mt-2"
+                aria-labelledby="popularDropdown"
+              >
                 <li>
-                  <a class="dropdown-item" href="{% url 'stories:story_list' %}?sort=popular">
-                    <i class="bi bi-graph-up me-2"></i>Popular Stories
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'stories:story_list' %}?sort=popular"
+                  >
+                    <i class="bi bi-graph-up me-2 text-primary"></i>Popular
+                    Stories
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="{% url 'stories:reading_list_list' %}?sort=popular">
-                    <i class="bi bi-bookmarks me-2"></i>Popular Reading Lists
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'stories:reading_list_list' %}?sort=popular"
+                  >
+                    <i class="bi bi-bookmarks me-2 text-primary"></i>Popular
+                    Reading Lists
                   </a>
                 </li>
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
-                  <a class="dropdown-item" href="{% url 'stories:category_list' %}">
-                    <i class="bi bi-grid me-2"></i>Browse Categories
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'stories:category_list' %}"
+                  >
+                    <i class="bi bi-grid me-2 text-primary"></i>Browse
+                    Categories
                   </a>
                 </li>
               </ul>
@@ -95,77 +150,140 @@
           </ul>
           <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  {% if user.profile_picture %}
-                    <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" class="rounded-circle me-2" width="32" height="32" style="object-fit: cover;" />
-                    {% else %}
-                    <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                      <span class="text-primary small">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
-                    </div>
-                  {% endif %}
-                  {{ user.get_full_name }}
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="navbarDropdown">
-                  <li>
-                    <a class="dropdown-item" href="{% url 'accounts:profile' %}">
-                      <i class="bi bi-person me-2"></i>My Profile
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="{% url 'accounts:user_detail' user.slug %}">
-                      <i class="bi bi-person-badge me-2"></i>Public Profile
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="{% url 'stories:my_stories' %}">
-                      <i class="bi bi-journal-text me-2"></i>My Stories
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="{% url 'stories:reading_list_list' %}">
-                      <i class="bi bi-bookmarks me-2"></i>Reading Lists
-                    </a>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="{% url 'accounts:followers_list' user.slug %}">
-                      <i class="bi bi-people me-2"></i>
-                      <span class="badge bg-primary rounded-pill">{{ user.follower_count }}</span> Followers
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="{% url 'accounts:following_list' user.slug %}">
-                      <i class="bi bi-person-plus me-2"></i>
-                      <span class="badge bg-primary rounded-pill">{{ user.following_count }}</span> Following
-                    </a>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <form action="{% url 'accounts:logout' %}" method="post" class="px-2">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-outline-danger btn-sm w-100">
-                        <i class="bi bi-box-arrow-right me-2"></i>Log Out
-                      </button>
-                    </form>
-                  </li>
-                </ul>
-              </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle d-flex align-items-center"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {% if user.profile_picture %}
+                <img
+                  src="{{ user.profile_picture.url }}"
+                  alt="{{ user.get_full_name }}"
+                  class="rounded-circle me-2 border border-2 border-primary"
+                  width="36"
+                  height="36"
+                  style="object-fit: cover"
+                />
+                {% else %}
+                <div
+                  class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2 border border-2 border-primary"
+                  style="width: 36px; height: 36px"
+                >
+                  <span class="text-primary fw-bold small"
+                    >{{ user.first_name.0|upper }}{{ user.last_name.0|upper
+                    }}</span
+                  >
+                </div>
+                {% endif %}
+                <span class="d-none d-md-inline">{{ user.get_full_name }}</span>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow border-0 mt-2"
+                aria-labelledby="navbarDropdown"
+              >
+                <li class="px-3 py-2 border-bottom">
+                  <div class="small text-muted">Signed in as</div>
+                  <div class="fw-semibold">{{ user.get_full_name }}</div>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'accounts:profile' %}"
+                  >
+                    <i class="bi bi-person me-2 text-primary"></i>My Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'accounts:user_detail' user.slug %}"
+                  >
+                    <i class="bi bi-person-badge me-2 text-primary"></i>Public
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'stories:my_stories' %}"
+                  >
+                    <i class="bi bi-journal-text me-2 text-primary"></i>My
+                    Stories
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'stories:reading_list_list' %}"
+                  >
+                    <i class="bi bi-bookmarks me-2 text-primary"></i>Reading
+                    Lists
+                  </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'accounts:followers_list' user.slug %}"
+                  >
+                    <i class="bi bi-people me-2 text-primary"></i>
+                    <span class="badge bg-primary rounded-pill"
+                      >{{ user.follower_count }}</span
+                    >
+                    Followers
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item rounded"
+                    href="{% url 'accounts:following_list' user.slug %}"
+                  >
+                    <i class="bi bi-person-plus me-2 text-primary"></i>
+                    <span class="badge bg-primary rounded-pill"
+                      >{{ user.following_count }}</span
+                    >
+                    Following
+                  </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li class="px-2 py-2">
+                  <form action="{% url 'accounts:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button
+                      type="submit"
+                      class="btn btn-outline-danger btn-sm w-100"
+                    >
+                      <i class="bi bi-box-arrow-right me-2"></i>Log Out
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </li>
             {% else %}
-              <li class="nav-item">
-                <a class="nav-link btn btn-outline-primary me-2" href="{% url 'accounts:login' %}">
-                  <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link btn btn-primary text-white" href="{% url 'accounts:signup' %}">
-                  <i class="bi bi-person-plus me-1"></i>Sign Up
-                </a>
-              </li>
+            <li class="nav-item me-2">
+              <a
+                class="btn btn-outline-primary"
+                href="{% url 'accounts:login' %}"
+              >
+                <i class="bi bi-box-arrow-in-right me-1"></i>Login
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="btn btn-primary text-white"
+                href="{% url 'accounts:signup' %}"
+              >
+                <i class="bi bi-person-plus me-1"></i>Sign Up
+              </a>
+            </li>
             {% endif %}
           </ul>
         </div>
@@ -174,116 +292,261 @@
 
     <!-- Messages -->
     {% if messages %}
-      <div class="container mt-3">
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
-            <i class="bi bi-info-circle me-2"></i>{{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
+    <div class="container mt-4">
+      {% for message in messages %}
+      <div
+        class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg border-0 rounded-3 fade-in"
+        role="alert"
+      >
+        <div class="d-flex align-items-center">
+          {% if message.tags == 'success' %}
+          <i class="bi bi-check-circle-fill me-3 fs-4"></i>
+          {% elif message.tags == 'error' or message.tags == 'danger' %}
+          <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+          {% elif message.tags == 'warning' %}
+          <i class="bi bi-exclamation-circle-fill me-3 fs-4"></i>
+          {% else %}
+          <i class="bi bi-info-circle-fill me-3 fs-4"></i>
+          {% endif %}
+          <div class="flex-grow-1">{{ message }}</div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
       </div>
+      {% endfor %}
+    </div>
     {% endif %}
 
     <!-- Main Content -->
-    <main class="flex-shrink-0">
-      {% block content %}
-
-      {% endblock %}
-    </main>
+    <main class="flex-shrink-0">{% block content %} {% endblock %}</main>
 
     <!-- Footer -->
     <footer class="footer mt-auto py-5">
       <div class="container">
         <div class="row g-4">
-          <div class="col-md-4">
-            <h5 class="mb-3">Story Platform</h5>
-            <p class="text-muted mb-3">A place to read and share short stories that inspire, entertain, and connect.</p>
+          <div class="col-lg-4">
+            <h5 class="mb-3 d-flex align-items-center">
+              <i class="bi bi-book me-2 fs-4"></i>
+              <span class="text-gradient">Story Platform</span>
+            </h5>
+            <p class="mb-3" style="max-width: 300px">
+              A place to read and share short stories that inspire, entertain,
+              and connect.
+            </p>
             <div class="d-flex gap-3 mb-3">
-              <a href="#" class="text-muted hover-primary" title="Facebook">
-                <i class="bi bi-facebook fs-5"></i>
+              <a
+                href="#"
+                class="text-decoration-none hover-lift"
+                title="Facebook"
+              >
+                <div
+                  class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                  style="width: 40px; height: 40px"
+                >
+                  <i class="bi bi-facebook text-primary fs-5"></i>
+                </div>
               </a>
-              <a href="#" class="text-muted hover-primary" title="Twitter">
-                <i class="bi bi-twitter fs-5"></i>
+              <a
+                href="#"
+                class="text-decoration-none hover-lift"
+                title="Twitter"
+              >
+                <div
+                  class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                  style="width: 40px; height: 40px"
+                >
+                  <i class="bi bi-twitter text-primary fs-5"></i>
+                </div>
               </a>
-              <a href="#" class="text-muted hover-primary" title="Instagram">
-                <i class="bi bi-instagram fs-5"></i>
+              <a
+                href="#"
+                class="text-decoration-none hover-lift"
+                title="Instagram"
+              >
+                <div
+                  class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                  style="width: 40px; height: 40px"
+                >
+                  <i class="bi bi-instagram text-primary fs-5"></i>
+                </div>
+              </a>
+              <a
+                href="#"
+                class="text-decoration-none hover-lift"
+                title="LinkedIn"
+              >
+                <div
+                  class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                  style="width: 40px; height: 40px"
+                >
+                  <i class="bi bi-linkedin text-primary fs-5"></i>
+                </div>
               </a>
             </div>
           </div>
-          <div class="col-md-2">
-            <h6 class="mb-3">Quick Links</h6>
+          <div class="col-6 col-lg-2">
+            <h6 class="mb-3 fw-semibold">Quick Links</h6>
             <ul class="list-unstyled mb-0">
               <li class="mb-2">
-                <a href="{% url 'stories:story_list' %}" class="text-muted text-decoration-none">Stories</a>
+                <a
+                  href="{% url 'stories:story_list' %}"
+                  class="text-decoration-none d-inline-flex align-items-center"
+                >
+                  <i class="bi bi-chevron-right me-1 small"></i>Stories
+                </a>
               </li>
               <li class="mb-2">
-                <a href="{% url 'stories:category_list' %}" class="text-muted text-decoration-none">Categories</a>
+                <a
+                  href="{% url 'stories:category_list' %}"
+                  class="text-decoration-none d-inline-flex align-items-center"
+                >
+                  <i class="bi bi-chevron-right me-1 small"></i>Categories
+                </a>
               </li>
               <li class="mb-2">
-                <a href="{% url 'stories:reading_list_list' %}" class="text-muted text-decoration-none">Reading Lists</a>
+                <a
+                  href="{% url 'stories:reading_list_list' %}"
+                  class="text-decoration-none d-inline-flex align-items-center"
+                >
+                  <i class="bi bi-chevron-right me-1 small"></i>Reading Lists
+                </a>
               </li>
             </ul>
           </div>
-          <div class="col-md-2">
-            <h6 class="mb-3">Support</h6>
+          <div class="col-6 col-lg-2">
+            <h6 class="mb-3 fw-semibold">Support</h6>
             <ul class="list-unstyled mb-0">
               <li class="mb-2">
-                <a href="{% url 'website:about' %}" class="text-muted text-decoration-none">About</a>
+                <a
+                  href="{% url 'website:about' %}"
+                  class="text-decoration-none d-inline-flex align-items-center"
+                >
+                  <i class="bi bi-chevron-right me-1 small"></i>About
+                </a>
               </li>
               <li class="mb-2">
-                <a href="{% url 'website:faq' %}" class="text-muted text-decoration-none">FAQ</a>
+                <a
+                  href="{% url 'website:faq' %}"
+                  class="text-decoration-none d-inline-flex align-items-center"
+                >
+                  <i class="bi bi-chevron-right me-1 small"></i>FAQ
+                </a>
               </li>
               <li class="mb-2">
-                <a href="{% url 'website:contact' %}" class="text-muted text-decoration-none">Contact</a>
+                <a
+                  href="{% url 'website:contact' %}"
+                  class="text-decoration-none d-inline-flex align-items-center"
+                >
+                  <i class="bi bi-chevron-right me-1 small"></i>Contact
+                </a>
               </li>
             </ul>
           </div>
-          <div class="col-md-2">
-            <h6 class="mb-3">Legal</h6>
+          <div class="col-6 col-lg-2">
+            <h6 class="mb-3 fw-semibold">Legal</h6>
             <ul class="list-unstyled mb-0">
               <li class="mb-2">
-                <a href="{% url 'website:privacy' %}" class="text-muted text-decoration-none">Privacy Policy</a>
+                <a
+                  href="{% url 'website:privacy' %}"
+                  class="text-decoration-none d-inline-flex align-items-center"
+                >
+                  <i class="bi bi-chevron-right me-1 small"></i>Privacy Policy
+                </a>
               </li>
               <li class="mb-2">
-                <a href="{% url 'website:terms' %}" class="text-muted text-decoration-none">Terms of Service</a>
+                <a
+                  href="{% url 'website:terms' %}"
+                  class="text-decoration-none d-inline-flex align-items-center"
+                >
+                  <i class="bi bi-chevron-right me-1 small"></i>Terms of Service
+                </a>
               </li>
             </ul>
           </div>
-          <div class="col-md-2">
-            <h6 class="mb-3">Download App</h6>
+          <div class="col-6 col-lg-2">
+            <h6 class="mb-3 fw-semibold">Download App</h6>
             <div class="d-grid gap-2">
-              <a href="#" class="btn btn-outline-dark btn-sm">
+              <a href="#" class="btn btn-outline-light btn-sm hover-lift">
                 <i class="bi bi-apple me-2"></i>App Store
               </a>
-              <a href="#" class="btn btn-outline-dark btn-sm">
+              <a href="#" class="btn btn-outline-light btn-sm hover-lift">
                 <i class="bi bi-google-play me-2"></i>Google Play
               </a>
             </div>
           </div>
         </div>
-        <hr class="my-4" />
+        <hr class="my-4 opacity-25" />
         <div class="row align-items-center">
-          <div class="col-md-6 text-center text-md-start">
-            <p class="text-muted mb-0">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <p class="mb-0 small">
               &copy; {% now "Y" %} Story Platform. All rights reserved.
             </p>
           </div>
           <div class="col-md-6 text-center text-md-end">
-            <p class="text-muted mb-0">
-              Made with <i class="bi bi-heart-fill text-danger"></i> by <a href="https://bastakiss.com" class="text-muted text-decoration-none">Bastaki</a>
+            <p class="mb-0 small">
+              Made with <i class="bi bi-heart-fill text-danger"></i> by
+              <a
+                href="https://bastakiss.com"
+                class="text-decoration-none hover-primary"
+                >Bastaki</a
+              >
             </p>
           </div>
         </div>
       </div>
     </footer>
 
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="btn" aria-label="Back to top">
+      <i class="bi bi-arrow-up fs-5"></i>
+    </button>
+
     <!-- Bootstrap 5.3 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Back to Top Button Script -->
+    <script>
+      // Back to top button functionality
+      const backToTopButton = document.getElementById("backToTop");
+
+      window.addEventListener("scroll", () => {
+        if (window.pageYOffset > 300) {
+          backToTopButton.classList.add("show");
+        } else {
+          backToTopButton.classList.remove("show");
+        }
+      });
+
+      backToTopButton.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      // Auto-dismiss alerts after 5 seconds
+      document.addEventListener("DOMContentLoaded", () => {
+        const alerts = document.querySelectorAll(".alert");
+        alerts.forEach((alert) => {
+          setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+          }, 5000);
+        });
+      });
+    </script>
+
     <!-- Custom JS -->
     <script src="{% static 'js/scripts.js' %}"></script>
 
-    {% block extra_js %}
-
-    {% endblock %}
+    {% block extra_js %} {% endblock %}
   </body>
 </html>

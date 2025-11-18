@@ -229,19 +229,19 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-10 hero-content">
-          <h1 class="display-3 fw-bold mb-4 fade-in-up text-gradient">Discover Amazing Stories</h1>
-          <p class="lead fs-4 mb-5 fade-in-up-delay-1">Join our vibrant community of storytellers and readers. Share your stories, discover new perspectives, and connect with writers from around the world.</p>
-          <div class="d-grid gap-3 d-sm-flex justify-content-sm-center fade-in-up-delay-2">
+          <h1 class="display-2 fw-bold mb-4 fade-in-up">Discover Amazing Stories</h1>
+          <p class="lead fs-3 mb-5 fade-in-up" style="animation-delay: 0.1s; opacity: 0;">Join our vibrant community of storytellers and readers. Share your stories, discover new perspectives, and connect with writers from around the world.</p>
+          <div class="d-grid gap-3 d-sm-flex justify-content-sm-center fade-in-up" style="animation-delay: 0.2s; opacity: 0;">
             {% if user.is_authenticated %}
-              <a href="{% url 'stories:story_create' %}" class="btn btn-light btn-lg px-5 py-3 shadow-lg">
+              <a href="{% url 'stories:story_create' %}" class="btn btn-light btn-lg px-5 py-3 shadow-lg hover-lift">
                 <i class="bi bi-pencil-square me-2"></i>Start Writing
               </a>
             {% else %}
-              <a href="{% url 'accounts:signup' %}" class="btn btn-light btn-lg px-5 py-3 shadow-lg">
+              <a href="{% url 'accounts:signup' %}" class="btn btn-light btn-lg px-5 py-3 shadow-lg hover-lift">
                 <i class="bi bi-person-plus me-2"></i>Join Now
               </a>
             {% endif %}
-            <a href="{% url 'stories:story_list' %}" class="btn btn-outline-light btn-lg px-5 py-3">
+            <a href="{% url 'stories:story_list' %}" class="btn btn-outline-light btn-lg px-5 py-3 hover-lift">
               <i class="bi bi-book me-2"></i>Explore Stories
             </a>
           </div>
@@ -255,10 +255,10 @@
     <section class="section-spacing">
       <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-5">
         <div>
-          <h2 class="section-title">Featured Stories</h2>
+          <h2 class="section-title"><span class="text-gradient">Featured Stories</span></h2>
           <p class="section-subtitle">Handpicked stories from our community</p>
         </div>
-        <a href="{% url 'stories:story_list' %}" class="btn btn-outline-primary btn-lg">
+        <a href="{% url 'stories:story_list' %}" class="btn btn-outline-primary btn-lg hover-lift">
           View All <i class="bi bi-arrow-right ms-2"></i>
         </a>
       </div>
@@ -266,51 +266,58 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {% for story in featured_stories %}
             <div class="col">
-              <div class="card h-100 shadow-sm story-card">
+              <div class="card h-100 shadow story-card">
                 {% if story.cover_image %}
-                  <div class="position-relative" style="height: 220px; overflow: hidden;">
+                  <div class="position-relative" style="height: 240px; overflow: hidden;">
                     <img src="{{ story.cover_image.url }}" class="card-img-top w-100 h-100" alt="{{ story.title }}" style="object-fit: cover;">
+                    <div class="position-absolute top-0 end-0 m-3">
+                      <span class="badge bg-primary bg-opacity-90 px-3 py-2">
+                        <i class="bi bi-heart-fill me-1"></i>{{ story.likes|default:0 }}
+                      </span>
+                    </div>
                   </div>
                 {% else %}
-                  <div class="bg-gradient d-flex align-items-center justify-content-center" style="height: 220px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <i class="bi bi-book text-white" style="font-size: 4rem; opacity: 0.5;"></i>
+                  <div class="bg-gradient-primary d-flex align-items-center justify-content-center" style="height: 240px;">
+                    <i class="bi bi-book text-white" style="font-size: 5rem; opacity: 0.3;"></i>
                   </div>
                 {% endif %}
                 <div class="card-body p-4">
                   <div class="d-flex align-items-center mb-3">
                     <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none">
                       {% if story.author.profile_picture %}
-                        <img src="{{ story.author.profile_picture.url }}" alt="{{ story.author.get_full_name }}" class="rounded-circle me-2" width="40" height="40" style="object-fit: cover; border: 2px solid #e2e8f0;">
+                        <img src="{{ story.author.profile_picture.url }}" alt="{{ story.author.get_full_name }}" class="rounded-circle me-2" width="44" height="44" style="object-fit: cover; border: 2px solid var(--primary-200);">
                       {% else %}
-                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px; border: 2px solid #e2e8f0;">
-                          <span class="text-primary fw-bold small">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 44px; height: 44px; border: 2px solid var(--primary-200);">
+                          <span class="text-primary fw-bold">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
                         </div>
                       {% endif %}
                     </a>
                     <div class="flex-grow-1">
                       <h6 class="mb-0">
-                        <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-dark fw-semibold">{{ story.author.get_full_name }}</a>
+                        <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-dark fw-semibold hover-primary">{{ story.author.get_full_name }}</a>
                       </h6>
-                      <small class="text-muted">{{ story.created_at|date:"M d, Y" }}</small>
+                      <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{{ story.created_at|date:"M d, Y" }}</small>
                     </div>
                   </div>
-                  <h5 class="card-title mb-3">
+                  <h5 class="card-title mb-3 fw-bold">
                     <a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a>
                   </h5>
-                  <p class="card-text text-secondary">{{ story.content|truncatewords:25|striptags }}</p>
+                  <p class="card-text text-secondary mb-0">{{ story.content|truncatewords:25|striptags }}</p>
                 </div>
                 <div class="card-footer bg-transparent border-top px-4 pb-4">
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-3">
                       <span class="text-muted small">
-                        <i class="bi bi-heart-fill text-danger me-1"></i>{{ story.likes|default:0 }}
-                      </span>
-                      <span class="text-muted small">
                         <i class="bi bi-chat-dots me-1"></i>{{ story.comments.count|default:0 }}
                       </span>
+                      {% if story.reading_time %}
+                        <span class="text-muted small">
+                          <i class="bi bi-clock me-1"></i>{{ story.reading_time }} min
+                        </span>
+                      {% endif %}
                     </div>
-                    <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-primary btn-sm">
-                      Read More <i class="bi bi-arrow-right ms-1"></i>
+                    <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-primary btn-sm hover-lift">
+                      Read <i class="bi bi-arrow-right ms-1"></i>
                     </a>
                   </div>
                 </div>
@@ -321,7 +328,7 @@
       {% else %}
         <div class="alert alert-info border-0 shadow-sm">
           <div class="d-flex align-items-center">
-            <i class="bi bi-info-circle fs-4 me-3"></i>
+            <i class="bi bi-info-circle fs-3 me-3 text-primary"></i>
             <div>
               <h5 class="mb-1">No stories yet</h5>
               <p class="mb-0">Be the first to share your story with our community!</p>
@@ -335,10 +342,10 @@
     <section class="section-spacing">
       <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-5">
         <div>
-          <h2 class="section-title">Browse By Category</h2>
+          <h2 class="section-title"><span class="text-gradient">Browse By Category</span></h2>
           <p class="section-subtitle">Explore stories by your favorite genres</p>
         </div>
-        <a href="{% url 'stories:category_list' %}" class="btn btn-outline-primary btn-lg">
+        <a href="{% url 'stories:category_list' %}" class="btn btn-outline-primary btn-lg hover-lift">
           View All <i class="bi bi-arrow-right ms-2"></i>
         </a>
       </div>
@@ -350,11 +357,11 @@
                 <div class="card h-100 category-card shadow-sm">
                   <div class="card-body text-center p-4 d-flex flex-column justify-content-center">
                     <div class="mb-3">
-                      <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                        <i class="bi bi-bookmark-fill fs-2 text-primary"></i>
+                      <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="bi bi-bookmark-fill fs-1 text-primary"></i>
                       </div>
                     </div>
-                    <h5 class="card-title mb-2 text-dark fw-semibold">{{ category.name }}</h5>
+                    <h5 class="card-title mb-2 text-dark fw-bold">{{ category.name }}</h5>
                     {% if category.description %}
                       <p class="card-text small text-muted mb-0">{{ category.description|truncatewords:8 }}</p>
                     {% endif %}
