@@ -3,17 +3,247 @@
   Home - Story Platform
 {% endblock %}
 
+{% block extra_css %}
+  <style>
+    .hero-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 0;
+      border-radius: 0 0 3rem 3rem;
+      margin-bottom: 5rem;
+    }
+    
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .text-gradient {
+      background: linear-gradient(45deg, #ffffff, #f0f0f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .story-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 100%;
+    }
+    
+    .story-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .story-card .card-img-top {
+      transition: transform 0.5s ease;
+    }
+    
+    .story-card:hover .card-img-top {
+      transform: scale(1.1);
+    }
+    
+    .category-card {
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      border-radius: 16px;
+      height: 100%;
+    }
+    
+    .category-card:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15);
+    }
+    
+    .author-card {
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      padding: 1.5rem;
+      background: #f8fafc;
+    }
+    
+    .author-card:hover {
+      background: white;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    .stats-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .stats-card:hover {
+      transform: scale(1.05);
+    }
+    
+    .stats-number {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .fade-in-up {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    .fade-in-up-delay-1 {
+      animation: fadeInUp 0.6s ease 0.1s forwards;
+      opacity: 0;
+    }
+    
+    .fade-in-up-delay-2 {
+      animation: fadeInUp 0.6s ease 0.2s forwards;
+      opacity: 0;
+    }
+    
+    .section-spacing {
+      margin-bottom: 5rem;
+    }
+    
+    .card-img-overlay-gradient {
+      background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+    }
+    
+    /* CTA Section Styles - Override any Bootstrap conflicts */
+    .cta-section {
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 50%, #1e3a8a 100%) !important;
+      color: #ffffff !important;
+      border-radius: 1.5rem;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+    
+    .cta-section * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .cta-section h2,
+    .cta-section .display-5 {
+      color: #ffffff !important;
+    }
+    
+    .cta-section p,
+    .cta-section .lead {
+      color: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    .cta-section .btn-light {
+      background-color: #ffffff !important;
+      color: #1e40af !important;
+      border: none !important;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .cta-section .btn-light:hover {
+      background-color: #f8fafc !important;
+      color: #1e3a8a !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .cta-section .btn-outline-light {
+      background-color: transparent !important;
+      color: #ffffff !important;
+      border: 2px solid rgba(255, 255, 255, 0.8) !important;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .cta-section .btn-outline-light:hover {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      color: #ffffff !important;
+      border-color: #ffffff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
   <!-- Hero section -->
-  <section class="hero-section text-center">
+  <section class="hero-section text-center text-white">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <h1 class="display-4 fw-bold mb-4 fade-in">Discover Amazing Stories</h1>
-          <p class="lead mb-5 fade-in">Join our community of storytellers and readers. Share your stories, discover new perspectives, and connect with writers from around the world.</p>
-          <div class="d-grid gap-3 d-sm-flex justify-content-sm-center fade-in">
-            <a href="{% url 'accounts:signup' %}" class="btn btn-story btn-lg px-5">Start Writing</a>
-            <a href="{% url 'stories:story_list' %}" class="btn btn-outline-light btn-lg px-5">Explore Stories</a>
+        <div class="col-lg-10 hero-content">
+          <h1 class="display-3 fw-bold mb-4 fade-in-up text-gradient">Discover Amazing Stories</h1>
+          <p class="lead fs-4 mb-5 fade-in-up-delay-1">Join our vibrant community of storytellers and readers. Share your stories, discover new perspectives, and connect with writers from around the world.</p>
+          <div class="d-grid gap-3 d-sm-flex justify-content-sm-center fade-in-up-delay-2">
+            {% if user.is_authenticated %}
+              <a href="{% url 'stories:story_create' %}" class="btn btn-light btn-lg px-5 py-3 shadow-lg">
+                <i class="bi bi-pencil-square me-2"></i>Start Writing
+              </a>
+            {% else %}
+              <a href="{% url 'accounts:signup' %}" class="btn btn-light btn-lg px-5 py-3 shadow-lg">
+                <i class="bi bi-person-plus me-2"></i>Join Now
+              </a>
+            {% endif %}
+            <a href="{% url 'stories:story_list' %}" class="btn btn-outline-light btn-lg px-5 py-3">
+              <i class="bi bi-book me-2"></i>Explore Stories
+            </a>
           </div>
         </div>
       </div>
@@ -22,47 +252,66 @@
 
   <div class="container py-5">
     <!-- Featured stories section -->
-    <section class="mb-5">
-      <div class="d-flex align-items-center justify-content-between mb-4">
-        <h2 class="text-story-primary mb-0">Featured Stories</h2>
-        <a href="{% url 'stories:story_list' %}" class="btn btn-outline-primary">View All</a>
+    <section class="section-spacing">
+      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-5">
+        <div>
+          <h2 class="section-title">Featured Stories</h2>
+          <p class="section-subtitle">Handpicked stories from our community</p>
+        </div>
+        <a href="{% url 'stories:story_list' %}" class="btn btn-outline-primary btn-lg">
+          View All <i class="bi bi-arrow-right ms-2"></i>
+        </a>
       </div>
       {% if featured_stories %}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {% for story in featured_stories %}
-            <div class="col fade-in">
+            <div class="col">
               <div class="card h-100 shadow-sm story-card">
                 {% if story.cover_image %}
-                  <img src="{{ story.cover_image.url }}" class="card-img-top" alt="{{ story.title }}" style="height: 200px; object-fit: cover;">
+                  <div class="position-relative" style="height: 220px; overflow: hidden;">
+                    <img src="{{ story.cover_image.url }}" class="card-img-top w-100 h-100" alt="{{ story.title }}" style="object-fit: cover;">
+                  </div>
+                {% else %}
+                  <div class="bg-gradient d-flex align-items-center justify-content-center" style="height: 220px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i class="bi bi-book text-white" style="font-size: 4rem; opacity: 0.5;"></i>
+                  </div>
                 {% endif %}
-                <div class="card-body">
+                <div class="card-body p-4">
                   <div class="d-flex align-items-center mb-3">
-                    {% if story.author.profile_picture %}
-                      <img src="{{ story.author.profile_picture.url }}" alt="{{ story.author.get_full_name }}" class="rounded-circle me-2" width="32" height="32" style="object-fit: cover;">
-                    {% else %}
-                      <i class="bi bi-person-circle fs-4 me-2 text-muted"></i>
-                    {% endif %}
-                    <div>
-                      <h6 class="card-subtitle mb-1">
-                        <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none">{{ story.author.get_full_name }}</a>
+                    <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none">
+                      {% if story.author.profile_picture %}
+                        <img src="{{ story.author.profile_picture.url }}" alt="{{ story.author.get_full_name }}" class="rounded-circle me-2" width="40" height="40" style="object-fit: cover; border: 2px solid #e2e8f0;">
+                      {% else %}
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px; border: 2px solid #e2e8f0;">
+                          <span class="text-primary fw-bold small">{{ story.author.first_name.0|upper }}{{ story.author.last_name.0|upper }}</span>
+                        </div>
+                      {% endif %}
+                    </a>
+                    <div class="flex-grow-1">
+                      <h6 class="mb-0">
+                        <a href="{% url 'accounts:user_detail' story.author.slug %}" class="text-decoration-none text-dark fw-semibold">{{ story.author.get_full_name }}</a>
                       </h6>
                       <small class="text-muted">{{ story.created_at|date:"M d, Y" }}</small>
                     </div>
                   </div>
-                  <h5 class="card-title mb-3">{{ story.title }}</h5>
-                  <p class="card-text">{{ story.content|truncatewords_html:30|safe }}</p>
+                  <h5 class="card-title mb-3">
+                    <a href="{% url 'stories:story_detail' story.slug %}" class="text-decoration-none text-dark">{{ story.title }}</a>
+                  </h5>
+                  <p class="card-text text-secondary">{{ story.content|truncatewords:25|striptags }}</p>
                 </div>
-                <div class="card-footer bg-transparent border-top-0">
+                <div class="card-footer bg-transparent border-top px-4 pb-4">
                   <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center">
-                      <span class="me-3">
-                        <i class="bi bi-heart me-1"></i>{{ story.likes_count }}
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="text-muted small">
+                        <i class="bi bi-heart-fill text-danger me-1"></i>{{ story.likes|default:0 }}
                       </span>
-                      <span>
-                        <i class="bi bi-chat me-1"></i>{{ story.comments_count }}
+                      <span class="text-muted small">
+                        <i class="bi bi-chat-dots me-1"></i>{{ story.comments.count|default:0 }}
                       </span>
                     </div>
-                    <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                    <a href="{% url 'stories:story_detail' story.slug %}" class="btn btn-primary btn-sm">
+                      Read More <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -70,28 +319,45 @@
           {% endfor %}
         </div>
       {% else %}
-        <div class="alert alert-info">
-          <i class="bi bi-info-circle me-2"></i>No stories have been published yet. Check back soon!
+        <div class="alert alert-info border-0 shadow-sm">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle fs-4 me-3"></i>
+            <div>
+              <h5 class="mb-1">No stories yet</h5>
+              <p class="mb-0">Be the first to share your story with our community!</p>
+            </div>
+          </div>
         </div>
       {% endif %}
     </section>
 
     <!-- Categories section -->
-    <section class="mb-5">
-      <div class="d-flex align-items-center justify-content-between mb-4">
-        <h2 class="text-story-primary mb-0">Browse By Category</h2>
-        <a href="{% url 'stories:category_list' %}" class="btn btn-outline-primary">View All</a>
+    <section class="section-spacing">
+      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-5">
+        <div>
+          <h2 class="section-title">Browse By Category</h2>
+          <p class="section-subtitle">Explore stories by your favorite genres</p>
+        </div>
+        <a href="{% url 'stories:category_list' %}" class="btn btn-outline-primary btn-lg">
+          View All <i class="bi bi-arrow-right ms-2"></i>
+        </a>
       </div>
       {% if categories %}
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
           {% for category in categories %}
-            <div class="col fade-in">
+            <div class="col">
               <a href="{% url 'stories:story_list_by_category' category.slug %}" class="text-decoration-none">
-                <div class="card h-100 category-card">
-                  <div class="card-body text-center p-4">
-                    <i class="bi bi-bookmark-fill fs-1 mb-3"></i>
-                    <h5 class="card-title mb-2">{{ category.name }}</h5>
-                    <p class="card-text small text-muted mb-0">{{ category.description|default:''|truncatewords:10 }}</p>
+                <div class="card h-100 category-card shadow-sm">
+                  <div class="card-body text-center p-4 d-flex flex-column justify-content-center">
+                    <div class="mb-3">
+                      <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                        <i class="bi bi-bookmark-fill fs-2 text-primary"></i>
+                      </div>
+                    </div>
+                    <h5 class="card-title mb-2 text-dark fw-semibold">{{ category.name }}</h5>
+                    {% if category.description %}
+                      <p class="card-text small text-muted mb-0">{{ category.description|truncatewords:8 }}</p>
+                    {% endif %}
                   </div>
                 </div>
               </a>
@@ -99,81 +365,98 @@
           {% endfor %}
         </div>
       {% else %}
-        <div class="alert alert-info">
+        <div class="alert alert-info border-0 shadow-sm">
           <i class="bi bi-info-circle me-2"></i>No categories have been created yet.
         </div>
       {% endif %}
     </section>
 
     <!-- Popular Authors section -->
-    <section class="mb-5">
-      <div class="d-flex align-items-center justify-content-between mb-4">
-        <h2 class="text-story-primary mb-0">Popular Authors</h2>
-        <a href="{% url 'stories:story_list' %}" class="btn btn-outline-primary">Discover More</a>
+    <section class="section-spacing">
+      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-5">
+        <div>
+          <h2 class="section-title">Popular Authors</h2>
+          <p class="section-subtitle">Meet our most active storytellers</p>
+        </div>
+        <a href="{% url 'stories:story_list' %}" class="btn btn-outline-primary btn-lg">
+          Discover More <i class="bi bi-arrow-right ms-2"></i>
+        </a>
       </div>
       {% if popular_authors %}
-        <div class="card shadow-sm">
-          <div class="card-body p-4">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-              {% for author in popular_authors %}
-                <div class="col fade-in">
-                  <div class="d-flex align-items-center">
-                    <div class="me-3">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          {% for author in popular_authors %}
+            <div class="col">
+              <div class="author-card shadow-sm">
+                <div class="d-flex align-items-start">
+                  <div class="me-3">
+                    <a href="{% url 'accounts:user_detail' author.slug %}" class="text-decoration-none">
                       {% if author.profile_picture %}
-                        <img src="{{ author.profile_picture.url }}" alt="{{ author.get_full_name }}" class="rounded-circle" width="64" height="64" style="object-fit: cover;">
+                        <img src="{{ author.profile_picture.url }}" alt="{{ author.get_full_name }}" class="rounded-circle shadow-sm" width="70" height="70" style="object-fit: cover; border: 3px solid white;">
                       {% else %}
-                        <div class="bg-light rounded-circle d-flex justify-content-center align-items-center" style="width: 64px; height: 64px;">
-                          <i class="bi bi-person-fill text-muted fs-3"></i>
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 70px; height: 70px; border: 3px solid white;">
+                          <span class="text-primary fw-bold fs-5">{{ author.first_name.0|upper }}{{ author.last_name.0|upper }}</span>
                         </div>
                       {% endif %}
+                    </a>
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6 class="mb-2">
+                      <a href="{% url 'accounts:user_detail' author.slug %}" class="text-decoration-none text-dark fw-semibold">{{ author.get_full_name }}</a>
+                    </h6>
+                    <div class="d-flex flex-wrap gap-3 mb-3">
+                      <span class="text-muted small">
+                        <i class="bi bi-journal-text text-primary me-1"></i>{{ author.stories.count }} stories
+                      </span>
+                      <span class="text-muted small">
+                        <i class="bi bi-people text-primary me-1"></i>{{ author.follower_count|default:0 }} followers
+                      </span>
                     </div>
-                    <div>
-                      <h6 class="mb-1">
-                        <a href="{% url 'accounts:user_detail' author.slug %}" class="text-decoration-none">{{ author.get_full_name }}</a>
-                      </h6>
-                      <div class="text-muted small mb-2">
-                        <span class="me-2"><i class="bi bi-journal-text"></i> {{ author.stories.count }} stories</span>
-                        <span><i class="bi bi-people"></i> {{ author.follower_count }} followers</span>
-                      </div>
-                      {% if user.is_authenticated and user != author %}
-                        <form method="post" action="{% url 'accounts:toggle_follow' author.slug %}">
-                          {% csrf_token %}
-                          <button type="submit" class="btn btn-sm {% if user.is_following == author %}btn-primary{% else %}btn-outline-primary{% endif %}">
-                            {% if user.is_following == author %}
-                              <i class="bi bi-person-check-fill me-1"></i>Following
-                            {% else %}
-                              <i class="bi bi-person-plus me-1"></i>Follow
-                            {% endif %}
-                          </button>
-                        </form>
-                      {% endif %}
-                    </div>
+                    {% if user.is_authenticated and user != author %}
+                      <form method="post" action="{% url 'accounts:toggle_follow' author.slug %}" class="mb-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-primary">
+                          <i class="bi bi-person-plus me-1"></i>Follow
+                        </button>
+                      </form>
+                    {% elif not user.is_authenticated %}
+                      <a href="{% url 'accounts:login' %}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-person-plus me-1"></i>Follow
+                      </a>
+                    {% endif %}
                   </div>
                 </div>
-              {% endfor %}
+              </div>
             </div>
-          </div>
+          {% endfor %}
         </div>
       {% else %}
-        <div class="alert alert-info">
+        <div class="alert alert-info border-0 shadow-sm">
           <i class="bi bi-info-circle me-2"></i>No authors to display yet. Check back soon!
         </div>
       {% endif %}
     </section>
 
     <!-- Call to action section -->
-    <section class="py-5 bg-primary text-white rounded-4 text-center">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <h2 class="display-6 mb-4">Ready to share your story?</h2>
-          <p class="lead mb-4">Join our vibrant community of writers and start sharing your unique perspective with readers around the world.</p>
-          <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-            <a href="{% url 'accounts:signup' %}" class="btn btn-light btn-lg px-5">
-              <i class="bi bi-pencil-square me-2"></i>Start Writing
-            </a>
-            <a href="{% url 'website:about' %}" class="btn btn-outline-light btn-lg px-5">
-              <i class="bi bi-info-circle me-2"></i>Learn More
-            </a>
+    <section class="section-spacing">
+      <div class="cta-section shadow-lg">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h2 class="display-5 fw-bold mb-4">Ready to share your story?</h2>
+            <p class="lead fs-5 mb-5">Join our vibrant community of writers and start sharing your unique perspective with readers around the world.</p>
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+              {% if user.is_authenticated %}
+                <a href="{% url 'stories:story_create' %}" class="btn btn-light btn-lg px-5 py-3">
+                  <i class="bi bi-pencil-square me-2"></i>Start Writing
+                </a>
+              {% else %}
+                <a href="{% url 'accounts:signup' %}" class="btn btn-light btn-lg px-5 py-3">
+                  <i class="bi bi-person-plus me-2"></i>Join Now
+                </a>
+              {% endif %}
+              <a href="{% url 'website:about' %}" class="btn btn-outline-light btn-lg px-5 py-3">
+                <i class="bi bi-info-circle me-2"></i>Learn More
+              </a>
+            </div>
           </div>
         </div>
       </div>
